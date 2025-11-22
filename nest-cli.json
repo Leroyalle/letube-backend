@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "monorepo": true,
+  "projects": {
+    "leroyalle-play-api-gateway": {
+      "type": "application",
+      "root": "apps/leroyalle-play-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/leroyalle-play-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/leroyalle-play-api-gateway/tsconfig.app.json"
+      }
+    }
+  }
+}
