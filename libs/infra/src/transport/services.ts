@@ -1,0 +1,2 @@
+export const USER_SERVICE = 'USER_SERVICE';
+export const APP_GATEWAY_SERVICE = 'APP_GATEWAY_SERVICE';
