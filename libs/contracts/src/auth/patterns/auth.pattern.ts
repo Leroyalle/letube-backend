@@ -5,8 +5,11 @@ export const AUTH_PATTERNS = {
   LOGOUT: {
     cmd: 'auth.logout',
   },
-  REGISTER: {
-    cmd: 'auth.register',
+  REGISTER_SEND_VERIFICATION_CODE: {
+    cmd: 'auth.register_send_verification_code',
+  },
+  REGISTER_VERIFY_CODE: {
+    cmd: 'auth.register_verify_code',
   },
   REFRESH_TOKEN: {
     cmd: 'auth.refresh-token',

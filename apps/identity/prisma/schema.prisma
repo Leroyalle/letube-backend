@@ -10,24 +10,49 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  password  String
-  role      UserRole @default(USER)
+  id String @id @default(uuid())
+
+  email    String @unique
+  name     String
+  password String
+
+  role UserRole @default(USER)
+
+  isVerified Boolean
+  isBanned   Boolean @default(false)
+
+  refreshToken      RefreshToken?
+  verificationCodes VerificationCode[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model RefreshToken {
-  id     String @id @default(uuid())
-  userId String
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
   tokenHash String
   expiresAt DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model VerificationCode {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  code      String
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code])
 }
 
 enum UserRole {

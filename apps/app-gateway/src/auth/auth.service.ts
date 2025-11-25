@@ -1,10 +1,16 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   AUTH_PATTERNS,
   LoginDto,
   RegisterDto,
+  SendMessageResponseDto,
   SuccessLoginDto,
   TokenData,
+  VerifyCodeDto,
 } from '@contracts';
 import { IDENTITY_SERVICE } from '@infra';
 import { ClientProxy } from '@nestjs/microservices';
@@ -18,45 +24,71 @@ export class AuthService {
   ) {}
 
   public async login(dto: LoginDto, res: Response) {
-    const data = await firstValueFrom<SuccessLoginDto>(
-      this.userClient.send(AUTH_PATTERNS.LOGIN, dto),
-    );
+    try {
+      const data = await firstValueFrom<SuccessLoginDto>(
+        this.userClient.send(AUTH_PATTERNS.LOGIN, dto),
+      );
 
-    res.cookie('refreshToken', data.refreshData.token, {
-      httpOnly: true,
-      // secure: true,
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
+      this.setRefreshToken(data.refreshData, res);
 
-    return {
-      data: {
-        accessToken: data.accessData.token,
-        expiresIn: data.accessData.expiresAt,
-      },
-      message: 'Login successful!',
-    };
+      return {
+        data: {
+          accessToken: data.accessData.token,
+          expiresIn: data.accessData.expiresAt,
+        },
+        message: 'Login successful!',
+      };
+    } catch (error) {
+      console.log('AppGateway_AuthService_login', error);
+    }
   }
 
-  public async register(dto: RegisterDto, res: Response) {
-    const data = await firstValueFrom<SuccessLoginDto | undefined>(
-      this.userClient.send(AUTH_PATTERNS.REGISTER, dto),
-    );
+  public async registerSendVerificationCode(dto: RegisterDto) {
+    try {
+      const data = await firstValueFrom<SendMessageResponseDto | undefined>(
+        this.userClient.send(
+          AUTH_PATTERNS.REGISTER_SEND_VERIFICATION_CODE,
+          dto,
+        ),
+      );
 
-    if (!data) {
-      return res
-        .status(HttpStatus.NOT_FOUND)
-        .json({ status: 'error', message: 'Register failed' });
+      if (!data || data.status === 'error') {
+        throw new InternalServerErrorException(
+          'Verification code sending failed',
+        );
+      }
+
+      // this.setRefreshToken(data.refreshData, res);
+
+      return {
+        status: data.status,
+        message:
+          'The letter with verification code has been sent to your email!',
+      };
+    } catch (error) {
+      console.log('AppGateway_AuthService_sendVerificationCode', error);
     }
+  }
 
-    this.setRefreshToken(data.refreshData, res);
+  public async registerVerifyCode(dto: VerifyCodeDto, res: Response) {
+    try {
+      const data = await firstValueFrom<SuccessLoginDto | undefined>(
+        this.userClient.send(AUTH_PATTERNS.REGISTER_VERIFY_CODE, dto),
+      );
 
-    return {
-      data: {
+      if (!data) {
+        throw new InternalServerErrorException('Registration failed');
+      }
+
+      this.setRefreshToken(data.refreshData, res);
+
+      return {
         accessToken: data.accessData.token,
-        expiresIn: data.accessData.expiresAt,
-      },
-    };
+        expiresIn: data.accessData.expiresAt.expiresMs,
+      };
+    } catch (error) {
+      console.log('AppGateway_AuthService_registerVerifyCode', error);
+    }
   }
 
   private setRefreshToken(tokenData: TokenData, res: Response) {

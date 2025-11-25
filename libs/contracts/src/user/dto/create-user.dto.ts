@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsEnum,
   IsOptional,
@@ -21,4 +22,8 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(EUserRole, { message: 'Invalid role' })
   role?: EUserRole;
+  @IsBoolean({ message: 'Invalid isBanned' })
+  isBanned?: boolean;
+  @IsBoolean({ message: 'Invalid isVerified' })
+  isVerified: boolean;
 }
