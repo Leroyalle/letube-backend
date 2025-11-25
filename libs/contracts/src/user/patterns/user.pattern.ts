@@ -14,4 +14,7 @@ export const USER_PATTERNS = {
   DELETE: {
     cmd: 'user.delete',
   },
+  FIND_BY_EMAIL: {
+    cmd: 'user.find-by-email',
+  },
 };

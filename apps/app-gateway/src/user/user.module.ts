@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { USER_PORT, USER_SERVICE } from '@infra';
+import { IDENTITY_PORT, IDENTITY_SERVICE, IDENTITY_SERVICE_HOST } from '@infra';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: USER_SERVICE,
+        name: IDENTITY_SERVICE,
         transport: Transport.TCP,
-        options: { port: USER_PORT },
+        options: { port: IDENTITY_PORT, host: IDENTITY_SERVICE_HOST },
       },
     ]),
   ],

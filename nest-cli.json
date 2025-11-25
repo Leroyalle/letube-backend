@@ -12,6 +12,15 @@
         "tsConfigPath": "apps/app-gateway/tsconfig.app.json"
       }
     },
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
+      }
+    },
     "contracts": {
       "type": "library",
       "root": "libs/contracts",
@@ -19,6 +28,15 @@
       "sourceRoot": "libs/contracts/src",
       "compilerOptions": {
         "tsConfigPath": "libs/contracts/tsconfig.lib.json"
+      }
+    },
+    "identity": {
+      "type": "application",
+      "root": "apps/identity",
+      "entryFile": "main",
+      "sourceRoot": "apps/identity/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/identity/tsconfig.app.json"
       }
     },
     "infra": {

@@ -1,0 +1,32 @@
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { SignDto } from '../dto/sign.dto';
+import { ConfigService } from '@nestjs/config';
+import { TokenData } from '@contracts';
+
+@Injectable()
+export class AccessTokenService {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  public async signAccessToken(payload: SignDto): Promise<TokenData> {
+    const stringExpiresAt = '5m';
+
+    const expiresMs = parseInt(stringExpiresAt) * 1000 * 60 + Date.now();
+    const expiresDate = new Date(Date.now() + expiresMs);
+    const token = await this.jwtService.signAsync(payload, {
+      secret: this.configService.getOrThrow<string>('ACCESS_SECRET'),
+      expiresIn: '5m',
+    });
+    return { token, expiresAt: { expiresMs, expiresDate } };
+  }
+
+  // FIXME: типизировать return
+  public verifyAccessToken(token: string) {
+    return this.jwtService.verify(token, {
+      secret: this.configService.getOrThrow<string>('ACCESS_SECRET'),
+    });
+  }
+}

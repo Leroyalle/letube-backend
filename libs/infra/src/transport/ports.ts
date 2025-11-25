@@ -1,2 +1,2 @@
-export const USER_PORT: number = 3001;
-export const APP_GATEWAY_PORT: number = 3000;
+export const APP_GATEWAY_PORT = 3000;
+export const IDENTITY_PORT = 3001;

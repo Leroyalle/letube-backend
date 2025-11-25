@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateUserDto, USER_PATTERNS } from '@contracts';
-import { User } from '@prisma/client';
+import { User } from 'apps/identity/__generated__/prisma';
 
 @Controller()
 export class UserController {

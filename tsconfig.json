@@ -18,10 +18,18 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@contracts": ["libs/contracts/src"],
-      "@contracts/*": ["libs/contracts/src/*"],
-      "@infra": ["libs/infra/src"],
-      "@infra/*": ["libs/infra/src/*"]
+      "@contracts": [
+        "libs/contracts/src"
+      ],
+      "@contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@infra": [
+        "libs/infra/src"
+      ],
+      "@infra/*": [
+        "libs/infra/src/*"
+      ]
     }
   }
 }
