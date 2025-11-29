@@ -18,11 +18,12 @@ export class CodeService {
     });
   }
 
-  public async findByUserId(userId: string, code: string) {
+  public async findByUserId(userId: string, code: string, type: ECodeType) {
     return await this.prisma.verificationCode.findFirst({
       where: {
         userId,
         code,
+        type,
       },
     });
   }
@@ -31,8 +32,12 @@ export class CodeService {
     return await this.prisma.verificationCode.deleteMany({ where: { userId } });
   }
 
-  public async checkExpiresAt(userId: string, code: string): Promise<boolean> {
-    const findCode = await this.findByUserId(userId, code);
+  public async checkExpiresAt(
+    userId: string,
+    code: string,
+    type: ECodeType,
+  ): Promise<boolean> {
+    const findCode = await this.findByUserId(userId, code, type);
     if (!findCode) return false;
     return findCode.expiresAt > new Date(Date.now());
   }

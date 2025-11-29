@@ -5,6 +5,7 @@ import {
   LoginDto,
   NOTIFICATION_PATTERNS,
   RegisterDto,
+  ResetPasswordDto,
   SendMessageDto,
   SendMessageResponseDto,
   SuccessLoginDto,
@@ -40,191 +41,199 @@ export class AuthService {
   ) {}
 
   public async login(dto: LoginDto): Promise<SuccessLoginDto | undefined> {
-    try {
-      const user = await this.userService.findByEmail(dto.email);
+    const user = await this.userService.findByEmail(dto.email);
 
-      if (!user) {
-        throw new NotFoundException('This account is not registered.');
-      }
-
-      const isValidPassword = await argon2.verify(user.password, dto.password);
-
-      if (!isValidPassword) {
-        throw new NotFoundException('Invalid credentials.');
-      }
-
-      const accessData = await this.accessTokenService.signAccessToken({
-        id: user.id,
-        // FIXME: заткнул тс по причине двух енамов (призма и либа), мб замаппить
-        role: user.role as EUserRole,
-      });
-
-      const refreshData = this.refreshTokenService.generate();
-      const hashedRefresh = await this.refreshTokenService.hash(
-        refreshData.token,
-      );
-
-      await this.updateRefreshToken(user.id, {
-        token: hashedRefresh,
-        expiresAt: refreshData.expiresAt,
-      });
-
-      return { accessData, refreshData };
-    } catch (error) {
-      console.log('AuthService_login', error);
+    if (!user) {
+      throw new NotFoundException('This account is not registered.');
     }
+
+    const isValidPassword = await argon2.verify(user.password, dto.password);
+
+    if (!isValidPassword) {
+      throw new NotFoundException('Invalid credentials.');
+    }
+
+    const accessData = await this.accessTokenService.signAccessToken({
+      id: user.id,
+      // FIXME: заткнул тс по причине двух енамов (призма и либа), мб замаппить
+      role: user.role as EUserRole,
+    });
+
+    const refreshData = this.refreshTokenService.generate();
+    const hashedRefresh = await this.refreshTokenService.hash(
+      refreshData.token,
+    );
+
+    await this.updateRefreshToken(user.id, {
+      token: hashedRefresh,
+      expiresAt: refreshData.expiresAt,
+    });
+
+    return { accessData, refreshData };
   }
 
   public async registerSendVerificationCode(
     dto: RegisterDto,
   ): Promise<SendMessageResponseDto | undefined> {
-    try {
-      const user = await this.userService.findByEmail(dto.email);
+    const user = await this.userService.findByEmail(dto.email);
 
-      if (user) {
-        throw new BadRequestException('User has already exists');
-      }
-
-      const hashedPassword = await argon2.hash(dto.password);
-
-      const createdUser = await this.userService.create({
-        ...dto,
-        role: EUserRole.USER,
-        password: hashedPassword,
-        isVerified: false,
-      });
-
-      if (!createdUser) {
-        throw new BadRequestException('User creation failed');
-      }
-
-      const codeData = await this.codeService.create(
-        createdUser.id,
-        ECodeType.REGISTER,
-      );
-
-      const sendData: SendMessageDto = {
-        message: `Your code is ${codeData.code}`,
-        subject: 'Verification code',
-        to: [createdUser.email],
-        type: 'AUTH',
-      };
-
-      const result = await firstValueFrom<SendMessageResponseDto | undefined>(
-        this.notificationClient.send(
-          NOTIFICATION_PATTERNS.SEND_MESSAGE,
-          sendData,
-        ),
-      );
-
-      if (!result || result.status === 'error') {
-        throw new BadRequestException('Sending code failed');
-      }
-
-      return result;
-    } catch (error) {
-      console.log('AuthService_registerSendVerificationCode', error);
+    if (user) {
+      throw new BadRequestException('User has already exists');
     }
+
+    const hashedPassword = await argon2.hash(dto.password);
+
+    const createdUser = await this.userService.create({
+      ...dto,
+      role: EUserRole.USER,
+      password: hashedPassword,
+      isVerified: false,
+    });
+
+    if (!createdUser) {
+      throw new BadRequestException('User creation failed');
+    }
+
+    const codeData = await this.codeService.create(
+      createdUser.id,
+      ECodeType.REGISTER,
+    );
+
+    const sendData: SendMessageDto = {
+      message: `Your code is ${codeData.code}`,
+      subject: 'Verification code',
+      to: [createdUser.email],
+      type: 'AUTH',
+    };
+
+    const result = await firstValueFrom<SendMessageResponseDto | undefined>(
+      this.notificationClient.send(
+        NOTIFICATION_PATTERNS.SEND_MESSAGE,
+        sendData,
+      ),
+    );
+
+    if (!result || result.status === 'error') {
+      throw new BadRequestException('Sending code failed');
+    }
+
+    return result;
   }
 
   public async registerVerifyCode(
     dto: VerifyCodeDto,
   ): Promise<SuccessLoginDto | undefined> {
-    try {
-      const user = await this.userService.findByEmail(dto.email);
+    const user = await this.userService.findByEmail(dto.email);
 
-      if (!user) {
-        throw new BadRequestException('User not found');
-      }
-
-      const isValidCode = await this.codeService.checkExpiresAt(
-        user.id,
-        dto.code,
-      );
-
-      if (!isValidCode) {
-        throw new BadRequestException('Invalid code');
-      }
-
-      const correctlyUser = {
-        ...user,
-        role: EUserRole.USER,
-      };
-
-      const accessData =
-        await this.accessTokenService.signAccessToken(correctlyUser);
-      const refreshData = this.refreshTokenService.generate();
-      const hashedRefresh = await this.refreshTokenService.hash(
-        refreshData.token,
-      );
-
-      await this.userService.update({ id: user.id, isVerified: true });
-
-      await this.updateRefreshToken(user.id, {
-        token: hashedRefresh,
-        expiresAt: refreshData.expiresAt,
-      });
-
-      return { accessData, refreshData };
-    } catch (error) {
-      console.log('AuthService_registerVerifyCode', error);
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
+
+    const isValidCode = await this.codeService.checkExpiresAt(
+      user.id,
+      dto.code,
+      ECodeType.REGISTER,
+    );
+
+    if (!isValidCode) {
+      throw new BadRequestException('Invalid code');
+    }
+
+    const correctlyUser = {
+      ...user,
+      role: EUserRole.USER,
+    };
+
+    const accessData =
+      await this.accessTokenService.signAccessToken(correctlyUser);
+    const refreshData = this.refreshTokenService.generate();
+    const hashedRefresh = await this.refreshTokenService.hash(
+      refreshData.token,
+    );
+
+    await this.userService.update({ id: user.id, isVerified: true });
+
+    await this.updateRefreshToken(user.id, {
+      token: hashedRefresh,
+      expiresAt: refreshData.expiresAt,
+    });
+
+    return { accessData, refreshData };
   }
 
   private async updateRefreshToken(userId: string, tokenData: TokenData) {
-    try {
-      await this.prisma.refreshToken.deleteMany({
-        where: {
-          userId,
-        },
-      });
+    await this.prisma.refreshToken.deleteMany({
+      where: {
+        userId,
+      },
+    });
 
-      return await this.prisma.refreshToken.create({
-        data: {
-          tokenHash: tokenData.token,
-          expiresAt: tokenData.expiresAt.expiresDate,
-          userId,
-        },
-      });
-    } catch (error) {
-      console.log('AuthService_updateRefreshToken', error);
-    }
+    return await this.prisma.refreshToken.create({
+      data: {
+        tokenHash: tokenData.token,
+        expiresAt: tokenData.expiresAt.expiresDate,
+        userId,
+      },
+    });
   }
 
   public async forgotPassword(dto: ForgotPasswordDto) {
-    try {
-      const user = await this.userService.findByEmail(dto.email);
+    const user = await this.userService.findByEmail(dto.email);
 
-      if (!user) {
-        throw new NotFoundException('This account is not registered.');
-      }
-
-      const codeData = await this.codeService.create(
-        user.id,
-        ECodeType.RESET_PASSWORD,
-      );
-
-      const sendData: SendMessageDto = {
-        message: `Your Reset Code is ${codeData.code}`,
-        subject: 'Reset password code',
-        to: [user.email],
-        type: 'AUTH',
-      };
-
-      const result = await firstValueFrom<SendMessageResponseDto | undefined>(
-        this.notificationClient.send(
-          NOTIFICATION_PATTERNS.SEND_MESSAGE,
-          sendData,
-        ),
-      );
-
-      if (!result || result.status === 'error') {
-        throw new BadRequestException('Sending code failed');
-      }
-
-      return result;
-    } catch (error) {
-      console.log('Auth_AuthService_forgotPassword', error);
+    if (!user) {
+      throw new NotFoundException('This account is not registered.');
     }
+
+    const codeData = await this.codeService.create(
+      user.id,
+      ECodeType.RESET_PASSWORD,
+    );
+
+    const sendData: SendMessageDto = {
+      message: `Your Reset Code is ${codeData.code}`,
+      subject: 'Reset password code',
+      to: [user.email],
+      type: 'AUTH',
+    };
+
+    const result = await firstValueFrom<SendMessageResponseDto | undefined>(
+      this.notificationClient.send(
+        NOTIFICATION_PATTERNS.SEND_MESSAGE,
+        sendData,
+      ),
+    );
+
+    if (!result || result.status === 'error') {
+      throw new BadRequestException('Sending code failed');
+    }
+
+    return result;
+  }
+
+  public async resetPassword(dto: ResetPasswordDto) {
+    const user = await this.userService.findByEmail(dto.email);
+
+    if (!user) {
+      throw new NotFoundException('This account is not registered.');
+    }
+
+    const isValidCode = await this.codeService.checkExpiresAt(
+      user.id,
+      dto.code,
+      ECodeType.RESET_PASSWORD,
+    );
+
+    if (!isValidCode) {
+      throw new BadRequestException('Invalid code');
+    }
+
+    const hashedPassword = await argon2.hash(dto.password);
+
+    await this.userService.update({
+      id: user.id,
+      password: hashedPassword,
+    });
+
+    return { status: 'success' };
   }
 }
