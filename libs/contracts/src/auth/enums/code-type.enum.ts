@@ -1,0 +1,4 @@
+export enum ECodeType {
+  REGISTER = 'REGISTER',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+}

@@ -18,6 +18,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/modules": [
+        "libs/modules/src"
+      ],
+      "@app/modules/*": [
+        "libs/modules/src/*"
+      ],
       "@contracts": [
         "libs/contracts/src"
       ],

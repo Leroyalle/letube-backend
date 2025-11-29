@@ -48,6 +48,15 @@
         "tsConfigPath": "libs/infra/tsconfig.lib.json"
       }
     },
+    "modules": {
+      "type": "library",
+      "root": "libs/modules",
+      "entryFile": "index",
+      "sourceRoot": "libs/modules/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/modules/tsconfig.lib.json"
+      }
+    },
     "notification": {
       "type": "application",
       "root": "apps/notification",

@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   AUTH_PATTERNS,
+  ForgotPasswordDto,
   LoginDto,
   RegisterDto,
   VerifyCodeDto,
@@ -25,5 +26,10 @@ export class AuthController {
   @MessagePattern(AUTH_PATTERNS.REGISTER_VERIFY_CODE)
   public registerVerifyCode(dto: VerifyCodeDto) {
     return this.authService.registerVerifyCode(dto);
+  }
+
+  @MessagePattern(AUTH_PATTERNS.FORGOT_PASSWORD)
+  public forgotPassword(@Payload() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
   }
 }

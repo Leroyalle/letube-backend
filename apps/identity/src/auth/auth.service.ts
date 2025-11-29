@@ -1,5 +1,7 @@
 import {
+  ECodeType,
   EUserRole,
+  ForgotPasswordDto,
   LoginDto,
   NOTIFICATION_PATTERNS,
   RegisterDto,
@@ -96,7 +98,10 @@ export class AuthService {
         throw new BadRequestException('User creation failed');
       }
 
-      const codeData = await this.codeService.create(createdUser.id);
+      const codeData = await this.codeService.create(
+        createdUser.id,
+        ECodeType.REGISTER,
+      );
 
       const sendData: SendMessageDto = {
         message: `Your code is ${codeData.code}`,
@@ -183,6 +188,43 @@ export class AuthService {
       });
     } catch (error) {
       console.log('AuthService_updateRefreshToken', error);
+    }
+  }
+
+  public async forgotPassword(dto: ForgotPasswordDto) {
+    try {
+      const user = await this.userService.findByEmail(dto.email);
+
+      if (!user) {
+        throw new NotFoundException('This account is not registered.');
+      }
+
+      const codeData = await this.codeService.create(
+        user.id,
+        ECodeType.RESET_PASSWORD,
+      );
+
+      const sendData: SendMessageDto = {
+        message: `Your Reset Code is ${codeData.code}`,
+        subject: 'Reset password code',
+        to: [user.email],
+        type: 'AUTH',
+      };
+
+      const result = await firstValueFrom<SendMessageResponseDto | undefined>(
+        this.notificationClient.send(
+          NOTIFICATION_PATTERNS.SEND_MESSAGE,
+          sendData,
+        ),
+      );
+
+      if (!result || result.status === 'error') {
+        throw new BadRequestException('Sending code failed');
+      }
+
+      return result;
+    } catch (error) {
+      console.log('Auth_AuthService_forgotPassword', error);
     }
   }
 }

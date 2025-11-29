@@ -50,6 +50,8 @@ model VerificationCode {
   code      String
   expiresAt DateTime
 
+  type CodeType
+
   createdAt DateTime @default(now())
 
   @@unique([userId, code])
@@ -59,4 +61,9 @@ enum UserRole {
   USER
   ADMIN
   MODERATOR
+}
+
+enum CodeType {
+  REGISTER
+  RESET_PASSWORD
 }
