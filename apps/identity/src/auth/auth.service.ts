@@ -177,7 +177,9 @@ export class AuthService {
     });
   }
 
-  public async forgotPassword(dto: ForgotPasswordDto) {
+  public async forgotPassword(
+    dto: ForgotPasswordDto,
+  ): Promise<SendMessageResponseDto> {
     const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {
@@ -210,7 +212,9 @@ export class AuthService {
     return result;
   }
 
-  public async resetPassword(dto: ResetPasswordDto) {
+  public async resetPassword(
+    dto: ResetPasswordDto,
+  ): Promise<SendMessageResponseDto> {
     const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {

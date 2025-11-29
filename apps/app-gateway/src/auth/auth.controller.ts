@@ -1,6 +1,12 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto, VerifyCodeDto } from '@contracts';
+import {
+  ForgotPasswordDto,
+  LoginDto,
+  RegisterDto,
+  ResetPasswordDto,
+  VerifyCodeDto,
+} from '@contracts';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -26,5 +32,15 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.registerVerifyCode(dto, res);
+  }
+
+  @Post('forgot-password')
+  public forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
+  }
+
+  @Post('reset-password')
+  public resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }

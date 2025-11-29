@@ -5,8 +5,10 @@ import {
 } from '@nestjs/common';
 import {
   AUTH_PATTERNS,
+  ForgotPasswordDto,
   LoginDto,
   RegisterDto,
+  ResetPasswordDto,
   SendMessageResponseDto,
   SuccessLoginDto,
   TokenData,
@@ -99,5 +101,35 @@ export class AuthService {
       maxAge: tokenData.expiresAt.expiresMs,
       // maxAge: 30 * 24 * 60 * 60 * 1000,
     });
+  }
+
+  public async forgotPassword(dto: ForgotPasswordDto) {
+    const data = await firstValueFrom<SendMessageResponseDto>(
+      this.userClient.send(AUTH_PATTERNS.FORGOT_PASSWORD, dto),
+    );
+
+    if (!data || data.status === 'error') {
+      throw new InternalServerErrorException('Sending code failed');
+    }
+
+    return {
+      message: 'The letter with verification code has been sent to your email!',
+      status: data.status,
+    };
+  }
+
+  public async resetPassword(dto: ResetPasswordDto) {
+    const data = await firstValueFrom<SendMessageResponseDto>(
+      this.userClient.send(AUTH_PATTERNS.RESET_PASSWORD, dto),
+    );
+
+    if (!data || data.status === 'error') {
+      throw new InternalServerErrorException('Error resetting password');
+    }
+
+    return {
+      message: 'Your password has been changed successfully!',
+      status: data.status,
+    };
   }
 }

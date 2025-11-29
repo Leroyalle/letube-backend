@@ -6,6 +6,7 @@ import {
   ForgotPasswordDto,
   LoginDto,
   RegisterDto,
+  ResetPasswordDto,
   VerifyCodeDto,
 } from '@contracts';
 
@@ -31,5 +32,10 @@ export class AuthController {
   @MessagePattern(AUTH_PATTERNS.FORGOT_PASSWORD)
   public forgotPassword(@Payload() dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto);
+  }
+
+  @MessagePattern(AUTH_PATTERNS.RESET_PASSWORD)
+  public resetPassword(@Payload() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }
