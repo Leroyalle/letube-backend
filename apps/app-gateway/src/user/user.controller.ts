@@ -1,11 +1,13 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from '@contracts';
+import { CreateUserDto, EUserRole } from '@contracts';
+import { Authorization } from '@app/modules/auth/decorators/authorization.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Authorization(EUserRole.ADMIN)
   @Post()
   public create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);

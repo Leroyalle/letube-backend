@@ -7,6 +7,7 @@ import {
   LoginDto,
   RegisterDto,
   ResetPasswordDto,
+  VerifyAccessTokenDto,
   VerifyCodeDto,
 } from '@contracts';
 
@@ -21,6 +22,7 @@ export class AuthController {
 
   @MessagePattern(AUTH_PATTERNS.REGISTER_SEND_VERIFICATION_CODE)
   public registerSendVerificationCode(dto: RegisterDto) {
+    console.log('auth micro');
     return this.authService.registerSendVerificationCode(dto);
   }
 
@@ -37,5 +39,10 @@ export class AuthController {
   @MessagePattern(AUTH_PATTERNS.RESET_PASSWORD)
   public resetPassword(@Payload() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
+  }
+
+  @MessagePattern(AUTH_PATTERNS.VERIFY_ACCESS_TOKEN)
+  public verifyAccessToken(@Payload() dto: VerifyAccessTokenDto) {
+    return this.authService.verifyAccessToken(dto);
   }
 }

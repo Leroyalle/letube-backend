@@ -26,7 +26,7 @@ export class NotificationService {
       return { status: 'success' };
     } catch (error) {
       console.log('NotificationService_sendMessage', error);
-      return { status: 'error' };
+      throw error;
     }
   }
 }

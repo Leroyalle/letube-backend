@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignDto } from '../dto/sign.dto';
 import { ConfigService } from '@nestjs/config';
 import { TokenData } from '@contracts';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AccessTokenService {
@@ -24,9 +25,14 @@ export class AccessTokenService {
   }
 
   // FIXME: типизировать return
-  public verifyAccessToken(token: string) {
-    return this.jwtService.verify(token, {
-      secret: this.configService.getOrThrow<string>('ACCESS_SECRET'),
-    });
+  public verifyAccessToken(token: string): SignDto {
+    try {
+      return this.jwtService.verify(token, {
+        secret: this.configService.getOrThrow<string>('ACCESS_SECRET'),
+      });
+    } catch (error) {
+      console.log('AccessTokenService_verifyAccessToken', error);
+      throw new RpcException('Invalid token');
+    }
   }
 }

@@ -20,4 +20,7 @@ export const AUTH_PATTERNS = {
   RESET_PASSWORD: {
     cmd: 'auth.reset-password',
   },
+  VERIFY_ACCESS_TOKEN: {
+    cmd: 'auth.verify-access-token',
+  },
 };

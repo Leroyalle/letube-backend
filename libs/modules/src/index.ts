@@ -1,2 +1,1 @@
-export * from './modules.module';
-export * from './modules.service';
+export * from './auth/shared-auth.module';

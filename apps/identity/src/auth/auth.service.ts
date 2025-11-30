@@ -10,6 +10,8 @@ import {
   SendMessageResponseDto,
   SuccessLoginDto,
   TokenData,
+  UserDto,
+  VerifyAccessTokenDto,
   VerifyCodeDto,
 } from '@contracts';
 import {
@@ -25,7 +27,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RefreshTokenService } from './token/services/refresh-token.service';
 import { CodeService } from './code/code.service';
 import { firstValueFrom } from 'rxjs';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NOTIFICATION_SERVICE } from '@infra';
 
 @Injectable()
@@ -75,10 +77,13 @@ export class AuthService {
   public async registerSendVerificationCode(
     dto: RegisterDto,
   ): Promise<SendMessageResponseDto | undefined> {
+    console.log('before user');
     const user = await this.userService.findByEmail(dto.email);
+    console.log('after user');
 
     if (user) {
-      throw new BadRequestException('User has already exists');
+      console.log('in user');
+      throw new RpcException('User has already exists');
     }
 
     const hashedPassword = await argon2.hash(dto.password);
@@ -239,5 +244,22 @@ export class AuthService {
     });
 
     return { status: 'success' };
+  }
+
+  public async verifyAccessToken(dto: VerifyAccessTokenDto): Promise<UserDto> {
+    const payload = this.accessTokenService.verifyAccessToken(dto.token);
+    const user = await this.userService.findById(payload.id);
+
+    if (!user) {
+      throw new RpcException('User not found');
+    }
+
+    return {
+      email: user.email,
+      name: user.name,
+      id: user.id,
+      role: user.role,
+      createdAt: user.createdAt,
+    };
   }
 }

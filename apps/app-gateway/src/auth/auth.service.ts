@@ -1,10 +1,12 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import {
   AUTH_PATTERNS,
+  EAuthTokens,
   ForgotPasswordDto,
   LoginDto,
   RegisterDto,
@@ -69,6 +71,11 @@ export class AuthService {
       };
     } catch (error) {
       console.log('AppGateway_AuthService_sendVerificationCode', error);
+      if (error?.message === 'User has already exists') {
+        throw new BadRequestException(error.message);
+      }
+
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -94,7 +101,7 @@ export class AuthService {
   }
 
   private setRefreshToken(tokenData: TokenData, res: Response) {
-    res.cookie('refreshToken', tokenData.token, {
+    res.cookie(EAuthTokens.Refresh, tokenData.token, {
       httpOnly: true,
       // secure: true,
       sameSite: 'strict',
