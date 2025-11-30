@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, EUserRole } from '@contracts';
-import { Authorization } from '@app/modules/auth/decorators/authorization.guard';
+import { Authorization } from '@app/modules/auth/decorators/authorization.decorator';
 
 @Controller('user')
 export class UserController {
