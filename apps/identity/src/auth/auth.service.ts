@@ -58,6 +58,7 @@ export class AuthService {
     const accessData = await this.accessTokenService.signAccessToken({
       id: user.id,
       // FIXME: заткнул тс по причине двух енамов (призма и либа), мб замаппить
+      email: user.email,
       role: user.role as EUserRole,
     });
 
@@ -77,12 +78,9 @@ export class AuthService {
   public async registerSendVerificationCode(
     dto: RegisterDto,
   ): Promise<SendMessageResponseDto | undefined> {
-    console.log('before user');
     const user = await this.userService.findByEmail(dto.email);
-    console.log('after user');
 
     if (user) {
-      console.log('in user');
       throw new RpcException('User has already exists');
     }
 

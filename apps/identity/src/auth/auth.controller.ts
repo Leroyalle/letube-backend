@@ -22,7 +22,6 @@ export class AuthController {
 
   @MessagePattern(AUTH_PATTERNS.REGISTER_SEND_VERIFICATION_CODE)
   public registerSendVerificationCode(dto: RegisterDto) {
-    console.log('auth micro');
     return this.authService.registerSendVerificationCode(dto);
   }
 
