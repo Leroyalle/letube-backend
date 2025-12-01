@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignDto } from '../dto/sign.dto';
 import { ConfigService } from '@nestjs/config';
-import { TokenData } from '@contracts';
+import { TokenData } from '@contracts/auth';
 import { RpcException } from '@nestjs/microservices';
 
 @Injectable()

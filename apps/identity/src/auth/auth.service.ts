@@ -1,19 +1,20 @@
 import {
   ECodeType,
-  EUserRole,
   ForgotPasswordDto,
   LoginDto,
-  NOTIFICATION_PATTERNS,
   RegisterDto,
   ResetPasswordDto,
-  SendMessageDto,
-  SendMessageResponseDto,
   SuccessLoginDto,
   TokenData,
-  UserDto,
   VerifyAccessTokenDto,
   VerifyCodeDto,
-} from '@contracts';
+} from '@contracts/auth';
+import {
+  SendMessageDto,
+  SendMessageResponseDto,
+  NOTIFICATION_PATTERNS,
+} from '@contracts/notification';
+import { UserDto, EUserRole } from '@contracts/user';
 import {
   BadRequestException,
   Inject,
@@ -63,6 +64,7 @@ export class AuthService {
     });
 
     const refreshData = this.refreshTokenService.generate();
+
     const hashedRefresh = await this.refreshTokenService.hash(
       refreshData.token,
     );

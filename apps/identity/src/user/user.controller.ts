@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateUserDto, USER_PATTERNS } from '@contracts';
+import { CreateUserDto, USER_PATTERNS } from '@contracts/user';
 import { User } from 'apps/identity/__generated__/prisma';
 
 @Controller()

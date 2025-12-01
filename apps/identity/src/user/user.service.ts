@@ -1,4 +1,4 @@
-import { CreateUserDto, UpdateUserDto } from '@contracts';
+import { CreateUserDto, UpdateUserDto } from '@contracts/user';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from 'apps/identity/__generated__/prisma';

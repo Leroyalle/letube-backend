@@ -18,12 +18,24 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/modules": ["libs/modules/src"],
-      "@app/modules/*": ["libs/modules/src/*"],
-      "@contracts": ["libs/contracts/src"],
-      "@contracts/*": ["libs/contracts/src/*"],
-      "@infra": ["libs/infra/src"],
-      "@infra/*": ["libs/infra/src/*"]
+      "@app/modules": [
+        "libs/modules/src"
+      ],
+      "@app/modules/*": [
+        "libs/modules/src/*"
+      ],
+      "@contracts": [
+        "libs/contracts/src"
+      ],
+      "@contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@infra": [
+        "libs/infra/src"
+      ],
+      "@infra/*": [
+        "libs/infra/src/*"
+      ]
     }
   }
 }

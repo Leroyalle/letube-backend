@@ -9,7 +9,7 @@ import {
   ResetPasswordDto,
   VerifyAccessTokenDto,
   VerifyCodeDto,
-} from '@contracts';
+} from '@contracts/auth';
 
 @Controller()
 export class AuthController {

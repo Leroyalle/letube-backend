@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { NOTIFICATION_PATTERNS, SendMessageDto } from '@contracts';
+import { NOTIFICATION_PATTERNS, SendMessageDto } from '@contracts/notification';
 
 @Controller()
 export class NotificationController {
