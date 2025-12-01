@@ -1,4 +1,4 @@
-import { SendMessageDto } from '@contracts';
+import { SendMessageDto } from '@contracts/notification';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

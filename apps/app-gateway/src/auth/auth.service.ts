@@ -11,11 +11,11 @@ import {
   LoginDto,
   RegisterDto,
   ResetPasswordDto,
-  SendMessageResponseDto,
   SuccessLoginDto,
   TokenData,
   VerifyCodeDto,
-} from '@contracts';
+} from '@contracts/auth';
+import { SendMessageResponseDto } from '@contracts/notification';
 import { IDENTITY_SERVICE } from '@infra';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';

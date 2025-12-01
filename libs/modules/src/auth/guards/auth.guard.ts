@@ -6,12 +6,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { UserDto } from '@contracts/user';
 import {
   AUTH_PATTERNS,
   EAuthTokens,
-  UserDto,
   VerifyAccessTokenDto,
-} from '@contracts';
+} from '@contracts/auth';
 import { ClientProxy } from '@nestjs/microservices';
 import { IDENTITY_SERVICE } from '@infra';
 import { firstValueFrom } from 'rxjs';

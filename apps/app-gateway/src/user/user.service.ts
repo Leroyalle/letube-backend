@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateUserDto, USER_PATTERNS } from '@contracts';
+import { CreateUserDto, USER_PATTERNS } from '@contracts/user';
 import { IDENTITY_SERVICE } from '@infra';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { VerificationCode } from 'apps/identity/__generated__/prisma';
-import { ECodeType } from '@contracts';
+import { ECodeType } from '@contracts/auth';
 
 @Injectable()
 export class CodeService {

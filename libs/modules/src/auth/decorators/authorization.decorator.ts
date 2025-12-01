@@ -1,4 +1,4 @@
-import { EUserRole } from '@contracts';
+import { EUserRole } from '@contracts/user';
 import { applyDecorators, CustomDecorator, UseGuards } from '@nestjs/common';
 import { RolesDecorator } from './roles.decorator';
 import { RolesGuard } from '../guards/roles.guard';

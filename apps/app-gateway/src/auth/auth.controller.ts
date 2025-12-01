@@ -6,7 +6,7 @@ import {
   RegisterDto,
   ResetPasswordDto,
   VerifyCodeDto,
-} from '@contracts';
+} from '@contracts/auth';
 import { Response } from 'express';
 
 @Controller('auth')

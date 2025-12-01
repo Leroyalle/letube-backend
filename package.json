@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./apps/app-gateway/test/jest-e2e.json",
     "start:gateway": "nest start app-gateway --watch",
     "start:identity": "nest start identity --watch",
-    "start:notification": "nest start notification --watch"
+    "start:notification": "nest start notification --watch",
+    "start:channel": "nest start channel --watch"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
