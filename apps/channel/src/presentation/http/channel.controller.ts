@@ -7,19 +7,21 @@ import {
   FindByIdDto,
   FindByUserIdDto,
 } from '@contracts/channel';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateChannelCommand } from '../../application/commands/create-channel/create-channel.command';
+import { FindByUserIdQuery } from '../../application/queries/find-by-user-id/find-by-user-id.query';
 
 @Controller()
 export class ChannelController {
   constructor(
     private readonly channelService: ChannelService,
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @MessagePattern(CHANNEL_PATTERNS.FIND_BY_USER_ID)
   public findByUserId(@Payload() dto: FindByUserIdDto) {
-    return this.channelService.findByUserId(dto);
+    return this.queryBus.execute(new FindByUserIdQuery(dto.userId));
   }
 
   @MessagePattern(CHANNEL_PATTERNS.FIND_ALL)

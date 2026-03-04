@@ -21,4 +21,12 @@ export class PrismaChannelRepository implements ChannelRepository {
       },
     });
   }
+
+  public findByUserId(userId: string) {
+    return this.prismaService.channel.findFirst({
+      where: {
+        userId,
+      },
+    });
+  }
 }
