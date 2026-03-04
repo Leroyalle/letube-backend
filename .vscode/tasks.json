@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Gateway",
+      "type": "shell",
+      "command": "npm run start:gateway",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start Identity",
+      "type": "shell",
+      "command": "npm run start:identity",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start Notification",
+      "type": "shell",
+      "command": "npm run start:notification",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start Channel",
+      "type": "shell",
+      "command": "npm run start:channel",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start All Microservices",
+      "dependsOn": [
+        "Start Gateway",
+        "Start Identity",
+        "Start Notification",
+        "Start Channel"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}

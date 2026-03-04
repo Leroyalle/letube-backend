@@ -129,6 +129,7 @@ export class AuthService {
     dto: VerifyCodeDto,
   ): Promise<SuccessLoginDto | undefined> {
     const user = await this.userService.findByEmail(dto.email);
+    console.log(user);
 
     if (!user) {
       throw new BadRequestException('User not found');
@@ -139,6 +140,7 @@ export class AuthService {
       dto.code,
       ECodeType.REGISTER,
     );
+    console.log('isValidCode', isValidCode);
 
     if (!isValidCode) {
       throw new BadRequestException('Invalid code');

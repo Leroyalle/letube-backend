@@ -84,7 +84,7 @@ export class AuthService {
       const data = await firstValueFrom<SuccessLoginDto | undefined>(
         this.userClient.send(AUTH_PATTERNS.REGISTER_VERIFY_CODE, dto),
       );
-
+      console.log('registerVerifyCode', data);
       if (!data) {
         throw new InternalServerErrorException('Registration failed');
       }
@@ -92,11 +92,15 @@ export class AuthService {
       this.setRefreshToken(data.refreshData, res);
 
       return {
-        accessToken: data.accessData.token,
-        expiresIn: data.accessData.expiresAt.expiresMs,
+        data,
+        message: 'Registration successful!',
       };
     } catch (error) {
       console.log('AppGateway_AuthService_registerVerifyCode', error);
+
+      if (error?.message) throw new BadRequestException(error.message);
+
+      throw new InternalServerErrorException('Verification failed');
     }
   }
 

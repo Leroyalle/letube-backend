@@ -25,7 +25,7 @@
     "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\""
   },
   "dependencies": {
-    "@nestjs-modules/mailer": "^2.0.2",
+    "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",

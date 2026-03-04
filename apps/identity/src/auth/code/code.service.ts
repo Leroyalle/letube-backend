@@ -38,6 +38,7 @@ export class CodeService {
     type: ECodeType,
   ): Promise<boolean> {
     const findCode = await this.findByUserId(userId, code, type);
+    // console.log('findCode', findCode);
     if (!findCode) return false;
     return findCode.expiresAt > new Date(Date.now());
   }

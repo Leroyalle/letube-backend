@@ -16,11 +16,11 @@ export class NotificationService {
     try {
       for (const to of dto.to) {
         await this.mailerService.sendMail({
-          to,
+          to: 'Toaster-11@yandex.ru',
           from: this.configService.getOrThrow<string>('MAIL_USER'),
           subject: dto.subject,
           text: dto.message,
-          html: '<b>welcome</b>',
+          html: `<b> ${dto.message} </b>`,
         });
       }
       return { status: 'success' };
