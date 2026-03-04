@@ -7,7 +7,7 @@ import { join } from 'path';
 import { CqrsModule } from '@nestjs/cqrs';
 import { commandHandlers } from './application/commands/command-handlers';
 import { PrismaChannelRepository } from './infrastructure/persistence/prisma-channel.repository';
-import { CHANNEL_REPOSITORY } from './application/tokens/channel-repository.token';
+import { CHANNEL_REPOSITORY } from './application/constants/channel-repository.token';
 import { queryHandlers } from './application/queries/query-handlers';
 
 @Module({

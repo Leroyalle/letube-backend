@@ -29,4 +29,8 @@ export class PrismaChannelRepository implements ChannelRepository {
       },
     });
   }
+
+  public findAll() {
+    return this.prismaService.channel.findMany();
+  }
 }

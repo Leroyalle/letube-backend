@@ -8,8 +8,8 @@ import {
   FindByUserIdDto,
 } from '@contracts/channel';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateChannelCommand } from '../../application/commands/create-channel/create-channel.command';
-import { FindByUserIdQuery } from '../../application/queries/find-by-user-id/find-by-user-id.query';
+import { CreateChannelCommand } from '../../application/commands/create-channel.command';
+import { FindByUserIdQuery } from '../../application/queries/find-by-user-id.query';
 
 @Controller()
 export class ChannelController {

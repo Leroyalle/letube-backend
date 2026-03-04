@@ -1,10 +1,10 @@
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 import type { ChannelRepository } from 'apps/channel/src/domain/channel.repository';
-import { CreateChannelCommand } from './create-channel.command';
+import { CreateChannelCommand } from '../commands/create-channel.command';
 import { Channel } from 'apps/channel/src/domain/entities/channel.entity';
 import { randomUUID } from 'crypto';
 import { Inject } from '@nestjs/common';
-import { CHANNEL_REPOSITORY } from '../../tokens/channel-repository.token';
+import { CHANNEL_REPOSITORY } from '../constants/channel-repository.token';
 
 @CommandHandler(CreateChannelCommand)
 export class CreateChannelHandler
