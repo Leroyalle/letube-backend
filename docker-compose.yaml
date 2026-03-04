@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: letube-db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: '123123'
+      POSTGRES_USER: 'user'
+      POSTGRES_DB: 'letube'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - '5467:5432'
+
+volumes:
+  pg_data:
