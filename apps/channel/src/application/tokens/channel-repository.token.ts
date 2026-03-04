@@ -1,0 +1,1 @@
+export const CHANNEL_REPOSITORY = Symbol('CHANNEL_REPOSITORY');
