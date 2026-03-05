@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChannelController } from './presentation/http/channel.controller';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { CqrsModule } from '@nestjs/cqrs';
