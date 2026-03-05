@@ -2,11 +2,11 @@ import { IsString, IsUUID } from 'class-validator';
 
 export class CreateChannelDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  description: string;
+  description!: string;
 
   @IsUUID()
-  userId: string;
+  userId!: string;
 }

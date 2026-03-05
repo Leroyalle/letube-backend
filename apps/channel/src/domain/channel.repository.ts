@@ -5,4 +5,5 @@ export interface ChannelRepository {
   remove: (id: string) => Promise<Channel>;
   findByUserId: (userId: string) => Promise<Channel | null>;
   findAll: () => Promise<Channel[]>;
+  findById: (id: string) => Promise<Channel | null>;
 }
