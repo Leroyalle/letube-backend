@@ -21,4 +21,24 @@ export class PrismaChannelRepository implements ChannelRepository {
       },
     });
   }
+
+  public findByUserId(userId: string) {
+    return this.prismaService.channel.findUnique({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  public findAll() {
+    return this.prismaService.channel.findMany();
+  }
+
+  public findById(id: string) {
+    return this.prismaService.channel.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 }

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ChannelController } from './presentation/http/channel.controller';
-import { ChannelService } from './channel.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { CqrsModule } from '@nestjs/cqrs';
-import { commandsHandlers } from './application/commands/commands-handlers';
+import { commandHandlers } from './application/commands/command-handlers';
 import { PrismaChannelRepository } from './infrastructure/persistence/prisma-channel.repository';
-import { CHANNEL_REPOSITORY } from './application/tokens/channel-repository.token';
+import { CHANNEL_REPOSITORY } from './application/constants/channel-repository.token';
+import { queryHandlers } from './application/queries/query-handlers';
 
 @Module({
   imports: [
@@ -20,9 +20,9 @@ import { CHANNEL_REPOSITORY } from './application/tokens/channel-repository.toke
   ],
   controllers: [ChannelController],
   providers: [
-    ChannelService,
     { provide: CHANNEL_REPOSITORY, useClass: PrismaChannelRepository },
-    ...commandsHandlers,
+    ...commandHandlers,
+    ...queryHandlers,
   ],
 })
 export class ChannelModule {}
