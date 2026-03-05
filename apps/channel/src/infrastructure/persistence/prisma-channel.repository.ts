@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { ChannelRepository } from '../../domain/channel.repository';
+import type { ChannelRepository } from '../../domain/interfaces/channel.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import type { Channel } from '../../domain/entities/channel.entity';
 import { ChannelMapper } from './channel.mapper';
