@@ -22,6 +22,7 @@
     "start:identity": "nest start identity --watch",
     "start:notification": "nest start notification --watch",
     "start:channel": "nest start channel --watch",
+    "start:media": "nest start media --watch",
     "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\""
   },
   "dependencies": {
