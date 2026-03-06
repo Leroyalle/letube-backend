@@ -1,10 +1,4 @@
 import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import {
   AUTH_PATTERNS,
   EAuthTokens,
   ForgotPasswordDto,
@@ -17,15 +11,20 @@ import {
 } from '@contracts/auth';
 import { SendMessageResponseDto } from '@contracts/notification';
 import { IDENTITY_SERVICE } from '@infra';
-import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
 import { firstValueFrom } from 'rxjs';
 
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+
 @Injectable()
 export class AuthService {
-  constructor(
-    @Inject(IDENTITY_SERVICE) private readonly userClient: ClientProxy,
-  ) {}
+  constructor(@Inject(IDENTITY_SERVICE) private readonly userClient: ClientProxy) {}
 
   public async login(dto: LoginDto, res: Response) {
     try {
@@ -50,24 +49,18 @@ export class AuthService {
   public async registerSendVerificationCode(dto: RegisterDto) {
     try {
       const data = await firstValueFrom<SendMessageResponseDto | undefined>(
-        this.userClient.send(
-          AUTH_PATTERNS.REGISTER_SEND_VERIFICATION_CODE,
-          dto,
-        ),
+        this.userClient.send(AUTH_PATTERNS.REGISTER_SEND_VERIFICATION_CODE, dto),
       );
 
       if (!data || data.status === 'error') {
-        throw new InternalServerErrorException(
-          'Verification code sending failed',
-        );
+        throw new InternalServerErrorException('Verification code sending failed');
       }
 
       // this.setRefreshToken(data.refreshData, res);
 
       return {
         status: data.status,
-        message:
-          'The letter with verification code has been sent to your email!',
+        message: 'The letter with verification code has been sent to your email!',
       };
     } catch (error) {
       console.log('AppGateway_AuthService_sendVerificationCode', error);

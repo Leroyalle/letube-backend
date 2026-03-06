@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import * as crypto from 'crypto';
-import * as argon2 from 'argon2';
 import { ExpiresData, SuccessLoginDto } from '@contracts/auth';
+import * as argon2 from 'argon2';
+import * as crypto from 'crypto';
+
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class RefreshTokenService {

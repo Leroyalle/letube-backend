@@ -1,10 +1,12 @@
+import { MailerModule } from '@nestjs-modules/mailer';
+import { join } from 'path';
+
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { mailerConfig } from './config/mailer.config';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './notification.service';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { mailerConfig } from './config/mailer.config';
-import { join } from 'path';
 
 @Module({
   imports: [

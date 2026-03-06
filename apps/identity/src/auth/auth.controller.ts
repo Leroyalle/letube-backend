@@ -1,6 +1,3 @@
-import { Controller } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   AUTH_PATTERNS,
   ForgotPasswordDto,
@@ -10,6 +7,11 @@ import {
   VerifyAccessTokenDto,
   VerifyCodeDto,
 } from '@contracts/auth';
+
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
+import { AuthService } from './auth.service';
 
 @Controller()
 export class AuthController {

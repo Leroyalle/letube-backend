@@ -1,20 +1,19 @@
-import { NestFactory } from '@nestjs/core';
-import { IdentityModule } from './identity.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { IDENTITY_PORT, IDENTITY_HOST } from '@infra';
+import { IDENTITY_HOST, IDENTITY_PORT } from '@infra';
+
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+import { IdentityModule } from './identity.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    IdentityModule,
-    {
-      transport: Transport.TCP,
-      options: {
-        port: IDENTITY_PORT,
-        host: IDENTITY_HOST,
-      },
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(IdentityModule, {
+    transport: Transport.TCP,
+    options: {
+      port: IDENTITY_PORT,
+      host: IDENTITY_HOST,
     },
-  );
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -24,4 +23,5 @@ async function bootstrap() {
   );
   await app.listen();
 }
-bootstrap();
+
+void bootstrap();

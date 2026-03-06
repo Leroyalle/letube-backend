@@ -1,16 +1,9 @@
-import {
-  Injectable,
-  Logger,
-  type OnModuleDestroy,
-  type OnModuleInit,
-} from '@nestjs/common';
+import { Injectable, Logger, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
+
 import { PrismaClient } from '../../../__generated__/prisma';
 
 @Injectable()
-export class PrismaService
-  extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
 
   public async onModuleInit() {
@@ -32,10 +25,7 @@ export class PrismaService
       await this.$disconnect();
       this.logger.log('🟢 Database connection closed successfully.');
     } catch (error) {
-      this.logger.error(
-        '⚠️ Error occurred while closing the database connection.',
-        error,
-      );
+      this.logger.error('⚠️ Error occurred while closing the database connection.', error);
       throw error;
     }
   }

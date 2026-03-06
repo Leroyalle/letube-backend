@@ -1,8 +1,10 @@
-import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
-import { FindByUserIdQuery } from '../queries/find-by-user-id.query';
 import type { ChannelRepository } from 'apps/channel/src/domain/interfaces/channel.repository';
+
 import { Inject } from '@nestjs/common';
+import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+
 import { CHANNEL_REPOSITORY } from '../constants/channel-repository.token';
+import { FindByUserIdQuery } from '../queries/find-by-user-id.query';
 
 @QueryHandler(FindByUserIdQuery)
 export class FindByUserIdHandler implements IQueryHandler<FindByUserIdQuery> {

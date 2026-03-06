@@ -1,13 +1,15 @@
-import { Module } from '@nestjs/common';
-import { ChannelController } from './presentation/http/channel.controller';
-import { PrismaModule } from './infrastructure/prisma/prisma.module';
-import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
+
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+
 import { commandHandlers } from './application/commands/command-handlers';
-import { PrismaChannelRepository } from './infrastructure/persistence/prisma-channel.repository';
 import { CHANNEL_REPOSITORY } from './application/constants/channel-repository.token';
 import { queryHandlers } from './application/queries/query-handlers';
+import { PrismaChannelRepository } from './infrastructure/persistence/prisma-channel.repository';
+import { PrismaModule } from './infrastructure/prisma/prisma.module';
+import { ChannelController } from './presentation/http/channel.controller';
 
 @Module({
   imports: [

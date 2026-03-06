@@ -7,6 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+
 import { EUserRole } from '../enums';
 
 export class CreateUserDto {

@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
-import { AuthGuard } from './guards/auth.guard';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from '@infra';
+
+import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
+import { AuthGuard } from './guards/auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({

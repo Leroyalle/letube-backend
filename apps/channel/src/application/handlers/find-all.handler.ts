@@ -1,8 +1,9 @@
-import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
-import { FindAllQuery } from '../queries/find-all.query';
 import { Inject } from '@nestjs/common';
-import { CHANNEL_REPOSITORY } from '../constants/channel-repository.token';
+import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+
 import type { ChannelRepository } from '../../domain/interfaces/channel.repository';
+import { CHANNEL_REPOSITORY } from '../constants/channel-repository.token';
+import { FindAllQuery } from '../queries/find-all.query';
 
 @QueryHandler(FindAllQuery)
 export class FindAllHandler implements IQueryHandler<FindAllQuery> {

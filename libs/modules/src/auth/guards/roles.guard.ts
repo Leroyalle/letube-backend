@@ -1,4 +1,5 @@
-import '../types/express';
+import type { Request } from 'express';
+
 import {
   type CanActivate,
   type ExecutionContext,
@@ -6,8 +7,9 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { Request } from 'express';
+
 import { ROLES_KEY } from '../decorators/roles.decorator';
+import '../types/express';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -25,9 +27,7 @@ export class RolesGuard implements CanActivate {
     const user = request?.user;
 
     if (!user || !roles.includes(user.role)) {
-      throw new ForbiddenException(
-        'You do not have permission to access this resource',
-      );
+      throw new ForbiddenException('You do not have permission to access this resource');
     }
 
     return true;

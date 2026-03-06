@@ -1,16 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
-import { VerificationCode } from 'apps/identity/__generated__/prisma';
 import { ECodeType } from '@contracts/auth';
+import { VerificationCode } from 'apps/identity/__generated__/prisma';
+
+import { Injectable } from '@nestjs/common';
+
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class CodeService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(
-    userId: string,
-    type: ECodeType,
-  ): Promise<VerificationCode> {
+  public async create(userId: string, type: ECodeType): Promise<VerificationCode> {
     const code = crypto.randomUUID();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
     return await this.prisma.verificationCode.create({
@@ -32,11 +31,7 @@ export class CodeService {
     return await this.prisma.verificationCode.deleteMany({ where: { userId } });
   }
 
-  public async checkExpiresAt(
-    userId: string,
-    code: string,
-    type: ECodeType,
-  ): Promise<boolean> {
+  public async checkExpiresAt(userId: string, code: string, type: ECodeType): Promise<boolean> {
     const findCode = await this.findByUserId(userId, code, type);
     if (!findCode) return false;
     return findCode.expiresAt > new Date(Date.now());
