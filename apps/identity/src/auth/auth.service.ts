@@ -10,26 +10,24 @@ import {
   VerifyCodeDto,
 } from '@contracts/auth';
 import {
+  NOTIFICATION_PATTERNS,
   SendMessageDto,
   SendMessageResponseDto,
-  NOTIFICATION_PATTERNS,
 } from '@contracts/notification';
-import { UserDto, EUserRole } from '@contracts/user';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import * as argon2 from 'argon2';
-import { AccessTokenService } from './token/services/access-token.service';
-import { UserService } from '../user/user.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { RefreshTokenService } from './token/services/refresh-token.service';
-import { CodeService } from './code/code.service';
-import { firstValueFrom } from 'rxjs';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { EUserRole, UserDto } from '@contracts/user';
 import { NOTIFICATION_SERVICE } from '@infra';
+import * as argon2 from 'argon2';
+import { firstValueFrom } from 'rxjs';
+
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+
+import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from '../user/user.service';
+
+import { CodeService } from './code/code.service';
+import { AccessTokenService } from './token/services/access-token.service';
+import { RefreshTokenService } from './token/services/refresh-token.service';
 
 @Injectable()
 export class AuthService {
@@ -65,9 +63,7 @@ export class AuthService {
 
     const refreshData = this.refreshTokenService.generate();
 
-    const hashedRefresh = await this.refreshTokenService.hash(
-      refreshData.token,
-    );
+    const hashedRefresh = await this.refreshTokenService.hash(refreshData.token);
 
     await this.updateRefreshToken(user.id, {
       token: hashedRefresh,
@@ -99,10 +95,7 @@ export class AuthService {
       throw new BadRequestException('User creation failed');
     }
 
-    const codeData = await this.codeService.create(
-      createdUser.id,
-      ECodeType.REGISTER,
-    );
+    const codeData = await this.codeService.create(createdUser.id, ECodeType.REGISTER);
 
     const sendData: SendMessageDto = {
       message: `Your code is ${codeData.code}`,
@@ -112,10 +105,7 @@ export class AuthService {
     };
 
     const result = await firstValueFrom<SendMessageResponseDto | undefined>(
-      this.notificationClient.send(
-        NOTIFICATION_PATTERNS.SEND_MESSAGE,
-        sendData,
-      ),
+      this.notificationClient.send(NOTIFICATION_PATTERNS.SEND_MESSAGE, sendData),
     );
 
     if (!result || result.status === 'error') {
@@ -125,9 +115,7 @@ export class AuthService {
     return result;
   }
 
-  public async registerVerifyCode(
-    dto: VerifyCodeDto,
-  ): Promise<SuccessLoginDto | undefined> {
+  public async registerVerifyCode(dto: VerifyCodeDto): Promise<SuccessLoginDto | undefined> {
     const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {
@@ -149,12 +137,9 @@ export class AuthService {
       role: EUserRole.USER,
     };
 
-    const accessData =
-      await this.accessTokenService.signAccessToken(correctlyUser);
+    const accessData = await this.accessTokenService.signAccessToken(correctlyUser);
     const refreshData = this.refreshTokenService.generate();
-    const hashedRefresh = await this.refreshTokenService.hash(
-      refreshData.token,
-    );
+    const hashedRefresh = await this.refreshTokenService.hash(refreshData.token);
 
     await this.userService.update({ id: user.id, isVerified: true });
 
@@ -182,19 +167,14 @@ export class AuthService {
     });
   }
 
-  public async forgotPassword(
-    dto: ForgotPasswordDto,
-  ): Promise<SendMessageResponseDto> {
+  public async forgotPassword(dto: ForgotPasswordDto): Promise<SendMessageResponseDto> {
     const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {
       throw new NotFoundException('This account is not registered.');
     }
 
-    const codeData = await this.codeService.create(
-      user.id,
-      ECodeType.RESET_PASSWORD,
-    );
+    const codeData = await this.codeService.create(user.id, ECodeType.RESET_PASSWORD);
 
     const sendData: SendMessageDto = {
       message: `Your Reset Code is ${codeData.code}`,
@@ -204,10 +184,7 @@ export class AuthService {
     };
 
     const result = await firstValueFrom<SendMessageResponseDto | undefined>(
-      this.notificationClient.send(
-        NOTIFICATION_PATTERNS.SEND_MESSAGE,
-        sendData,
-      ),
+      this.notificationClient.send(NOTIFICATION_PATTERNS.SEND_MESSAGE, sendData),
     );
 
     if (!result || result.status === 'error') {
@@ -217,9 +194,7 @@ export class AuthService {
     return result;
   }
 
-  public async resetPassword(
-    dto: ResetPasswordDto,
-  ): Promise<SendMessageResponseDto> {
+  public async resetPassword(dto: ResetPasswordDto): Promise<SendMessageResponseDto> {
     const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {

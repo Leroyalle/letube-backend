@@ -1,4 +1,5 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
+
 import { VerifyCodeDto } from '../verify-code.dto';
 
 export class ResetPasswordDto extends VerifyCodeDto {

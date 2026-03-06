@@ -1,25 +1,16 @@
-import '../types/express';
-import {
-  CanActivate,
-  ExecutionContext,
-  Inject,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Request } from 'express';
+import { AUTH_PATTERNS, EAuthTokens, VerifyAccessTokenDto } from '@contracts/auth';
 import { UserDto } from '@contracts/user';
-import {
-  AUTH_PATTERNS,
-  EAuthTokens,
-  VerifyAccessTokenDto,
-} from '@contracts/auth';
-import { ClientProxy } from '@nestjs/microservices';
 import { IDENTITY_SERVICE } from '@infra';
+import { Request } from 'express';
 import { firstValueFrom } from 'rxjs';
 
+import { CanActivate, ExecutionContext, Inject, UnauthorizedException } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+
+import '../types/express';
+
 export class AuthGuard implements CanActivate {
-  public constructor(
-    @Inject(IDENTITY_SERVICE) private readonly identityClient: ClientProxy,
-  ) {}
+  public constructor(@Inject(IDENTITY_SERVICE) private readonly identityClient: ClientProxy) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();

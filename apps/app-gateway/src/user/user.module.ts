@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { IDENTITY_PORT, IDENTITY_SERVICE, IDENTITY_HOST } from '@infra';
 import { SharedAuthModule } from '@app/modules';
+import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from '@infra';
+
+import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 @Module({
   imports: [

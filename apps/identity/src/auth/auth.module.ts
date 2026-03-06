@@ -1,16 +1,15 @@
+import { NOTIFICATION_HOST, NOTIFICATION_PORT, NOTIFICATION_SERVICE } from '@infra';
+
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { TokenModule } from './token/token.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
 import { PrismaModule } from '../prisma/prisma.module';
 import { UserModule } from '../user/user.module';
+
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { CodeModule } from './code/code.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  NOTIFICATION_HOST,
-  NOTIFICATION_PORT,
-  NOTIFICATION_SERVICE,
-} from '@infra';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [

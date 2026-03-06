@@ -1,16 +1,18 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CHANNEL_PATTERNS,
   CreateChannelDto,
   FindByIdDto,
   FindByUserIdDto,
 } from '@contracts/channel';
+
+import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
 import { CreateChannelCommand } from '../../application/commands/create-channel.command';
-import { FindByUserIdQuery } from '../../application/queries/find-by-user-id.query';
 import { FindAllQuery } from '../../application/queries/find-all.query';
 import { FindByIdQuery } from '../../application/queries/find-by-id.query';
+import { FindByUserIdQuery } from '../../application/queries/find-by-user-id.query';
 
 @Controller()
 export class ChannelController {
@@ -36,8 +38,6 @@ export class ChannelController {
 
   @MessagePattern(CHANNEL_PATTERNS.CREATE)
   public create(@Payload() dto: CreateChannelDto) {
-    return this.commandBus.execute(
-      new CreateChannelCommand(dto.userId, dto.name, dto.description),
-    );
+    return this.commandBus.execute(new CreateChannelCommand(dto.userId, dto.name, dto.description));
   }
 }

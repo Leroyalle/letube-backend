@@ -1,8 +1,10 @@
+import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from '@infra';
+
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { IDENTITY_PORT, IDENTITY_SERVICE, IDENTITY_HOST } from '@infra';
+
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [

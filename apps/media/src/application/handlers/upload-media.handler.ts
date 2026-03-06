@@ -1,7 +1,8 @@
+import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
+
 import { UploadMediaCommand } from '../commands/upload-media.command';
 import type { FileStoragePort } from '../storage/file-storage.port';
-import { Inject } from '@nestjs/common';
 import { FILE_STORAGE_TOKEN } from '../storage/file-storage.token';
 
 @CommandHandler(UploadMediaCommand)

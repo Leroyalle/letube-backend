@@ -1,5 +1,6 @@
 import { SendMessageDto } from '@contracts/notification';
 import { MailerService } from '@nestjs-modules/mailer';
+
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -10,9 +11,7 @@ export class NotificationService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async sendMessage(
-    dto: SendMessageDto,
-  ): Promise<{ status: 'success' | 'error' }> {
+  public async sendMessage(dto: SendMessageDto): Promise<{ status: 'success' | 'error' }> {
     try {
       for (const to of dto.to) {
         await this.mailerService.sendMail({

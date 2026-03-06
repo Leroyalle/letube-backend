@@ -1,16 +1,16 @@
+import { spawn } from 'child_process';
+import { createReadStream, createWriteStream, promises } from 'fs';
+import { join } from 'path';
+import { pipeline } from 'stream/promises';
+
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
+
 import { UploadCompleteCommand } from '../commands/upload-complete.command';
 import type { FileStoragePort } from '../storage/file-storage.port';
-import { createReadStream, createWriteStream, promises } from 'fs';
-import { pipeline } from 'stream/promises';
-import { spawn } from 'child_process';
-import { join } from 'path';
 
 // TODO: вынести в воркер
 @CommandHandler(UploadCompleteCommand)
-export class UploadCompleteHandler
-  implements ICommandHandler<UploadCompleteCommand>
-{
+export class UploadCompleteHandler implements ICommandHandler<UploadCompleteCommand> {
   constructor(private readonly fileStorageService: FileStoragePort) {}
   public async execute(command: UploadCompleteCommand) {
     const inputPath = `/tmp/video/${command.s3Key}`;
@@ -37,7 +37,7 @@ export class UploadCompleteHandler
         ],
       );
 
-      ffmpeg.on('close', (code) => {
+      ffmpeg.on('close', code => {
         if (code === 0) resolve();
         else reject(new Error(`ffmpeg exited with code ${code}`));
       });
@@ -53,7 +53,7 @@ export class UploadCompleteHandler
       const batch = files.slice(i, i + concurrency);
 
       await Promise.all(
-        batch.map(async (file) => {
+        batch.map(async file => {
           const pathFile = join('/temp/video', command.s3Key, file);
           const stream = createReadStream(pathFile);
           await this.fileStorageService.put(command.s3Key, stream);

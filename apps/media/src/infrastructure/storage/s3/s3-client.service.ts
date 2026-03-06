@@ -1,14 +1,11 @@
-import {
-  GetObjectCommand,
-  PutObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import type { FileStoragePort } from 'apps/media/src/application/storage/file-storage.port';
 import type { ReadStream } from 'fs';
 import type { Readable } from 'stream';
+
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class S3ClientService implements FileStoragePort {
@@ -20,9 +17,7 @@ export class S3ClientService implements FileStoragePort {
       region: this.configService.getOrThrow<string>('S3_REGION'),
       credentials: {
         accessKeyId: this.configService.getOrThrow<string>('S3_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.getOrThrow<string>(
-          'S3_SECRET_ACCESS_KEY',
-        ),
+        secretAccessKey: this.configService.getOrThrow<string>('S3_SECRET_ACCESS_KEY'),
       },
       endpoint: this.configService.getOrThrow<string>('S3_ENDPOINT'),
     });

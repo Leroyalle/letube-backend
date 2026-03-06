@@ -1,5 +1,3 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import {
   ForgotPasswordDto,
   LoginDto,
@@ -9,15 +7,16 @@ import {
 } from '@contracts/auth';
 import { Response } from 'express';
 
+import { Body, Controller, Post, Res } from '@nestjs/common';
+
+import { AuthService } from './auth.service';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  public login(
-    @Body() dto: LoginDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  public login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
     return this.authService.login(dto, res);
   }
 
@@ -27,10 +26,7 @@ export class AuthController {
   }
 
   @Post('register/verify-code')
-  public registerVerifyCode(
-    @Body() dto: VerifyCodeDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  public registerVerifyCode(@Body() dto: VerifyCodeDto, @Res({ passthrough: true }) res: Response) {
     return this.authService.registerVerifyCode(dto, res);
   }
 
