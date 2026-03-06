@@ -1,8 +1,14 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { FileStoragePort } from 'apps/media/src/application/storage/file-storage.port';
+import type { ReadStream } from 'fs';
+import type { Readable } from 'stream';
 
 @Injectable()
 export class S3ClientService implements FileStoragePort {
@@ -25,6 +31,7 @@ export class S3ClientService implements FileStoragePort {
 
   public getUploadUrl(key: string) {
     const command = new PutObjectCommand({
+      // TODO: добавить препапку к key
       Key: key,
       Bucket: this.bucket,
       ContentType: 'video/mp4',
@@ -35,5 +42,27 @@ export class S3ClientService implements FileStoragePort {
     });
 
     return url;
+  }
+
+  public async get(key: string, bucket: string = this.bucket) {
+    const command = new GetObjectCommand({
+      Key: key,
+      Bucket: bucket,
+    });
+
+    const response = await this.client.send(command);
+
+    return response.Body as Readable;
+  }
+
+  public async put(key: string, stream: ReadStream) {
+    const command = new PutObjectCommand({
+      Key: key,
+      Bucket: this.bucket,
+      Body: stream,
+    });
+
+    const result = await this.client.send(command);
+    return result;
   }
 }
