@@ -4,6 +4,7 @@ import { MEDIA_PATTERNS } from '@contracts/media/patterns/media.patterns';
 import type { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { UploadMediaCommand } from '../../application/commands/upload-media.command';
+import { UploadCompleteCommand } from '../../application/commands/upload-complete.command';
 
 @Controller()
 export class MediaController {
@@ -14,5 +15,10 @@ export class MediaController {
     return this.commandBus.execute(
       new UploadMediaCommand(dto.filename, dto.contentType),
     );
+  }
+
+  @MessagePattern(MEDIA_PATTERNS.UPLOAD_COMPLETE)
+  public uploadCompleteMedia(@Payload() dto: UploadMediaDto) {
+    return this.commandBus.execute(new UploadCompleteCommand(dto.filename));
   }
 }
