@@ -6,4 +6,5 @@ export interface FileStoragePort {
   getUploadUrl: (key: string) => Promise<string>;
   get: (key: string) => Promise<Readable | undefined>;
   put: (key: string, stream: ReadStream) => Promise<PutObjectCommandOutput>;
+  uploadFolder: (localPath: string, remotePrefix: string) => Promise<void>;
 }

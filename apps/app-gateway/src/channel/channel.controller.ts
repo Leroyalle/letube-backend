@@ -1,6 +1,6 @@
 import type { CreateChannelDto, FindByIdDto, FindByUserIdDto } from '@contracts/channel';
 
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { ChannelService } from './channel.service';
 
@@ -8,18 +8,22 @@ import { ChannelService } from './channel.service';
 export class ChannelController {
   constructor(private readonly channelService: ChannelService) {}
 
-  public create(dto: CreateChannelDto) {
+  @Post()
+  public create(@Body() dto: CreateChannelDto) {
     return this.channelService.create(dto);
   }
 
-  public findById(dto: FindByIdDto) {
+  @Get(':id')
+  public findById(@Param() dto: FindByIdDto) {
     return this.channelService.findById(dto);
   }
 
-  public findByUserId(dto: FindByUserIdDto) {
+  @Get(':userId')
+  public findByUserId(@Param() dto: FindByUserIdDto) {
     return this.channelService.findByUserId(dto);
   }
 
+  @Get()
   public findAll() {
     return this.channelService.findAll();
   }
