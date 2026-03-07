@@ -1,6 +1,6 @@
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import type { FileStoragePort } from 'apps/media/src/application/storage/file-storage.port';
+import type { FileStoragePort } from 'apps/media/src/application/persistence/file-storage.port';
 import { createReadStream, promises, type ReadStream } from 'fs';
 import { join } from 'path';
 import type { Readable } from 'stream';
