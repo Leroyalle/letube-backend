@@ -1,7 +1,11 @@
+type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING';
+
 interface VideoData {
   id: string;
   description: string;
   name: string;
+  sourceKey: string;
+  status: VideoStatus;
   channelId: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -9,4 +13,12 @@ interface VideoData {
 
 export class Video {
   constructor(public readonly props: VideoData) {}
+
+  public changeStatus(status: VideoStatus) {
+    this.props.status = status;
+  }
+
+  public canStartProcessing(): boolean {
+    return this.props.status === 'UPLOADING';
+  }
 }
