@@ -13,7 +13,7 @@ export class MediaController {
     return this.mediaService.getUploadUrl(dto);
   }
 
-  @Post('upload_complete')
+  @Post('upload-complete')
   public uploadComplete(@Body() dto: UploadMediaDto) {
     return this.mediaService.uploadComplete(dto);
   }
