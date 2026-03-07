@@ -5,7 +5,7 @@ import { pipeline } from 'stream/promises';
 
 import { Injectable } from '@nestjs/common';
 
-import type { VideoProcessorPort } from '../../../application/video/video-processor.port';
+import type { VideoProcessorPort } from '../../../application/ports/video-processor.port';
 
 @Injectable()
 export class FfmpegVideoProcessor implements VideoProcessorPort {

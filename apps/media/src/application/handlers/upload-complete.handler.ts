@@ -3,13 +3,15 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
 import { UploadCompleteCommand } from '../commands/upload-complete.command';
-import type { FileStoragePort } from '../persistence/file-storage.port';
-import { FILE_STORAGE_TOKEN } from '../persistence/file-storage.token';
-import { VIDEO_REPOSITORY_TOKEN } from '../persistence/video-repository.token';
-import type { TempFolderPort } from '../temp-folder/temp-folder.port';
-import { TEMP_FOLDER_TOKEN } from '../temp-folder/temp-folder.token';
-import type { VideoProcessorPort } from '../video/video-processor.port';
-import { VIDEO_PROCESSOR_TOKEN } from '../video/video-processor.token';
+import type { FileStoragePort } from '../ports/file-storage.port';
+import type { TempFolderPort } from '../ports/temp-folder.port';
+import {
+  FILE_STORAGE_TOKEN,
+  TEMP_FOLDER_TOKEN,
+  VIDEO_PROCESSOR_TOKEN,
+  VIDEO_REPOSITORY_TOKEN,
+} from '../ports/tokens';
+import type { VideoProcessorPort } from '../ports/video-processor.port';
 
 // TODO: вынести в воркер
 @CommandHandler(UploadCompleteCommand)

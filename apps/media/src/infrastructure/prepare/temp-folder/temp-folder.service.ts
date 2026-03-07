@@ -1,4 +1,4 @@
-import type { TempFolderPort } from 'apps/media/src/application/temp-folder/temp-folder.port';
+import type { TempFolderPort } from 'apps/media/src/application/ports/temp-folder.port';
 
 import { Injectable } from '@nestjs/common';
 
