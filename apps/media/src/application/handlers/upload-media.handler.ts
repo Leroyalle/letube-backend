@@ -14,6 +14,6 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
 
   public async execute(command: UploadMediaCommand) {
     const url = await this.fileStorageService.getUploadUrl(command.filename);
-    return url;
+    return { url };
   }
 }
