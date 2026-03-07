@@ -1,7 +1,8 @@
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import type { FileStoragePort } from 'apps/media/src/application/storage/file-storage.port';
-import type { ReadStream } from 'fs';
+import { createReadStream, promises, type ReadStream } from 'fs';
+import { join } from 'path';
 import type { Readable } from 'stream';
 
 import { Injectable } from '@nestjs/common';
@@ -59,5 +60,20 @@ export class S3ClientService implements FileStoragePort {
 
     const result = await this.client.send(command);
     return result;
+  }
+
+  public async uploadFolder(localPath: string, remotePrefix: string): Promise<void> {
+    const files = await promises.readdir(localPath);
+    const concurrency = 10;
+
+    for (let i = 0; i < files.length; i += concurrency) {
+      const batch = files.slice(i, i + concurrency);
+      await Promise.all(
+        batch.map(file => {
+          const stream = createReadStream(join(localPath, file));
+          return this.put(`${remotePrefix}/${file}`, stream);
+        }),
+      );
+    }
   }
 }
