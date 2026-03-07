@@ -1,6 +1,6 @@
-import type { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
+import { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { MediaService } from './media.service';
 
@@ -8,11 +8,13 @@ import { MediaService } from './media.service';
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
-  public getUploadUrl(dto: UploadMediaDto) {
+  @Post('upload')
+  public getUploadUrl(@Body() dto: UploadMediaDto) {
     return this.mediaService.getUploadUrl(dto);
   }
 
-  public uploadComplete(dto: UploadMediaDto) {
+  @Post('upload_complete')
+  public uploadComplete(@Body() dto: UploadMediaDto) {
     return this.mediaService.uploadComplete(dto);
   }
 }
