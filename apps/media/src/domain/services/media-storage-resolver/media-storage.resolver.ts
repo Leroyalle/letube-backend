@@ -15,14 +15,13 @@ export class MediaStorageResolver {
   public generateUploadKey(id: string, filename: string, content: ContentType): string {
     const parsed = filename.split('.');
     const ext = parsed.pop();
-    const contentPrefix = this.CONTENT_PREFIX[content];
-    const name = parsed[0];
-    const key = `${this.UPLOAD_PREFIX}/${contentPrefix}/${id}-${name}/original.${ext}`;
+    const contentPrefix = this.CONTENT_PREFIX[content.getValue()];
+    const key = `${this.UPLOAD_PREFIX}/${contentPrefix}/${id}/original.${ext}`;
     return key;
   }
 
   public createHlsFolderKey(id: string, content: ContentType): string {
-    const contentPrefix = this.CONTENT_PREFIX[content];
+    const contentPrefix = this.CONTENT_PREFIX[content.getValue()];
     return `${this.STREAMS_PREFIX}/${contentPrefix}/${id}`;
   }
 
