@@ -23,4 +23,10 @@ export const AUTH_PATTERNS = {
   VERIFY_ACCESS_TOKEN: {
     cmd: 'auth.verify-access-token',
   },
+  GOOGLE_LOGIN_URL: {
+    cmd: 'auth.google-login-url',
+  },
+  GOOGLE_LOGIN: {
+    cmd: 'auth.google-login',
+  },
 };

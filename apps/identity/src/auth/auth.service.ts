@@ -30,6 +30,7 @@ import { CodeService } from './code/code.service';
 import { firstValueFrom } from 'rxjs';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NOTIFICATION_SERVICE } from '@infra';
+import { IGoogleUserResponse } from '@contracts/auth/types';
 
 @Injectable()
 export class AuthService {
@@ -85,7 +86,6 @@ export class AuthService {
     if (user) {
       throw new RpcException('User has already exists');
     }
-
     const hashedPassword = await argon2.hash(dto.password);
 
     const createdUser = await this.userService.create({
@@ -98,7 +98,6 @@ export class AuthService {
     if (!createdUser) {
       throw new BadRequestException('User creation failed');
     }
-
     const codeData = await this.codeService.create(
       createdUser.id,
       ECodeType.REGISTER,
@@ -121,7 +120,6 @@ export class AuthService {
     if (!result || result.status === 'error') {
       throw new BadRequestException('Sending code failed');
     }
-
     return result;
   }
 
@@ -129,7 +127,6 @@ export class AuthService {
     dto: VerifyCodeDto,
   ): Promise<SuccessLoginDto | undefined> {
     const user = await this.userService.findByEmail(dto.email);
-    console.log(user);
 
     if (!user) {
       throw new BadRequestException('User not found');
@@ -140,7 +137,6 @@ export class AuthService {
       dto.code,
       ECodeType.REGISTER,
     );
-    console.log('isValidCode', isValidCode);
 
     if (!isValidCode) {
       throw new BadRequestException('Invalid code');
@@ -248,7 +244,9 @@ export class AuthService {
     return { status: 'success' };
   }
 
-  public async verifyAccessToken(dto: VerifyAccessTokenDto): Promise<UserDto> {
+  public async verifyAccessToken(
+    dto: VerifyAccessTokenDto,
+  ): Promise<SuccessLoginDto> {
     const payload = this.accessTokenService.verifyAccessToken(dto.token);
     const user = await this.userService.findById(payload.id);
 
@@ -256,12 +254,94 @@ export class AuthService {
       throw new RpcException('User not found');
     }
 
-    return {
-      email: user.email,
-      name: user.name,
+    const accessData = await this.accessTokenService.signAccessToken({
       id: user.id,
-      role: user.role,
-      createdAt: user.createdAt,
-    };
+      email: user.email,
+      role: user.role as EUserRole,
+    });
+
+    const refreshData = this.refreshTokenService.generate();
+    return { accessData, refreshData };
+  }
+
+  public getGoogleLoginUrl() {
+    const params = new URLSearchParams({
+      client_id: process.env.GOOGLE_CLIENT_ID!,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URL!,
+      response_type: 'code',
+      scope: 'openid email profile',
+      access_type: 'offline',
+      prompt: 'consent',
+    });
+    return `${process.env.GOOGLE_AUTH_REDIRECT_URL}?${params}`;
+  }
+
+  public async googleLogin(code: string): Promise<SuccessLoginDto> {
+    const tokenResponse = await fetch(process.env.GOOGLE_TOKEN_URL!, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code,
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: process.env.GOOGLE_REDIRECT_URL,
+        grant_type: 'authorization_code',
+      }),
+    });
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+
+    const userResponse = await fetch(
+      'https://www.googleapis.com/oauth2/v2/userinfo',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    const googleUser: IGoogleUserResponse = await userResponse.json();
+    const foundUser = await this.userService.findByEmail(googleUser.email);
+
+    let user: UserDto;
+
+    if (foundUser) {
+      user = foundUser;
+    } else {
+      const createdUser = await this.userService.create({
+        email: googleUser.email,
+        name: googleUser.name,
+        password: '',
+        role: EUserRole.USER,
+        isVerified: true,
+      });
+
+      if (!createdUser) {
+        throw new Error('Failed to create user');
+      }
+
+      user = createdUser;
+    }
+
+    const accessData = await this.accessTokenService.signAccessToken({
+      id: user.id,
+      email: user.email,
+      role: user.role as EUserRole,
+    });
+
+    const refreshData = this.refreshTokenService.generate();
+
+    const hashedRefresh = await this.refreshTokenService.hash(
+      refreshData.token,
+    );
+
+    await this.updateRefreshToken(user.id, {
+      token: hashedRefresh,
+      expiresAt: refreshData.expiresAt,
+    });
+
+    return { accessData, refreshData };
   }
 }

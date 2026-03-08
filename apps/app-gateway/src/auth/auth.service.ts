@@ -3,6 +3,8 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Req,
+  Res,
 } from '@nestjs/common';
 import {
   AUTH_PATTERNS,
@@ -18,7 +20,7 @@ import {
 import { SendMessageResponseDto } from '@contracts/notification';
 import { IDENTITY_SERVICE } from '@infra';
 import { ClientProxy } from '@nestjs/microservices';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -33,17 +35,11 @@ export class AuthService {
         this.userClient.send(AUTH_PATTERNS.LOGIN, dto),
       );
 
-      this.setRefreshToken(data.refreshData, res);
-
-      return {
-        data: {
-          accessToken: data.accessData.token,
-          expiresIn: data.accessData.expiresAt,
-        },
-        message: 'Login successful!',
-      };
+      this.setToken(EAuthTokens.Refresh, data.refreshData, res);
+      this.setToken(EAuthTokens.Access, data.accessData, res);
+      return res.redirect('http://localhost:3002?success=Login');
     } catch (error) {
-      console.log('AppGateway_AuthService_login', error);
+      throw new InternalServerErrorException(error.message || 'Login failed');
     }
   }
 
@@ -84,17 +80,19 @@ export class AuthService {
       const data = await firstValueFrom<SuccessLoginDto | undefined>(
         this.userClient.send(AUTH_PATTERNS.REGISTER_VERIFY_CODE, dto),
       );
-      console.log('registerVerifyCode', data);
       if (!data) {
         throw new InternalServerErrorException('Registration failed');
       }
 
-      this.setRefreshToken(data.refreshData, res);
+      console.log('datratatat', data);
+      this.setToken(EAuthTokens.Refresh, data.refreshData, res);
+      this.setToken(EAuthTokens.Access, data.accessData, res);
 
-      return {
-        data,
-        message: 'Registration successful!',
-      };
+      return res.redirect('http://localhost:3002?access=Register');
+      // return {
+      //   message: 'Registration successful!',
+      //   status: 'success',
+      // };
     } catch (error) {
       console.log('AppGateway_AuthService_registerVerifyCode', error);
 
@@ -104,8 +102,28 @@ export class AuthService {
     }
   }
 
-  private setRefreshToken(tokenData: TokenData, res: Response) {
-    res.cookie(EAuthTokens.Refresh, tokenData.token, {
+  // private setRefreshToken(tokenData: TokenData, res: Response) {
+  //   res.cookie(EAuthTokens.Refresh, tokenData.token, {
+  //     httpOnly: true,
+  //     // secure: true,
+  //     sameSite: 'strict',
+  //     maxAge: tokenData.expiresAt.expiresMs,
+  //     // maxAge: 30 * 24 * 60 * 60 * 1000,
+  //   });
+  // }
+
+  // private setAccessToken(tokenData: TokenData, res: Response) {
+  //   res.cookie(EAuthTokens.Access, tokenData.token, {
+  //     httpOnly: true,
+  //     // secure: true,
+  //     sameSite: 'strict',
+  //     maxAge: tokenData.expiresAt.expiresMs,
+  //     // maxAge: 30 * 24 * 60 * 60 * 1000,
+  //   });
+  // }
+
+  private setToken(name: EAuthTokens, tokenData: TokenData, res: Response) {
+    res.cookie(name, tokenData.token, {
       httpOnly: true,
       // secure: true,
       sameSite: 'strict',
@@ -141,6 +159,37 @@ export class AuthService {
     return {
       message: 'Your password has been changed successfully!',
       status: data.status,
+    };
+  }
+
+  public async googleLogin(res: Response) {
+    const url = await firstValueFrom<string>(
+      this.userClient.send(AUTH_PATTERNS.GOOGLE_LOGIN_URL, {}),
+    );
+    if (!url) {
+      throw new InternalServerErrorException('Failed to get Google login URL');
+    }
+    return res.redirect(url);
+  }
+
+  public async googleCallback(@Req() req: Request, @Res() res: Response) {
+    const code = req.query.code;
+
+    if (!code) {
+      throw new BadRequestException('Google code not provided');
+    }
+
+    const data = await firstValueFrom<SuccessLoginDto>(
+      this.userClient.send(AUTH_PATTERNS.GOOGLE_LOGIN, code),
+    );
+
+    this.setToken(EAuthTokens.Refresh, data.refreshData, res);
+    this.setToken(EAuthTokens.Access, data.accessData, res);
+
+    res.redirect('http://localhost:3002?access=LoginGoogle');
+    return {
+      message: 'Google login successful!',
+      status: 'success',
     };
   }
 }

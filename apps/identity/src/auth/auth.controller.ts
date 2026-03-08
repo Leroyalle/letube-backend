@@ -44,4 +44,14 @@ export class AuthController {
   public verifyAccessToken(@Payload() dto: VerifyAccessTokenDto) {
     return this.authService.verifyAccessToken(dto);
   }
+
+  @MessagePattern(AUTH_PATTERNS.GOOGLE_LOGIN_URL)
+  public getGoogleLoginUrl() {
+    return this.authService.getGoogleLoginUrl();
+  }
+
+  @MessagePattern(AUTH_PATTERNS.GOOGLE_LOGIN)
+  public googleLogin(@Payload() code: string) {
+    return this.authService.googleLogin(code);
+  }
 }

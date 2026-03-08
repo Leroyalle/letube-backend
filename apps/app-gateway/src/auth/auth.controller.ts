@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ForgotPasswordDto,
@@ -7,7 +7,7 @@ import {
   ResetPasswordDto,
   VerifyCodeDto,
 } from '@contracts/auth';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -27,10 +27,7 @@ export class AuthController {
   }
 
   @Post('register/verify-code')
-  public registerVerifyCode(
-    @Body() dto: VerifyCodeDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  public registerVerifyCode(@Body() dto: VerifyCodeDto, @Res() res: Response) {
     return this.authService.registerVerifyCode(dto, res);
   }
 
@@ -42,5 +39,15 @@ export class AuthController {
   @Post('reset-password')
   public resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
+  }
+
+  @Get('google')
+  public googleLogin(@Res() Res: Response) {
+    return this.authService.googleLogin(Res);
+  }
+
+  @Get('google/callback')
+  public googleCallback(@Req() req: Request, @Res() res: Response) {
+    return this.authService.googleCallback(req, res);
   }
 }
