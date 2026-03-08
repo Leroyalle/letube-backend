@@ -1,9 +1,16 @@
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+
+import { ContentType } from '../enums/content-type.enum';
 
 export class UploadMediaDto {
   @IsString()
-  filename!: string;
-
+  name!: string;
   @IsString()
-  contentType!: string;
+  description!: string;
+  @IsString()
+  channelId!: string;
+  @IsString()
+  filename!: string;
+  @IsEnum(ContentType)
+  contentType!: ContentType;
 }
