@@ -1,4 +1,4 @@
-type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING';
+type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'PROCESSING';
 
 interface VideoData {
   id: string;

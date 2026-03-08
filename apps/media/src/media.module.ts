@@ -16,7 +16,7 @@ import { PrismaVideoRepository } from './infrastructure/persistence/db/prisma-vi
 import { S3ClientService } from './infrastructure/persistence/s3/s3-client.service';
 import { TempFolderService } from './infrastructure/prepare/temp-folder/temp-folder.service';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
-import { FfmpegVideoProcessor } from './infrastructure/video/ffmpeg/ffmpeg-video-processor.service';
+import { FfmpegVideoProcessor } from './infrastructure/video/ffmpeg/ffmpeg-video.processor';
 import { MediaController } from './presentation/http/media.controller';
 
 @Module({
