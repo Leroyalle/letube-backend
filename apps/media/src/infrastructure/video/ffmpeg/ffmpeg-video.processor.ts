@@ -1,3 +1,7 @@
+import {
+  HLS_PLAYLIST_NAME,
+  HLS_SEGMENT_NAME,
+} from 'apps/media/src/application/constants/hls.constant';
 import { spawn } from 'child_process';
 import { createWriteStream } from 'fs';
 import { mkdir } from 'fs/promises';
@@ -15,8 +19,8 @@ export class FfmpegVideoProcessor implements VideoProcessorPort {
     await mkdir(outputPath, { recursive: true });
 
     const inputFile = `${inputPath}/input`;
-    const playlist = `${outputPath}/index.m3u8`;
-    const segmentPath = `${outputPath}/segment%03d.ts`;
+    const playlist = `${outputPath}/${HLS_PLAYLIST_NAME}`;
+    const segmentPath = `${outputPath}/${HLS_SEGMENT_NAME}`;
 
     const writeStream = createWriteStream(inputFile);
     await pipeline(source, writeStream);
