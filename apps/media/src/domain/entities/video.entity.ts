@@ -5,6 +5,7 @@ interface VideoData {
   description: string;
   name: string;
   sourceKey: string;
+  hlsMasterKey: string | null;
   status: VideoStatus;
   channelId: string;
   createdAt?: Date;

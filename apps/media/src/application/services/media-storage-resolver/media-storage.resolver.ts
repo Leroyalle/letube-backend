@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import type { ContentType } from '../../value-objects/content-type.vo';
+import type { ContentType } from '../../../domain/value-objects/content-type.vo';
 
 @Injectable()
 export class MediaStorageResolver {

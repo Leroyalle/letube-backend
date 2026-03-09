@@ -5,10 +5,10 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { Video } from '../../domain/entities/video.entity';
 import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
-import { MediaStorageResolver } from '../../domain/services/media-storage-resolver/media-storage.resolver';
 import { UploadMediaCommand } from '../commands/upload-media.command';
 import type { FileStoragePort } from '../ports/file-storage.port';
 import { FILE_STORAGE_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../ports/tokens';
+import { MediaStorageResolver } from '../services/media-storage-resolver/media-storage.resolver';
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
@@ -34,6 +34,7 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       description: command.description,
       channelId: command.channelId,
       sourceKey: key,
+      hlsMasterKey: null,
       status: 'UPLOADING',
     });
 

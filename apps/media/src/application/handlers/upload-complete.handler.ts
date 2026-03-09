@@ -2,7 +2,6 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
-import type { MediaStorageResolver } from '../../domain/services/media-storage-resolver/media-storage.resolver';
 import { UploadCompleteCommand } from '../commands/upload-complete.command';
 import type { FileStoragePort } from '../ports/file-storage.port';
 import type { TempFolderPort } from '../ports/temp-folder.port';
@@ -13,6 +12,7 @@ import {
   VIDEO_REPOSITORY_TOKEN,
 } from '../ports/tokens';
 import type { VideoProcessorPort } from '../ports/video-processor.port';
+import type { MediaStorageResolver } from '../services/media-storage-resolver/media-storage.resolver';
 
 // TODO: вынести в воркер
 @CommandHandler(UploadCompleteCommand)

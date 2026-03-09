@@ -11,7 +11,7 @@ import {
   VIDEO_PROCESSOR_TOKEN,
   VIDEO_REPOSITORY_TOKEN,
 } from './application/ports/tokens';
-import { MediaStorageResolver } from './domain/services/media-storage-resolver/media-storage.resolver';
+import { MediaStorageResolver } from './application/services/media-storage-resolver/media-storage.resolver';
 import { PrismaVideoRepository } from './infrastructure/persistence/db/prisma-video.repository';
 import { S3ClientService } from './infrastructure/persistence/s3/s3-client.service';
 import { TempFolderService } from './infrastructure/prepare/temp-folder/temp-folder.service';
