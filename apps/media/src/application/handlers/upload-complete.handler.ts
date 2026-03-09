@@ -56,6 +56,13 @@ export class UploadCompleteHandler implements ICommandHandler<UploadCompleteComm
 
     await this.fileStorageService.uploadFolder(outputDir, hlsFolderKey);
 
+    const playlistKey = this.mediaStorageResolver.createPlaylistKey(
+      video.props.id,
+      command.contentType,
+    );
+
+    video.setMasterKey(playlistKey);
+
     await this.videoRepository.update(video);
   }
 }

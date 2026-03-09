@@ -22,4 +22,8 @@ export class Video {
   public canStartProcessing(): boolean {
     return this.props.status === 'UPLOADING';
   }
+
+  public setMasterKey(masterKey: string) {
+    return (this.props.hlsMasterKey = masterKey);
+  }
 }
