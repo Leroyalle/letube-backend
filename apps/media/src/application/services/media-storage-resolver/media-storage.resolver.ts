@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import type { ContentType } from '../../value-objects/content-type.vo';
+import type { ContentType } from '../../../domain/value-objects/content-type.vo';
+import { HLS_PLAYLIST_NAME } from '../../constants/hls.constant';
 
 @Injectable()
 export class MediaStorageResolver {
@@ -26,6 +27,6 @@ export class MediaStorageResolver {
   }
 
   public createPlaylistKey(id: string, content: ContentType): string {
-    return `${this.createHlsFolderKey(id, content)}/index.m3u8`;
+    return `${this.createHlsFolderKey(id, content)}/${HLS_PLAYLIST_NAME}`;
   }
 }

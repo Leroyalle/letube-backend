@@ -5,6 +5,7 @@ interface VideoData {
   description: string;
   name: string;
   sourceKey: string;
+  hlsMasterKey: string | null;
   status: VideoStatus;
   channelId: string;
   createdAt?: Date;
@@ -20,5 +21,9 @@ export class Video {
 
   public canStartProcessing(): boolean {
     return this.props.status === 'UPLOADING';
+  }
+
+  public setMasterKey(masterKey: string) {
+    return (this.props.hlsMasterKey = masterKey);
   }
 }
