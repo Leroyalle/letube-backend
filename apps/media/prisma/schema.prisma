@@ -21,8 +21,10 @@ model Video {
   description String
   channelId   String @unique
 
-  sourceKey String
-  status    String
+  sourceKey    String
+  hlsMasterKey String?
+
+  status String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
