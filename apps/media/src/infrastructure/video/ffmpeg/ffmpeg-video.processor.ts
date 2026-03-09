@@ -16,6 +16,7 @@ export class FfmpegVideoProcessor implements VideoProcessorPort {
 
     const inputFile = `${inputPath}/input`;
     const playlist = `${outputPath}/index.m3u8`;
+    const segmentPath = `${outputPath}/segment%03d.ts`;
 
     const writeStream = createWriteStream(inputFile);
     await pipeline(source, writeStream);
@@ -23,15 +24,7 @@ export class FfmpegVideoProcessor implements VideoProcessorPort {
     return await new Promise<void>((resolve, reject) => {
       const ffmpeg = spawn(
         'C:\\Users\\nikol\\Downloads\\ffmpeg-2026-03-05-git-74cfcd1c69-essentials_build\\ffmpeg-2026-03-05-git-74cfcd1c69-essentials_build\\bin\\ffmpeg.exe',
-        [
-          '-i',
-          inputFile,
-          '-f',
-          'hls',
-          '-hls_segment_filename',
-          `${outputPath}/segment%03d.ts`,
-          playlist,
-        ],
+        ['-i', inputFile, '-f', 'hls', '-hls_segment_filename', segmentPath, playlist],
       );
 
       ffmpeg.on('close', code => {
