@@ -64,5 +64,7 @@ export class UploadCompleteHandler implements ICommandHandler<UploadCompleteComm
     video.setMasterKey(playlistKey);
 
     await this.videoRepository.update(video);
+
+    return { sourceId: video.props.id };
   }
 }
