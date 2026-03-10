@@ -19,7 +19,7 @@ model Video {
 
   name        String
   description String
-  channelId   String @unique
+  channelId   String
 
   sourceKey    String
   hlsMasterKey String?
