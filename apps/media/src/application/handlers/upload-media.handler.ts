@@ -40,8 +40,8 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
 
     const url = await this.fileStorageService.getUploadUrl(key);
 
-    await this.videoRepository.create(domainVideo);
+    const video = await this.videoRepository.create(domainVideo);
 
-    return { url };
+    return { url, sourceId: video.props.id, contentType: command.contentType };
   }
 }
