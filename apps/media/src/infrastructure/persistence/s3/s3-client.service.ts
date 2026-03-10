@@ -20,24 +20,23 @@ export class S3ClientService implements FileStoragePort {
         accessKeyId: this.configService.getOrThrow<string>('S3_ACCESS_KEY_ID'),
         secretAccessKey: this.configService.getOrThrow<string>('S3_SECRET_ACCESS_KEY'),
       },
+      requestChecksumCalculation: 'WHEN_REQUIRED',
       endpoint: this.configService.getOrThrow<string>('S3_ENDPOINT'),
     });
     this.bucket = this.configService.getOrThrow<string>('S3_BUCKET');
   }
 
-  public getUploadUrl(key: string) {
+  public async getUploadUrl(key: string): Promise<string> {
     const command = new PutObjectCommand({
-      // TODO: добавить препапку к key
       Key: key,
       Bucket: this.bucket,
-      ContentType: 'video/mp4',
+      // FIXME: передавать контейнттайп чтобы при реквесте загрузить видео не передали фото
+      // ContentType: 'video/mp4',
     });
 
-    const url = getSignedUrl(this.client, command, {
+    return await getSignedUrl(this.client, command, {
       expiresIn: 3600,
     });
-
-    return url;
   }
 
   public async get(key: string, bucket: string = this.bucket) {
