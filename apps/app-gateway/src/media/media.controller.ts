@@ -1,3 +1,4 @@
+import type { UploadCompleteDto } from '@contracts/media/dto/upload-complete.dto';
 import { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 
 import { Body, Controller, Post } from '@nestjs/common';
@@ -14,7 +15,7 @@ export class MediaController {
   }
 
   @Post('upload-complete')
-  public uploadComplete(@Body() dto: UploadMediaDto) {
+  public uploadComplete(@Body() dto: UploadCompleteDto) {
     return this.mediaService.uploadComplete(dto);
   }
 }
