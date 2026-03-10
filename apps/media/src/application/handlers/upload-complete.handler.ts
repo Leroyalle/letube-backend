@@ -12,7 +12,7 @@ import {
   VIDEO_REPOSITORY_TOKEN,
 } from '../ports/tokens';
 import type { VideoProcessorPort } from '../ports/video-processor.port';
-import type { MediaStorageResolver } from '../services/media-storage-resolver/media-storage.resolver';
+import { MediaStorageResolver } from '../services/media-storage-resolver/media-storage.resolver';
 
 // TODO: вынести в воркер
 @CommandHandler(UploadCompleteCommand)
@@ -64,5 +64,7 @@ export class UploadCompleteHandler implements ICommandHandler<UploadCompleteComm
     video.setMasterKey(playlistKey);
 
     await this.videoRepository.update(video);
+
+    return { sourceId: video.props.id };
   }
 }
