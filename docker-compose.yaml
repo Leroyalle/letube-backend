@@ -19,8 +19,8 @@ services:
     ports:
       - '5672:5672'
     environment:
-      RABBITMQ_DEFAULT_USER: ${RQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RQ_PASS}
+      RABBITMQ_DEFAULT_USER: ${RMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RMQ_PASS}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
