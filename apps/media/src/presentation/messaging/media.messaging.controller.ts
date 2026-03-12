@@ -12,7 +12,7 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { MarkMediaAsProcessedCommand } from '../../application/commands/mark-media-as-processed.command';
 import { UploadCompleteCommand } from '../../application/commands/upload-complete.command';
 import { UploadMediaCommand } from '../../application/commands/upload-media.command';
-import { GetVideoByIdQuery } from '../../application/queries/get-video-by-id,query';
+import { GetVideoByIdQuery } from '../../application/queries/get-video-by-id.query';
 import { ContentType } from '../../domain/value-objects/content-type.vo';
 
 @Controller()
