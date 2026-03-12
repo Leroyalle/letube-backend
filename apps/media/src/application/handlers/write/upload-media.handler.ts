@@ -1,3 +1,4 @@
+import type { FileStoragePort } from '@app/abstractions/storage/file-storage.port';
 import { FILE_STORAGE_TOKEN } from '@app/abstractions/storage/file-storage.token';
 import { MediaStorageResolver } from '@app/pure/media';
 import { randomUUID } from 'crypto';
@@ -5,11 +6,10 @@ import { randomUUID } from 'crypto';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { Video } from '../../domain/entities/video.entity';
-import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
-import { UploadMediaCommand } from '../commands/upload-media.command';
-import type { FileStoragePort } from '../ports/file-storage.port';
-import { VIDEO_REPOSITORY_TOKEN } from '../ports/tokens';
+import { Video } from '../../../domain/entities/video.entity';
+import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
+import { UploadMediaCommand } from '../../commands/upload-media.command';
+import { VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {

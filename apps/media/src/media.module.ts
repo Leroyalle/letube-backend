@@ -6,7 +6,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { commandHandlers } from './application/handlers/command-handlers';
+import { handlers } from './application/handlers/handlers';
 import { BROKER_EVENT_BUS_TOKEN, VIDEO_REPOSITORY_TOKEN } from './application/ports/tokens';
 import { RabbitMQEventBus } from './infrastructure/broker/rabbitmq/rabbitmq-event-bus';
 import { rabbitMQConfig } from './infrastructure/broker/rabbitmq/rabbitmq.config';
@@ -35,7 +35,7 @@ import { MediaMessagingController } from './presentation/messaging/media.messagi
       provide: BROKER_EVENT_BUS_TOKEN,
       useClass: RabbitMQEventBus,
     },
-    ...commandHandlers,
+    ...handlers,
   ],
 })
 export class MediaModule {}

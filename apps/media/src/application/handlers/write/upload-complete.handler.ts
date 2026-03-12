@@ -4,12 +4,11 @@ import { MEDIA_BROKER_QUEUES } from '@contracts/media/queues/broker.queues';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
-import { UploadCompleteCommand } from '../commands/upload-complete.command';
-import type { BrokerEventBusPort } from '../ports/broker-event-bus.port';
-import { BROKER_EVENT_BUS_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../ports/tokens';
+import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
+import { UploadCompleteCommand } from '../../commands/upload-complete.command';
+import type { BrokerEventBusPort } from '../../ports/broker-event-bus.port';
+import { BROKER_EVENT_BUS_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
 
-// TODO: вынести в воркер
 @CommandHandler(UploadCompleteCommand)
 export class UploadCompleteHandler implements ICommandHandler<UploadCompleteCommand> {
   constructor(
