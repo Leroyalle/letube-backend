@@ -23,6 +23,7 @@
     "start:notification": "nest start notification --watch",
     "start:channel": "nest start channel --watch",
     "start:media": "nest start media --watch",
+    "start:media-worker": "nest start media-worker --watch",
     "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\"",
     "prepare": "husky"
   },
@@ -40,6 +41,8 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "5.22.0",
     "@saintleroyalle/core": "^1.2.0",
+    "amqp-connection-manager": "^5.0.0",
+    "amqplib": "^0.10.9",
     "argon2": "^0.44.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
@@ -105,7 +108,11 @@
       "^1/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1",
       "^1/infra(|/.*)$": "<rootDir>/libs/infra/src/$1",
       "^1/shared(|/.*)$": "<rootDir>/libs/shared/src/$1",
-      "^@app/modules(|/.*)$": "<rootDir>/libs/modules/src/$1"
+      "^@app/abstractions(|/.*)$": "<rootDir>/libs/abstractions/src/$1",
+      "^@app/infra-core(|/.*)$": "<rootDir>/libs/infra-core/src/$1",
+      "^@app/modules(|/.*)$": "<rootDir>/libs/modules/src/$1",
+      "^@app/modules/rabbitmq(|/.*)$": "<rootDir>/libs/modules/rabbitmq/src/$1",
+      "^@app/pure(|/.*)$": "<rootDir>/libs/pure/src/$1"
     }
   },
   "lint-staged": {

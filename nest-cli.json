@@ -3,6 +3,15 @@
   "collection": "@nestjs/schematics",
   "monorepo": true,
   "projects": {
+    "abstractions": {
+      "type": "library",
+      "root": "libs/abstractions",
+      "entryFile": "index",
+      "sourceRoot": "libs/abstractions/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/abstractions/tsconfig.lib.json"
+      }
+    },
     "app-gateway": {
       "type": "application",
       "root": "apps/app-gateway",
@@ -48,13 +57,22 @@
         "tsConfigPath": "apps/identity/tsconfig.app.json"
       }
     },
-    "infra": {
+    "infra-constants": {
       "type": "library",
-      "root": "libs/infra",
+      "root": "libs/infra-constants",
       "entryFile": "index",
-      "sourceRoot": "libs/infra/src",
+      "sourceRoot": "libs/infra-constants/src",
       "compilerOptions": {
         "tsConfigPath": "libs/infra/tsconfig.lib.json"
+      }
+    },
+    "infra-core": {
+      "type": "library",
+      "root": "libs/infra-core",
+      "entryFile": "index",
+      "sourceRoot": "libs/infra-core/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/infra-core/tsconfig.lib.json"
       }
     },
     "media": {
@@ -64,6 +82,15 @@
       "sourceRoot": "apps/media/src",
       "compilerOptions": {
         "tsConfigPath": "apps/media/tsconfig.app.json"
+      }
+    },
+    "media-worker": {
+      "type": "application",
+      "root": "apps/media-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/media-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/media-worker/tsconfig.app.json"
       }
     },
     "modules": {
@@ -82,6 +109,15 @@
       "sourceRoot": "apps/notification/src",
       "compilerOptions": {
         "tsConfigPath": "apps/notification/tsconfig.app.json"
+      }
+    },
+    "pure": {
+      "type": "library",
+      "root": "libs/pure",
+      "entryFile": "index",
+      "sourceRoot": "libs/pure/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/pure/tsconfig.lib.json"
       }
     },
     "user": {

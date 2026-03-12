@@ -18,24 +18,18 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/modules": [
-        "libs/modules/src"
-      ],
-      "@app/modules/*": [
-        "libs/modules/src/*"
-      ],
-      "@contracts": [
-        "libs/contracts/src"
-      ],
-      "@contracts/*": [
-        "libs/contracts/src/*"
-      ],
-      "@infra": [
-        "libs/infra/src"
-      ],
-      "@infra/*": [
-        "libs/infra/src/*"
-      ]
+      "@app/abstractions": ["libs/abstractions/src"],
+      "@app/abstractions/*": ["libs/abstractions/src/*"],
+      "@app/infra-core": ["libs/infra-core/src"],
+      "@app/infra-core/*": ["libs/infra-core/src/*"],
+      "@app/modules": ["libs/modules/src"],
+      "@app/modules/*": ["libs/modules/src/*"],
+      "@app/pure": ["libs/pure/src"],
+      "@app/pure/*": ["libs/pure/src/*"],
+      "@contracts": ["libs/contracts/src"],
+      "@contracts/*": ["libs/contracts/src/*"],
+      "@infra": ["libs/infra-constants/src"],
+      "@infra/*": ["libs/infra-constants/src/*"]
     }
   }
 }
