@@ -1,4 +1,4 @@
-import { HLS_PLAYLIST_NAME } from './constants/hls.constant';
+import { HLS_PLAYLIST_NAME } from '../constants/hls.constant';
 
 type ContentType = 'video' | 'image';
 
