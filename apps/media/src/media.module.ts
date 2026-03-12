@@ -1,3 +1,5 @@
+import { RabbitMQModule } from '@app/infra-core';
+import { S3Module } from '@app/infra-core/s3/s3.module';
 import { join } from 'path';
 
 import { Module } from '@nestjs/common';
@@ -5,19 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { commandHandlers } from './application/handlers/command-handlers';
-import {
-  FILE_STORAGE_TOKEN,
-  TEMP_FOLDER_TOKEN,
-  VIDEO_PROCESSOR_TOKEN,
-  VIDEO_REPOSITORY_TOKEN,
-} from './application/ports/tokens';
-import { MediaStorageResolver } from './application/services/media-storage-resolver/media-storage.resolver';
+import { BROKER_EVENT_BUS_TOKEN, VIDEO_REPOSITORY_TOKEN } from './application/ports/tokens';
+import { RabbitMQEventBus } from './infrastructure/broker/rabbitmq/rabbitmq-event-bus';
+import { rabbitMQConfig } from './infrastructure/broker/rabbitmq/rabbitmq.config';
 import { PrismaVideoRepository } from './infrastructure/persistence/db/prisma-video.repository';
-import { S3ClientService } from './infrastructure/persistence/s3/s3-client.service';
-import { TempFolderService } from './infrastructure/prepare/temp-folder/temp-folder.service';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
-import { FfmpegVideoProcessor } from './infrastructure/video/ffmpeg/ffmpeg-video.processor';
-import { MediaController } from './presentation/http/media.controller';
+import { MediaMessagingController } from './presentation/messaging/media.messaging.controller';
 
 @Module({
   imports: [
@@ -27,26 +22,19 @@ import { MediaController } from './presentation/http/media.controller';
       isGlobal: true,
       envFilePath: join(process.cwd(), 'apps', 'media', '.env'),
     }),
+    RabbitMQModule.registerAsync(rabbitMQConfig),
+    S3Module,
   ],
-  controllers: [MediaController],
+  controllers: [MediaMessagingController],
   providers: [
-    {
-      provide: FILE_STORAGE_TOKEN,
-      useClass: S3ClientService,
-    },
-    {
-      provide: TEMP_FOLDER_TOKEN,
-      useClass: TempFolderService,
-    },
-    {
-      provide: VIDEO_PROCESSOR_TOKEN,
-      useClass: FfmpegVideoProcessor,
-    },
     {
       provide: VIDEO_REPOSITORY_TOKEN,
       useClass: PrismaVideoRepository,
     },
-    MediaStorageResolver,
+    {
+      provide: BROKER_EVENT_BUS_TOKEN,
+      useClass: RabbitMQEventBus,
+    },
     ...commandHandlers,
   ],
 })

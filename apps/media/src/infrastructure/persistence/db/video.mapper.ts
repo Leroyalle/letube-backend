@@ -3,6 +3,7 @@ import type { Video as DomainVideo } from 'apps/media/src/domain/entities/video.
 import type { Video as PrismaVideo } from '../../../../__generated__/prisma';
 
 const statusMap: Record<string, DomainVideo['props']['status']> = {
+  UPLOADED: 'UPLOADED',
   UPLOADING: 'UPLOADING',
   READY: 'READY',
   ERROR: 'ERROR',

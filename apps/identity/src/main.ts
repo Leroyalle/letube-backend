@@ -1,4 +1,4 @@
-import { IDENTITY_HOST, IDENTITY_PORT } from '@infra';
+import { IDENTITY_HOST, IDENTITY_PORT } from 'libs/infra-constants/src';
 
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';

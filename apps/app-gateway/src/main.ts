@@ -1,5 +1,5 @@
-import { APP_GATEWAY_PORT } from '@infra';
 import * as cookieParser from 'cookie-parser';
+import { APP_GATEWAY_PORT } from 'libs/infra-constants/src';
 
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';

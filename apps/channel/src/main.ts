@@ -1,4 +1,4 @@
-import { CHANNEL_HOST, CHANNEL_PORT } from '@infra';
+import { CHANNEL_HOST, CHANNEL_PORT } from 'libs/infra-constants/src';
 
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';

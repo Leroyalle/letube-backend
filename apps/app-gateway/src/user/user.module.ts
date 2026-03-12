@@ -1,5 +1,5 @@
 import { SharedAuthModule } from '@app/modules';
-import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from '@infra';
+import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from 'libs/infra-constants/src';
 
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';

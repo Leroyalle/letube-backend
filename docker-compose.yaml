@@ -4,13 +4,26 @@ services:
     container_name: letube-db
     restart: always
     environment:
-      POSTGRES_PASSWORD: '123123'
-      POSTGRES_USER: 'user'
-      POSTGRES_DB: 'letube'
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
       - '5467:5432'
 
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: letube-rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RMQ_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   pg_data:
+  rabbitmq_data:
