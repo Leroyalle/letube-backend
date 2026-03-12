@@ -1,4 +1,5 @@
-type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'PROCESSING';
+// type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'UPLOADED' | 'PROCESSED' | 'PROCESSING';
+type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'UPLOADED';
 
 interface VideoData {
   id: string;
@@ -20,7 +21,16 @@ export class Video {
   }
 
   public canStartProcessing(): boolean {
+    return this.props.status === 'UPLOADED';
+  }
+
+  public canMakeUploaded(): boolean {
     return this.props.status === 'UPLOADING';
+  }
+
+  public canMakeReady(): boolean {
+    // FIXME: изменить на PROCESSED
+    return this.props.status === 'UPLOADED';
   }
 
   public setMasterKey(masterKey: string) {
