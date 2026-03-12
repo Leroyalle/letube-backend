@@ -1,5 +1,5 @@
 import { CreateUserDto, USER_PATTERNS } from '@contracts/user';
-import { IDENTITY_SERVICE } from '@infra';
+import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';

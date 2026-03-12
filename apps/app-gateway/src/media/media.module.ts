@@ -1,4 +1,4 @@
-import { MEDIA_HOST, MEDIA_PORT, MEDIA_SERVICE } from '@infra';
+import { MEDIA_HOST, MEDIA_PORT, MEDIA_SERVICE } from 'libs/infra-constants/src';
 
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';

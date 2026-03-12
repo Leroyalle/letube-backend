@@ -1,4 +1,4 @@
-import { NOTIFICATION_HOST, NOTIFICATION_PORT } from '@infra';
+import { NOTIFICATION_HOST, NOTIFICATION_PORT } from 'libs/infra-constants/src';
 
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';

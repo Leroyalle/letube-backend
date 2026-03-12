@@ -1,7 +1,7 @@
 import { AUTH_PATTERNS, EAuthTokens, VerifyAccessTokenDto } from '@contracts/auth';
 import { UserDto } from '@contracts/user';
-import { IDENTITY_SERVICE } from '@infra';
 import { Request } from 'express';
+import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
 import { firstValueFrom } from 'rxjs';
 
 import { CanActivate, ExecutionContext, Inject, UnauthorizedException } from '@nestjs/common';

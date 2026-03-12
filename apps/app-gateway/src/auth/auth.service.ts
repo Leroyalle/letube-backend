@@ -10,8 +10,8 @@ import {
   VerifyCodeDto,
 } from '@contracts/auth';
 import { SendMessageResponseDto } from '@contracts/notification';
-import { IDENTITY_SERVICE } from '@infra';
 import { Response } from 'express';
+import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
 import { firstValueFrom } from 'rxjs';
 
 import {

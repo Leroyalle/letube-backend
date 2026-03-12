@@ -4,7 +4,7 @@ import {
   type FindByIdDto,
   type FindByUserIdDto,
 } from '@contracts/channel';
-import { CHANNEL_SERVICE } from '@infra';
+import { CHANNEL_SERVICE } from 'libs/infra-constants/src';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';

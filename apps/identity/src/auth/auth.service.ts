@@ -15,8 +15,8 @@ import {
   SendMessageResponseDto,
 } from '@contracts/notification';
 import { EUserRole, UserDto } from '@contracts/user';
-import { NOTIFICATION_SERVICE } from '@infra';
 import * as argon2 from 'argon2';
+import { NOTIFICATION_SERVICE } from 'libs/infra-constants/src';
 import { firstValueFrom } from 'rxjs';
 
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';

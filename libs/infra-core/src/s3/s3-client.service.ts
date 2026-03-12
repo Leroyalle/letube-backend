@@ -1,7 +1,12 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import type { FileStoragePort } from '@app/abstractions/storage/file-storage.port';
+import {
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import type { FileStoragePort } from 'apps/media/src/application/ports/file-storage.port';
-import { createReadStream, promises, type ReadStream } from 'fs';
+import { createReadStream, promises } from 'fs';
 import { join } from 'path';
 import type { Readable } from 'stream';
 
@@ -26,6 +31,25 @@ export class S3ClientService implements FileStoragePort {
     this.bucket = this.configService.getOrThrow<string>('S3_BUCKET');
   }
 
+  public async exists(key: string): Promise<boolean> {
+    try {
+      const command = new HeadObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      });
+
+      await this.client.send(command);
+
+      return true;
+    } catch (error: any) {
+      if (error?.$metadata?.httpStatusCode === 404) {
+        return false;
+      }
+
+      throw error;
+    }
+  }
+
   public async getUploadUrl(key: string): Promise<string> {
     const command = new PutObjectCommand({
       Key: key,
@@ -47,18 +71,19 @@ export class S3ClientService implements FileStoragePort {
 
     const response = await this.client.send(command);
 
+    if (!response.Body) return undefined;
+
     return response.Body as Readable;
   }
 
-  public async put(key: string, stream: ReadStream) {
+  public async put(key: string, stream: Readable) {
     const command = new PutObjectCommand({
       Key: key,
       Bucket: this.bucket,
       Body: stream,
     });
 
-    const result = await this.client.send(command);
-    return result;
+    await this.client.send(command);
   }
 
   public async uploadFolder(localPath: string, remotePrefix: string): Promise<void> {

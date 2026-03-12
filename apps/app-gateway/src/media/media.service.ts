@@ -1,7 +1,7 @@
 import type { UploadCompleteDto } from '@contracts/media/dto/upload-complete.dto';
 import type { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 import { MEDIA_PATTERNS } from '@contracts/media/patterns/media.patterns';
-import { MEDIA_SERVICE } from '@infra';
+import { MEDIA_SERVICE } from 'libs/infra-constants/src';
 
 import { Inject, Injectable } from '@nestjs/common';
 import type { ClientProxy } from '@nestjs/microservices';
