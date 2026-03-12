@@ -1,3 +1,5 @@
+import { FILE_STORAGE_TOKEN } from '@app/abstractions/storage/file-storage.token';
+import { MediaStorageResolver } from '@app/pure/media';
 import { randomUUID } from 'crypto';
 
 import { Inject } from '@nestjs/common';
@@ -7,25 +9,23 @@ import { Video } from '../../domain/entities/video.entity';
 import type { VideoRepositoryPort } from '../../domain/interfaces/video-repository.port';
 import { UploadMediaCommand } from '../commands/upload-media.command';
 import type { FileStoragePort } from '../ports/file-storage.port';
-import { FILE_STORAGE_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../ports/tokens';
-import { MediaStorageResolver } from '../services/media-storage-resolver/media-storage.resolver';
+import { VIDEO_REPOSITORY_TOKEN } from '../ports/tokens';
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
   constructor(
     @Inject(FILE_STORAGE_TOKEN)
     private readonly fileStorageService: FileStoragePort,
-    private readonly mediaStorageResolver: MediaStorageResolver,
     @Inject(VIDEO_REPOSITORY_TOKEN)
     private readonly videoRepository: VideoRepositoryPort,
   ) {}
 
   public async execute(command: UploadMediaCommand) {
     const videoId = randomUUID();
-    const key = this.mediaStorageResolver.generateUploadKey(
+    const key = MediaStorageResolver.generateUploadKey(
       videoId,
       command.filename,
-      command.contentType,
+      command.contentType.getValue(),
     );
 
     const domainVideo = new Video({
