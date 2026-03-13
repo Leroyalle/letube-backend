@@ -8,8 +8,6 @@ export class UploadMediaDto {
   @IsString()
   description!: string;
   @IsString()
-  channelId!: string;
-  @IsString()
   filename!: string;
   @IsEnum(ContentType)
   contentType!: ContentType;
