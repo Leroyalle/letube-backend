@@ -15,6 +15,7 @@ export class VideoMapper {
       name: video.name,
       description: video.description,
       channelId: video.channelId,
+      bucket: video.bucket,
       sourceKey: video.sourceKey,
       hlsMasterKey: video.hlsMasterKey,
       status: statusMap[video.status] || 'ERROR',

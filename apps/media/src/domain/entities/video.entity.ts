@@ -9,6 +9,7 @@ interface VideoData {
   hlsMasterKey: string | null;
   status: VideoStatus;
   channelId: string;
+  bucket: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
