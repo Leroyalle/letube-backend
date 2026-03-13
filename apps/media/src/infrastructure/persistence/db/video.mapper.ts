@@ -1,6 +1,5 @@
-import type { Video as DomainVideo } from 'apps/media/src/domain/entities/video.entity';
-
 import type { Video as PrismaVideo } from '../../../../__generated__/prisma';
+import type { Video as DomainVideo } from '../../../domain/entities/video.entity';
 
 const statusMap: Record<string, DomainVideo['props']['status']> = {
   UPLOADED: 'UPLOADED',

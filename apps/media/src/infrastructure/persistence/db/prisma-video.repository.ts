@@ -1,9 +1,8 @@
-import { Video } from 'apps/media/src/domain/entities/video.entity';
-import type { VideoRepositoryPort } from 'apps/media/src/domain/interfaces/video-repository.port';
-
 import { Injectable } from '@nestjs/common';
 
 import type { Video as PrismaVideo } from '../../../../__generated__/prisma';
+import { Video } from '../../../domain/entities/video.entity';
+import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import { VideoMapper } from './video.mapper';
