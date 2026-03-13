@@ -1,9 +1,11 @@
 import type { Readable } from 'stream';
 
+type MediaStorage = 'public' | 'private';
+
 export interface FileStoragePort {
-  getUploadUrl: (key: string) => Promise<string>;
-  get: (key: string) => Promise<Readable | undefined>;
-  put: (key: string, stream: Readable) => Promise<void>;
-  exists: (key: string) => Promise<boolean>;
-  uploadFolder: (localPath: string, remotePrefix: string) => Promise<void>;
+  getUploadUrl: (key: string, storage: MediaStorage) => Promise<string>;
+  get: (key: string, storage: MediaStorage) => Promise<Readable | undefined>;
+  put: (key: string, stream: Readable, storage: MediaStorage) => Promise<void>;
+  exists: (key: string, storage: MediaStorage) => Promise<boolean>;
+  uploadFolder: (localPath: string, remotePrefix: string, storage: MediaStorage) => Promise<void>;
 }
