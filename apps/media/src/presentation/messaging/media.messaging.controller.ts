@@ -1,9 +1,9 @@
 import type { GetByIdDto } from '@contracts/media/dto/get-by-id.dto';
 import type { MediaProcessedDto } from '@contracts/media/dto/media-processed.dto';
 import type { UploadCompleteDto } from '@contracts/media/dto/upload-complete.dto';
-import { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 import { MEDIA_PATTERNS } from '@contracts/media/patterns/media.patterns';
 import { MEDIA_BROKER_QUEUES } from '@contracts/media/queues/broker.queues';
+import type { UploadMediaRpc } from '@contracts/media/rpc/upload-media.rpc';
 
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -23,12 +23,12 @@ export class MediaMessagingController {
   ) {}
 
   @MessagePattern(MEDIA_PATTERNS.UPLOAD)
-  public uploadMedia(@Payload() dto: UploadMediaDto): Promise<string> {
+  public uploadMedia(@Payload() dto: UploadMediaRpc): Promise<string> {
     return this.commandBus.execute(
       new UploadMediaCommand(
         dto.name,
         dto.description,
-        dto.channelId,
+        dto.userId,
         dto.filename,
         ContentType.from(dto.contentType),
       ),
