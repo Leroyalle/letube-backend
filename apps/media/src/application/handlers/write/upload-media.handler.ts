@@ -9,7 +9,8 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 import { Video } from '../../../domain/entities/video.entity';
 import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { UploadMediaCommand } from '../../commands/upload-media.command';
-import { VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
+import type { ChannelAdapterPort } from '../../ports/channel.adapter.port';
+import { CHANNEL_ADAPTER_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
@@ -18,9 +19,15 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
     private readonly fileStorageService: FileStoragePort,
     @Inject(VIDEO_REPOSITORY_TOKEN)
     private readonly videoRepository: VideoRepositoryPort,
+    @Inject(CHANNEL_ADAPTER_TOKEN)
+    private readonly channelAdapter: ChannelAdapterPort,
   ) {}
 
   public async execute(command: UploadMediaCommand) {
+    const channel = await this.channelAdapter.findChannelByUserId(command.userId);
+
+    if (!channel) throw new Error('Канал не найден');
+
     const videoId = randomUUID();
     const key = MediaStorageResolver.generateUploadKey(
       videoId,
@@ -32,7 +39,7 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       id: videoId,
       name: command.name,
       description: command.description,
-      channelId: command.channelId,
+      channelId: channel.id,
       sourceKey: key,
       hlsMasterKey: null,
       status: 'UPLOADING',
