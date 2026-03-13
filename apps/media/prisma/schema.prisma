@@ -21,6 +21,7 @@ model Video {
   description String
   channelId   String
 
+  bucket       String
   sourceKey    String
   hlsMasterKey String?
 
