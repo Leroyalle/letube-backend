@@ -17,6 +17,7 @@ interface Buckets {
   private: string;
   public: string;
 }
+
 @Injectable()
 export class S3ClientService implements FileStoragePort {
   public client: S3Client;
@@ -57,20 +58,32 @@ export class S3ClientService implements FileStoragePort {
       throw error;
     }
   }
-
-  public async getUploadUrl(key: string, storage: keyof Buckets): Promise<string> {
+  public async getSecureUrl(
+    key: string,
+    storage: keyof Buckets,
+    method: 'PUT' | 'GET',
+  ): Promise<string> {
     const bucket = this.buckets[storage];
 
-    const command = new PutObjectCommand({
-      Key: key,
-      Bucket: bucket,
-      // FIXME: передавать контейнттайп чтобы при реквесте загрузить видео не передали фото
-      // ContentType: 'video/mp4',
-    });
+    if (method === 'PUT') {
+      return getSignedUrl(
+        this.client,
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: key,
+        }),
+        { expiresIn: 3600 },
+      );
+    }
 
-    return await getSignedUrl(this.client, command, {
-      expiresIn: 3600,
-    });
+    return getSignedUrl(
+      this.client,
+      new GetObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      }),
+      { expiresIn: 3600 },
+    );
   }
 
   public async get(key: string, storage: keyof Buckets) {
@@ -115,5 +128,9 @@ export class S3ClientService implements FileStoragePort {
         }),
       );
     }
+  }
+
+  public getBucket(storage: keyof Buckets) {
+    return this.buckets[storage];
   }
 }

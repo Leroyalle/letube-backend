@@ -35,17 +35,23 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       command.contentType.getValue(),
     );
 
+    const url = await this.fileStorageService.getSecureUrl(
+      key,
+      command.storageType.getValue(),
+      'PUT',
+    );
+    const bucket = this.fileStorageService.getBucket(command.storageType.getValue());
+
     const domainVideo = new Video({
       id: videoId,
       name: command.name,
       description: command.description,
       channelId: channel.id,
+      bucket,
       sourceKey: key,
       hlsMasterKey: null,
       status: 'UPLOADING',
     });
-
-    const url = await this.fileStorageService.getUploadUrl(key);
 
     const video = await this.videoRepository.create(domainVideo);
 
