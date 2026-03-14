@@ -1,9 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { MarkMediaAsProcessedCommand } from '../../commands/mark-media-as-processed.command';
 import { VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
+import type { VideoRepositoryPort } from '../../ports/video-repository.port';
 
 @CommandHandler(MarkMediaAsProcessedCommand)
 export class MarkMediaAsProcessedHandler implements ICommandHandler<MarkMediaAsProcessedCommand> {
