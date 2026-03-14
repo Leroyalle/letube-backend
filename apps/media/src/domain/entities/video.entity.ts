@@ -1,3 +1,5 @@
+import type { Visibility } from '../value-objects/visibility.vo';
+
 // type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'UPLOADED' | 'PROCESSED' | 'PROCESSING';
 type VideoStatus = 'READY' | 'ERROR' | 'UPLOADING' | 'UPLOADED';
 
@@ -7,9 +9,9 @@ interface VideoData {
   name: string;
   sourceKey: string;
   hlsMasterKey: string | null;
+  visibility: Visibility;
   status: VideoStatus;
   channelId: string;
-  bucket: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
