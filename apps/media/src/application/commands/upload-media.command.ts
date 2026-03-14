@@ -1,5 +1,5 @@
 import type { ContentType } from '../../domain/value-objects/content-type.vo';
-import type { StorageType } from '../../domain/value-objects/storage-type.vo';
+import type { Visibility } from '../../domain/value-objects/visibility.vo';
 
 export class UploadMediaCommand {
   constructor(
@@ -8,6 +8,6 @@ export class UploadMediaCommand {
     public readonly userId: string,
     public readonly filename: string,
     public readonly contentType: ContentType,
-    public readonly storageType: StorageType,
+    public readonly visibility: Visibility,
   ) {}
 }
