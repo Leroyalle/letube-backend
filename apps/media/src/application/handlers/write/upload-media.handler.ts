@@ -7,10 +7,10 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { Video } from '../../../domain/entities/video.entity';
-import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { UploadMediaCommand } from '../../commands/upload-media.command';
 import type { ChannelAdapterPort } from '../../ports/channel.adapter.port';
 import { CHANNEL_ADAPTER_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
+import type { CreateVideoRecord, VideoRepositoryPort } from '../../ports/video-repository.port';
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
@@ -35,19 +35,30 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       command.contentType.getValue(),
     );
 
+    const url = await this.fileStorageService.getSecureUrl(
+      key,
+      command.visibility.getValue(),
+      'PUT',
+    );
+    const bucket = this.fileStorageService.getBucket(command.visibility.getValue());
+
     const domainVideo = new Video({
       id: videoId,
       name: command.name,
       description: command.description,
       channelId: channel.id,
+      visibility: command.visibility,
       sourceKey: key,
       hlsMasterKey: null,
       status: 'UPLOADING',
     });
 
-    const url = await this.fileStorageService.getUploadUrl(key);
+    const videoRecord: CreateVideoRecord = {
+      video: domainVideo,
+      storage: { bucket },
+    };
 
-    const video = await this.videoRepository.create(domainVideo);
+    const video = await this.videoRepository.create(videoRecord);
 
     return { url, sourceId: video.props.id, contentType: command.contentType.getValue() };
   }

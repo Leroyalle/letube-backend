@@ -6,4 +6,5 @@ export interface UploadMediaRpc {
   userId: string;
   filename: string;
   contentType: ContentType;
+  visibility: 'private' | 'public';
 }

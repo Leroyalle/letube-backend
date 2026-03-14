@@ -1,4 +1,5 @@
 import { ContentType } from '@contracts/media/enums/content-type.enum';
+import { Visibility } from '@contracts/media/enums/visibility.enum';
 import { IsEnum, IsString, IsUUID } from 'class-validator';
 
 export class UploadCompletedDto {
@@ -10,4 +11,7 @@ export class UploadCompletedDto {
 
   @IsEnum(ContentType)
   contentType!: ContentType;
+
+  @IsEnum(Visibility)
+  visibility!: Visibility;
 }

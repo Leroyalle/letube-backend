@@ -20,7 +20,9 @@ model Video {
   name        String
   description String
   channelId   String
+  visibility  String
 
+  bucket       String
   sourceKey    String
   hlsMasterKey String?
 

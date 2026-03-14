@@ -31,11 +31,17 @@ export class ProcessMediaHandler implements ICommandHandler<ProcessMediaCommand>
       command.contentType.getValue(),
     );
 
-    const isExists = await this.fileStorageService.exists(playlistKey);
+    const isExists = await this.fileStorageService.exists(
+      playlistKey,
+      command.visibility.getValue(),
+    );
 
     if (isExists) return;
 
-    const readable = await this.fileStorageService.get(command.sourceKey);
+    const readable = await this.fileStorageService.get(
+      command.sourceKey,
+      command.visibility.getValue(),
+    );
 
     if (!readable) throw new Error('Файл в хранилище не найден');
 
@@ -49,12 +55,16 @@ export class ProcessMediaHandler implements ICommandHandler<ProcessMediaCommand>
         command.contentType.getValue(),
       );
 
-      await this.fileStorageService.uploadFolder(workspace.outputDir, hlsFolderKey);
+      await this.fileStorageService.uploadFolder(
+        workspace.outputDir,
+        hlsFolderKey,
+        command.visibility.getValue(),
+      );
 
       this.brokerEventBus.emit(MEDIA_BROKER_QUEUES.processed, {
         sourceId: command.sourceId,
         contentType: command.contentType,
-        playlistKey,
+        hlsMasterKey: playlistKey,
       });
 
       return {

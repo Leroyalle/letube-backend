@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 import type { Video as PrismaVideo } from '../../../../__generated__/prisma';
+import type {
+  CreateVideoRecord,
+  VideoRepositoryPort,
+} from '../../../application/ports/video-repository.port';
 import { Video } from '../../../domain/entities/video.entity';
-import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import { VideoMapper } from './video.mapper';
@@ -11,8 +14,9 @@ import { VideoMapper } from './video.mapper';
 export class PrismaVideoRepository implements VideoRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async create(video: Video) {
-    const data = await this.prismaService.video.create({ data: video.props });
+  public async create(record: CreateVideoRecord) {
+    const persistenceVideo = VideoMapper.toCreatePersistence(record);
+    const data = await this.prismaService.video.create({ data: persistenceVideo });
     return this.mapToDomain(data);
   }
 
@@ -35,11 +39,13 @@ export class PrismaVideoRepository implements VideoRepositoryPort {
   }
 
   public async update(video: Video) {
+    const persistenceVideo = VideoMapper.toPersistenceUpdateData(video);
+
     const data = await this.prismaService.video.update({
       where: {
         id: video.props.id,
       },
-      data: video.props,
+      data: persistenceVideo,
     });
     return this.mapToDomain(data);
   }
@@ -48,7 +54,6 @@ export class PrismaVideoRepository implements VideoRepositoryPort {
   private mapToDomain(data: PrismaVideo | null): Video | null;
   private mapToDomain(data: PrismaVideo | null): Video | null {
     if (!data) return null;
-    const domainData = VideoMapper.toDomain(data);
-    return new Video(domainData);
+    return VideoMapper.toDomain(data);
   }
 }

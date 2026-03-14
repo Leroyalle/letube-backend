@@ -13,10 +13,15 @@ import type { Readable } from 'stream';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+interface Buckets {
+  private: string;
+  public: string;
+}
+
 @Injectable()
 export class S3ClientService implements FileStoragePort {
   public client: S3Client;
-  public bucket: string;
+  public buckets: Buckets;
 
   constructor(private readonly configService: ConfigService) {
     this.client = new S3Client({
@@ -28,13 +33,17 @@ export class S3ClientService implements FileStoragePort {
       requestChecksumCalculation: 'WHEN_REQUIRED',
       endpoint: this.configService.getOrThrow<string>('S3_ENDPOINT'),
     });
-    this.bucket = this.configService.getOrThrow<string>('S3_BUCKET');
+    this.buckets = {
+      public: this.configService.getOrThrow<string>('S3_PUBLIC_BUCKET'),
+      private: this.configService.getOrThrow<string>('S3_PRIVATE_BUCKET'),
+    };
   }
 
-  public async exists(key: string): Promise<boolean> {
+  public async exists(key: string, storage: keyof Buckets): Promise<boolean> {
     try {
+      const bucket = this.buckets[storage];
       const command = new HeadObjectCommand({
-        Bucket: this.bucket,
+        Bucket: bucket,
         Key: key,
       });
 
@@ -49,21 +58,36 @@ export class S3ClientService implements FileStoragePort {
       throw error;
     }
   }
+  public async getSecureUrl(
+    key: string,
+    storage: keyof Buckets,
+    method: 'PUT' | 'GET',
+  ): Promise<string> {
+    const bucket = this.buckets[storage];
 
-  public async getUploadUrl(key: string): Promise<string> {
-    const command = new PutObjectCommand({
-      Key: key,
-      Bucket: this.bucket,
-      // FIXME: передавать контейнттайп чтобы при реквесте загрузить видео не передали фото
-      // ContentType: 'video/mp4',
-    });
+    if (method === 'PUT') {
+      return getSignedUrl(
+        this.client,
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: key,
+        }),
+        { expiresIn: 3600 },
+      );
+    }
 
-    return await getSignedUrl(this.client, command, {
-      expiresIn: 3600,
-    });
+    return getSignedUrl(
+      this.client,
+      new GetObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      }),
+      { expiresIn: 3600 },
+    );
   }
 
-  public async get(key: string, bucket: string = this.bucket) {
+  public async get(key: string, storage: keyof Buckets) {
+    const bucket = this.buckets[storage];
     const command = new GetObjectCommand({
       Key: key,
       Bucket: bucket,
@@ -76,17 +100,22 @@ export class S3ClientService implements FileStoragePort {
     return response.Body as Readable;
   }
 
-  public async put(key: string, stream: Readable) {
+  public async put(key: string, stream: Readable, storage: keyof Buckets) {
+    const bucket = this.buckets[storage];
     const command = new PutObjectCommand({
       Key: key,
-      Bucket: this.bucket,
+      Bucket: bucket,
       Body: stream,
     });
 
     await this.client.send(command);
   }
 
-  public async uploadFolder(localPath: string, remotePrefix: string): Promise<void> {
+  public async uploadFolder(
+    localPath: string,
+    remotePrefix: string,
+    storage: keyof Buckets,
+  ): Promise<void> {
     const files = await promises.readdir(localPath);
     const concurrency = 10;
 
@@ -95,9 +124,13 @@ export class S3ClientService implements FileStoragePort {
       await Promise.all(
         batch.map(file => {
           const stream = createReadStream(join(localPath, file));
-          return this.put(`${remotePrefix}/${file}`, stream);
+          return this.put(`${remotePrefix}/${file}`, stream, storage);
         }),
       );
     }
+  }
+
+  public getBucket(storage: keyof Buckets) {
+    return this.buckets[storage];
   }
 }

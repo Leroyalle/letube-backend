@@ -1,6 +1,7 @@
 import { IsEnum, IsString } from 'class-validator';
 
 import { ContentType } from '../enums/content-type.enum';
+import { Visibility } from '../enums/visibility.enum';
 
 export class UploadMediaDto {
   @IsString()
@@ -11,4 +12,6 @@ export class UploadMediaDto {
   filename!: string;
   @IsEnum(ContentType)
   contentType!: ContentType;
+  @IsEnum(Visibility)
+  visibility!: Visibility;
 }
