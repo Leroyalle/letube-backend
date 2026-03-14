@@ -4,10 +4,11 @@ import { MEDIA_BROKER_QUEUES } from '@contracts/media/queues/broker.queues';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { VideoRepositoryPort } from '../../../domain/interfaces/video-repository.port';
 import { UploadCompleteCommand } from '../../commands/upload-complete.command';
+import { visibilityMap } from '../../mappers/visibility-map';
 import type { BrokerEventBusPort } from '../../ports/broker-event-bus.port';
 import { BROKER_EVENT_BUS_TOKEN, VIDEO_REPOSITORY_TOKEN } from '../../ports/tokens';
+import type { VideoRepositoryPort } from '../../ports/video-repository.port';
 
 @CommandHandler(UploadCompleteCommand)
 export class UploadCompleteHandler implements ICommandHandler<UploadCompleteCommand> {
@@ -33,6 +34,7 @@ export class UploadCompleteHandler implements ICommandHandler<UploadCompleteComm
       sourceKey: video.props.sourceKey,
       sourceId: video.props.id,
       contentType: command.contentType.getValue(),
+      visibility: visibilityMap[video.props.visibility.getValue()],
     };
 
     this.brokerEventBus.emit(MEDIA_BROKER_QUEUES.uploaded, dto);
