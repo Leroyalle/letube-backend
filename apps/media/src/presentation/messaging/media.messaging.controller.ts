@@ -14,6 +14,7 @@ import { UploadCompleteCommand } from '../../application/commands/upload-complet
 import { UploadMediaCommand } from '../../application/commands/upload-media.command';
 import { GetVideoByIdQuery } from '../../application/queries/get-video-by-id.query';
 import { ContentType } from '../../domain/value-objects/content-type.vo';
+import { Visibility } from '../../domain/value-objects/visibility.vo';
 
 @Controller()
 export class MediaMessagingController {
@@ -31,6 +32,7 @@ export class MediaMessagingController {
         dto.userId,
         dto.filename,
         ContentType.from(dto.contentType),
+        Visibility.from(dto.visibility),
       ),
     );
   }
