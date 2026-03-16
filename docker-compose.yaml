@@ -24,6 +24,15 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  srs:
+    image: ossrs/srs
+    ports:
+      - '1935:1935'
+      - '8080:8080'
+    volumes:
+      - ./srs.conf:/usr/local/srs/conf/srs.conf
+      - ./hls:/usr/local/srs/objs/nginx/html
+
 volumes:
   pg_data:
   rabbitmq_data:
