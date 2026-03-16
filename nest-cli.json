@@ -120,6 +120,15 @@
         "tsConfigPath": "libs/pure/tsconfig.lib.json"
       }
     },
+    "stream": {
+      "type": "application",
+      "root": "apps/stream",
+      "entryFile": "main",
+      "sourceRoot": "apps/stream/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/stream/tsconfig.app.json"
+      }
+    },
     "user": {
       "type": "application",
       "root": "apps/user",
