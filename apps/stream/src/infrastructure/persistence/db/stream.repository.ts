@@ -48,4 +48,16 @@ export class StreamRepository implements StreamRepositoryPort {
 
     return StreamMapper.toDomain(stream);
   }
+
+  public async findByStreamKey(streamKey: string): Promise<Stream | null> {
+    const stream = await this.prismaService.stream.findFirst({
+      where: {
+        streamKey,
+      },
+    });
+
+    if (!stream) return null;
+
+    return StreamMapper.toDomain(stream);
+  }
 }
