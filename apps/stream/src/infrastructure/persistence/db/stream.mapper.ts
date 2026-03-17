@@ -2,8 +2,15 @@ import { Stream as DomainStream } from 'apps/stream/src/domain/entities/stream.e
 
 import type { Stream as PrismaStream } from '../../../../__generated__/prisma';
 
+const statusMap: Record<string, DomainStream['props']['status']> = {
+  REQUESTED: 'REQUESTED',
+  PUBLISHED: 'PUBLISHED',
+  ERROR: 'ERROR',
+  STOPPED: 'STOPPED',
+};
+
 export class StreamMapper {
-  public toPersistence(data: DomainStream): PrismaStream {
+  public static toPersistence(data: DomainStream): PrismaStream {
     return {
       id: data.props.id,
       channelId: data.props.channelId,
@@ -12,12 +19,12 @@ export class StreamMapper {
     };
   }
 
-  public toDomain(data: PrismaStream): DomainStream {
+  public static toDomain(data: PrismaStream): DomainStream {
     return new DomainStream({
       id: data.id,
       channelId: data.channelId,
       streamKey: data.streamKey,
-      status: data.status,
+      status: statusMap[data.status] || 'ERRORs',
     });
   }
 }
