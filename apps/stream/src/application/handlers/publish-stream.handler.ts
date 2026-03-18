@@ -17,9 +17,10 @@ export class PublishStreamHandler implements ICommandHandler<PublishStreamComman
   ) {}
 
   public async execute(command: PublishStreamCommand) {
-    const streamKey = await this.cacheManager.get(`streamKey:${command.props.streamKey}`);
+    const channelId = await this.cacheManager.get(`streamKey:${command.props.streamKey}`);
 
-    if (!streamKey) throw new Error('Stream key not found');
+    if (!channelId) throw new Error('Stream key not found');
+    if (channelId !== command.props.channelId) throw new Error('Invalid stream key');
 
     const stream = new Stream({
       id: randomUUID(),
