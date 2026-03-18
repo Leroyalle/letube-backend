@@ -1,4 +1,5 @@
-import { ConfigService } from '@nestjs/config';
+import { STREAM_HOST, STREAM_PORT } from '@infra';
+
 import { NestFactory } from '@nestjs/core';
 import { TcpOptions, Transport } from '@nestjs/microservices';
 
@@ -6,13 +7,12 @@ import { StreamModule } from './stream.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(StreamModule);
-  const config = app.get(ConfigService);
 
   app.connectMicroservice<TcpOptions>({
     transport: Transport.TCP,
     options: {
-      host: config.getOrThrow<string>('STREAM_HOST'),
-      port: config.getOrThrow<number>('STREAM_PORT'),
+      host: STREAM_HOST,
+      port: STREAM_PORT,
     },
   });
 
