@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../__generated__/prisma"
 }
 
 datasource db {
@@ -17,7 +18,7 @@ model Stream {
   id String @id @default(uuid())
 
   channelId String
-  streamKey String
+  streamKey String @unique
 
   status String
 }
