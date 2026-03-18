@@ -33,6 +33,18 @@ services:
       - ./srs.conf:/usr/local/srs/conf/srs.conf
       - ./hls:/usr/local/srs/objs/nginx/html
 
+  redis:
+    image: redis:8.6
+    container_name: letube-redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command:
+      ['redis-server', '--user', '${REDIS_USER}', 'on', '>${REDIS_PASSWORD}', '~*', '&*', '+@all']
+
 volumes:
   pg_data:
   rabbitmq_data:
+  redis_data:
