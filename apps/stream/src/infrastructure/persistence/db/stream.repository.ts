@@ -3,7 +3,7 @@ import type { StreamRepositoryPort } from 'apps/stream/src/domain/ports/stream-r
 
 import { Injectable } from '@nestjs/common';
 
-import type { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 
 import { StreamMapper } from './stream.mapper';
 
