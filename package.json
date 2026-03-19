@@ -24,6 +24,7 @@
     "start:channel": "nest start channel --watch",
     "start:media": "nest start media --watch",
     "start:media-worker": "nest start media-worker --watch",
+    "start:stream": "nest start stream --watch",
     "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\"",
     "prepare": "husky"
   },
