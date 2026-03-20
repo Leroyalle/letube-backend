@@ -1,3 +1,4 @@
+import { MediaStorageResolver } from '@app/pure/media';
 import { randomUUID } from 'crypto';
 
 import { Inject } from '@nestjs/common';
@@ -22,11 +23,16 @@ export class PublishStreamHandler implements ICommandHandler<PublishStreamComman
     if (!channelId) throw new Error('Stream key not found');
     if (channelId !== command.props.channelId) throw new Error('Invalid stream key');
 
+    const playlistPath = MediaStorageResolver.createPlaylistKey(command.props.streamKey, 'video');
+    const segmentsPath = MediaStorageResolver.createHlsFolderKey(command.props.streamKey, 'video');
+
     const stream = new Stream({
       id: randomUUID(),
       channelId: command.props.channelId,
       streamKey: command.props.streamKey,
       status: 'PUBLISHED',
+      playlistPath,
+      segmentsPath,
     });
 
     await this.streamRepository.create(stream);
