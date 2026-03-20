@@ -5,6 +5,8 @@ interface IStream {
   channelId: string;
   streamKey: string;
   status: StreamStatus;
+  playlistPath: string;
+  segmentsPath: string;
 }
 
 export class Stream {

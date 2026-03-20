@@ -16,6 +16,8 @@ export class StreamMapper {
       channelId: data.props.channelId,
       streamKey: data.props.streamKey,
       status: data.props.status,
+      playlistPath: data.props.playlistPath,
+      segmentsPath: data.props.segmentsPath,
     };
   }
 
@@ -24,7 +26,9 @@ export class StreamMapper {
       id: data.id,
       channelId: data.channelId,
       streamKey: data.streamKey,
-      status: statusMap[data.status] || 'ERRORs',
+      playlistPath: data.playlistPath,
+      segmentsPath: data.segmentsPath,
+      status: statusMap[data.status] || 'ERROR',
     });
   }
 }
