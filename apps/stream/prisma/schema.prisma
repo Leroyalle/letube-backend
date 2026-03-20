@@ -20,5 +20,8 @@ model Stream {
   channelId String
   streamKey String @unique
 
+  playlistPath String
+  segmentsPath String
+
   status String
 }
