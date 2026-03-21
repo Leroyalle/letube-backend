@@ -17,7 +17,7 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-  await app.init();
+  await app.listen(STREAM_PORT);
 }
 
 void bootstrap();

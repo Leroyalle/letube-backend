@@ -25,6 +25,7 @@
     "start:media": "nest start media --watch",
     "start:media-worker": "nest start media-worker --watch",
     "start:stream": "nest start stream --watch",
+    "start:stream-worker": "nest start stream-worker --watch",
     "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\"",
     "prepare": "husky"
   },
@@ -51,6 +52,7 @@
     "handlebars": "^4.7.8",
     "ioredis": "^5.10.0",
     "nodemailer": "^7.0.10",
+    "p-limit": "^7.3.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
