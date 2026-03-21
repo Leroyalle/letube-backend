@@ -1,8 +1,7 @@
 import type { FileStoragePort } from '@app/abstractions/storage/file-storage.port';
 import { FILE_STORAGE_TOKEN } from '@app/abstractions/storage/file-storage.token';
 import { createReadStream } from 'fs';
-import { stat, watch } from 'fs/promises';
-import pLimit from 'p-limit';
+import { stat } from 'fs/promises';
 import { join } from 'path';
 
 import { Inject, Injectable } from '@nestjs/common';
@@ -16,28 +15,46 @@ import type {
 export class StreamProcessor implements StreamProcessorPort {
   constructor(@Inject(FILE_STORAGE_TOKEN) private readonly fileStorage: FileStoragePort) {}
 
+  private locks = new Map<string, Promise<void>>();
+
   public async process(streamKey: string, paths: IStoragePaths) {
-    const limit = pLimit(5);
-    const dir = join(process.cwd(), 'hls', 'live', streamKey);
+    const prev = this.locks.get(streamKey) ?? Promise.resolve();
 
-    for await (const event of watch(dir)) {
-      const file = event.filename;
+    const next = prev.then(() => this._process(paths));
+    this.locks.set(streamKey, next);
 
-      if (!file || !file.endsWith('.ts')) continue;
-      const filepath = join(dir, file);
-
-      void limit(() => void this.handleUpload(filepath, paths));
-    }
+    await next;
   }
 
-  private async handleUpload(filepath: string, paths: IStoragePaths) {
-    await this.waitForStableFile(filepath);
-    const stream = createReadStream(filepath);
-    await this.fileStorage.put(
-      filepath.endsWith('m3u8') ? paths.playlistPath : paths.segmentsPath,
-      stream,
-      'public',
-    );
+  public async _process(paths: IStoragePaths) {
+    const base = join(process.cwd(), 'hls');
+    const fullLocalSegmentPath = join(base, paths.localSegmentsPath);
+    const fullLocalPlaylistPath = join(base, paths.localPlaylistPath);
+
+    await this.handleUpload(fullLocalSegmentPath, paths);
+    await this.handleUpload(fullLocalPlaylistPath, paths);
+  }
+
+  private async handleUpload(
+    filepath: string,
+    paths: Pick<IStoragePaths, 'storageSegmentsPath' | 'storagePlaylistPath'>,
+  ) {
+    try {
+      // await this.waitForStableFile(filepath);
+      const stream = createReadStream(filepath);
+      stream.on('error', (e: any) => {
+        if (e.code === 'ENOENT') return;
+        throw e;
+      });
+      await this.fileStorage.put(
+        filepath.endsWith('m3u8') ? paths.storagePlaylistPath : paths.storageSegmentsPath,
+        stream,
+        'public',
+      );
+    } catch (e: any) {
+      if (e.code === 'ENOENT') return;
+      throw e;
+    }
   }
 
   private async waitForStableFile(path: string) {

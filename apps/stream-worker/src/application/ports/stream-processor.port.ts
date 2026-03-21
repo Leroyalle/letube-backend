@@ -1,6 +1,8 @@
 export interface IStoragePaths {
-  segmentsPath: string;
-  playlistPath: string;
+  storageSegmentsPath: string;
+  storagePlaylistPath: string;
+  localPlaylistPath: string;
+  localSegmentsPath: string;
 }
 
 export interface StreamProcessorPort {
