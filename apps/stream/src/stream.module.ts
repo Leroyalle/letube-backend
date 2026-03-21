@@ -1,4 +1,3 @@
-import { RabbitMQModule } from '@app/infra-core';
 import { RedisModule } from '@app/infra-core/redis/redis.module';
 import { CHANNEL_HOST, CHANNEL_PORT, CHANNEL_SERVICE } from '@infra';
 import { join } from 'path';
@@ -10,23 +9,18 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { handlers } from './application/handlers/handlers';
 import {
-  BROKER_EVENT_BUS_TOKEN,
   CACHE_MANAGER_TOKEN,
   CHANNEL_ADAPTER_TOKEN,
   STREAM_REPOSITORY_TOKEN,
 } from './application/ports/tokens';
-import { RabbitMQEventBus } from './infrastructure/broker/rabbitmq/rabbitmq-event-bus';
-import { rabbitMQConfig } from './infrastructure/broker/rabbitmq/rabbitmq.config';
 import { StreamRepository } from './infrastructure/persistence/db/stream.repository';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { RedisAdapter } from './infrastructure/redis/redis.adapter';
 import { ChannelRpcAdapter } from './infrastructure/rpc/adapters/channel.rpc.adapter';
-import { StreamHttpController } from './presentation/http/stream.http.controller';
 import { StreamController } from './presentation/messaging/stream.controller';
 
 @Module({
   imports: [
-    RabbitMQModule.registerAsync(rabbitMQConfig),
     PrismaModule,
     RedisModule,
     CqrsModule,
@@ -58,12 +52,9 @@ import { StreamController } from './presentation/messaging/stream.controller';
       provide: CHANNEL_ADAPTER_TOKEN,
       useClass: ChannelRpcAdapter,
     },
-    {
-      provide: BROKER_EVENT_BUS_TOKEN,
-      useClass: RabbitMQEventBus,
-    },
+
     ...handlers,
   ],
-  controllers: [StreamController, StreamHttpController],
+  controllers: [StreamController],
 })
 export class StreamModule {}
