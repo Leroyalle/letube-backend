@@ -129,15 +129,6 @@
         "tsConfigPath": "apps/stream/tsconfig.app.json"
       }
     },
-    "stream-worker": {
-      "type": "application",
-      "root": "apps/stream-worker",
-      "entryFile": "main",
-      "sourceRoot": "apps/stream-worker/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/stream-worker/tsconfig.app.json"
-      }
-    },
     "user": {
       "type": "application",
       "root": "apps/user",
