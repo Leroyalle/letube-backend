@@ -5,9 +5,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
+import { handlers } from './application/handlers/handlers';
 import { STREAM_PROCESSOR_TOKEN } from './application/ports/tokens';
 import { StreamProcessor } from './infrastructure/stream-processor/stream.processor';
-import { StreamWorkerController } from './presentation/messaging/stream-worker.controller';
+import { StreamWorkerEventsController } from './presentation/events/stream-worker.events.controller';
 
 @Module({
   imports: [
@@ -18,12 +19,13 @@ import { StreamWorkerController } from './presentation/messaging/stream-worker.c
     }),
     CqrsModule,
   ],
-  controllers: [StreamWorkerController],
+  controllers: [StreamWorkerEventsController],
   providers: [
     {
       provide: STREAM_PROCESSOR_TOKEN,
       useClass: StreamProcessor,
     },
+    ...handlers,
   ],
 })
 export class StreamWorkerModule {}
