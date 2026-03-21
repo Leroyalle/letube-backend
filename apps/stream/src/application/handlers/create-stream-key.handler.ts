@@ -14,15 +14,15 @@ export class CreateStreamKeyHandler implements ICommandHandler<CreateStreamKeyCo
     @Inject(CACHE_MANAGER_TOKEN) private readonly cacheManager: CacheManagerPort,
     @Inject(CHANNEL_ADAPTER_TOKEN) private readonly channelAdapter: ChannelAdapterPort,
   ) {}
+  // command: CreateStreamKeyCommand;
+  public async execute() {
+    // const channel = await this.channelAdapter.findChannelByUserId(command.userId);
 
-  public async execute(command: CreateStreamKeyCommand) {
-    const channel = await this.channelAdapter.findChannelByUserId(command.userId);
-
-    if (!channel) throw new Error('Channel not found');
+    // if (!channel) throw new Error('Channel not found');
 
     const streamKey = randomUUID();
 
-    await this.cacheManager.add(`streamKey:${streamKey}`, channel.id, 3600);
+    await this.cacheManager.add(`streamKey:${streamKey}`, '123', 3600);
 
     return { streamKey };
   }

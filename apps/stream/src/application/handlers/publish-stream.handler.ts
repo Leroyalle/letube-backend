@@ -1,10 +1,8 @@
-import { MediaStorageResolver } from '@app/pure/media';
-import { randomUUID } from 'crypto';
-
+// import { MediaStorageResolver } from '@app/pure/media';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { Stream } from '../../domain/entities/stream.entity';
+// import { Stream } from '../../domain/entities/stream.entity';
 import type { StreamRepositoryPort } from '../../domain/ports/stream-repository.port';
 import { PublishStreamCommand } from '../commands/publish-stream.command';
 import type { CacheManagerPort } from '../ports/cache-manager.port';
@@ -21,21 +19,20 @@ export class PublishStreamHandler implements ICommandHandler<PublishStreamComman
     const channelId = await this.cacheManager.get(`streamKey:${command.props.streamKey}`);
 
     if (!channelId) throw new Error('Stream key not found');
-    if (channelId !== command.props.channelId) throw new Error('Invalid stream key');
 
-    const playlistPath = MediaStorageResolver.createPlaylistKey(command.props.streamKey, 'video');
-    const segmentsPath = MediaStorageResolver.createHlsFolderKey(command.props.streamKey, 'video');
+    // const playlistPath = MediaStorageResolver.createPlaylistKey(command.props.streamKey, 'video');
+    // const segmentsPath = MediaStorageResolver.createHlsFolderKey(command.props.streamKey, 'video');
 
-    const stream = new Stream({
-      id: randomUUID(),
-      channelId: command.props.channelId,
-      streamKey: command.props.streamKey,
-      status: 'PUBLISHED',
-      playlistPath,
-      segmentsPath,
-    });
+    // const stream = new Stream({
+    //   id: randomUUID(),
+    //   channelId,
+    //   streamKey: command.props.streamKey,
+    //   status: 'PUBLISHED',
+    //   playlistPath,
+    //   segmentsPath,
+    // });
 
-    await this.streamRepository.create(stream);
+    // await this.streamRepository.create(stream);
 
     return {
       code: 0,
