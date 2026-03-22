@@ -50,7 +50,7 @@ model VerificationCode {
   code      String
   expiresAt DateTime
 
-  type CodeType
+  type String
 
   createdAt DateTime @default(now())
 
@@ -63,7 +63,7 @@ enum UserRole {
   MODERATOR
 }
 
-enum CodeType {
-  REGISTER
-  RESET_PASSWORD
-}
+// enum CodeType {
+//   REGISTER
+//   RESET_PASSWORD
+// }
