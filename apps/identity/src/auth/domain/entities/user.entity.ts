@@ -5,7 +5,7 @@ interface Props {
   password: string;
 }
 
-export class UserEntity {
+export class User {
   constructor(private readonly props: Props) {}
 
   public changePassword(hashedPassword: string) {
