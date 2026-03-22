@@ -1,7 +1,15 @@
+import type { ClockPort } from '../ports/clock.port';
+import type { CodeGeneratorPort } from '../ports/code-generator.port';
+
 export class VerificationCodeService {
+  constructor(
+    private readonly clockService: ClockPort,
+    private readonly codeGenerator: CodeGeneratorPort,
+  ) {}
+
   public generate() {
-    const code = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    const code = this.codeGenerator.generate();
+    const expiresAt = new Date(this.clockService.now().getTime() + 5 * 60 * 1000);
     return { code, expiresAt };
   }
 }
