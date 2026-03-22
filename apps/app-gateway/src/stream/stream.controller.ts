@@ -18,4 +18,9 @@ export class StreamController {
   public createKey() {
     return this.streamService.createKey('123');
   }
+
+  @Post('stop')
+  public stop() {
+    return this.streamService.stopStream('123');
+  }
 }
