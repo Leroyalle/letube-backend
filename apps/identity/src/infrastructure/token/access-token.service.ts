@@ -4,10 +4,13 @@ import { Injectable } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
 import type { JwtService } from '@nestjs/jwt';
 
-import type { SignPayload, TokenServicePort } from '../../application/ports/token-service.port';
+import type {
+  AccessTokenServicePort,
+  SignPayload,
+} from '../../application/ports/access-token-service.port';
 
 @Injectable()
-export class TokenService implements TokenServicePort {
+export class AccessTokenService implements AccessTokenServicePort {
   private readonly accessSecret: string;
   private readonly refreshToken: string;
 

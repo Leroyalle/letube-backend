@@ -7,7 +7,7 @@ export interface SignPayload {
   role: EUserRole;
 }
 
-export interface TokenServicePort {
+export interface AccessTokenServicePort {
   sign(payload: SignPayload): Promise<TokenData>;
   verify(token: string): Promise<SignPayload>;
 }
