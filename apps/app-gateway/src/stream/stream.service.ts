@@ -21,4 +21,8 @@ export class StreamService {
   public createKey(userId: string) {
     return this.streamClient.send(STREAM_PATTERNS.CREATE_STREAM_KEY, { userId });
   }
+
+  public stopStream(streamKey: string) {
+    return this.streamClient.send(STREAM_PATTERNS.STOP, { streamKey });
+  }
 }
