@@ -3,6 +3,6 @@ interface Props {
   email: string;
 }
 
-export class ForgotPasswordCommand {
+export class ResetPasswordCommand {
   constructor(public readonly props: Props) {}
 }
