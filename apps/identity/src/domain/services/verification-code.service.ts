@@ -12,4 +12,8 @@ export class VerificationCodeService {
     const expiresAt = new Date(this.clockService.now().getTime() + 5 * 60 * 1000);
     return { code, expiresAt };
   }
+
+  public isNotExpired(expiresAt: Date) {
+    return expiresAt > new Date(Date.now());
+  }
 }

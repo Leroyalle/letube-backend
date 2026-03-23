@@ -39,18 +39,4 @@ export class VerificationCodeRepository implements VerificationCodeRepositoryPor
   public async deleteByUserId(userId: string) {
     await this.prisma.verificationCode.deleteMany({ where: { userId } });
   }
-
-  public async checkExpiresAt(userId: string, code: string, type: CodeType): Promise<boolean> {
-    const findCode = await this.prisma.verificationCode.findFirst({
-      where: {
-        userId,
-        code,
-        type,
-      },
-    });
-
-    if (!findCode) return false;
-
-    return findCode.expiresAt > new Date(Date.now());
-  }
 }
