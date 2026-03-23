@@ -5,14 +5,14 @@ const notificationType = ['AUTH', 'NOTIFICATION'] as const;
 export class SendMessageDto {
   @IsArray()
   @IsString({ each: true })
-  to: string[];
+  to!: string[];
 
   @IsString()
-  subject: string;
+  subject!: string;
 
   @IsString()
-  message: string;
+  message!: string;
 
   @IsIn(notificationType)
-  type: (typeof notificationType)[number];
+  type!: (typeof notificationType)[number];
 }

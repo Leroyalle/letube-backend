@@ -31,7 +31,6 @@ services:
       - '8080:8080'
     volumes:
       - ./srs.conf:/usr/local/srs/conf/docker.conf
-      - ./hls:/usr/local/srs/objs/nginx/html
 
   redis:
     image: redis:8.6
