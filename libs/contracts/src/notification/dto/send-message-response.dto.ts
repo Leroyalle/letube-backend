@@ -1,3 +1,3 @@
 export class SendMessageResponseDto {
-  status: 'success' | 'error';
+  status!: 'success' | 'error';
 }
