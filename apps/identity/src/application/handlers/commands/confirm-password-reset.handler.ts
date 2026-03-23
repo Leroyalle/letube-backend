@@ -1,16 +1,16 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { UserRepositoryPort } from '../../domain/ports/user-repository.port';
-import type { VerificationCodeRepositoryPort } from '../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../domain/services/verification-code.service';
-import { ConfirmPasswordResetCommand } from '../commands/confirm-password-reset.command';
-import type { PasswordHasherPort } from '../ports/password-hasher.port';
+import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
+import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
+import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
+import { ConfirmPasswordResetCommand } from '../../commands/confirm-password-reset.command';
+import type { PasswordHasherPort } from '../../ports/password-hasher.port';
 import {
   PASSWORD_HASHER_TOKEN,
   USER_REPOSITORY_TOKEN,
   VERIFICATION_CODE_REPOSITORY_TOKEN,
-} from '../ports/tokens';
+} from '../../ports/tokens';
 
 @CommandHandler(ConfirmPasswordResetCommand)
 export class ConfirmPasswordResetHandler implements ICommandHandler<ConfirmPasswordResetCommand> {

@@ -1,20 +1,20 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { RefreshTokenRepositoryPort } from '../../domain/ports/refresh-token-repository.port';
-import type { UserRepositoryPort } from '../../domain/ports/user-repository.port';
-import type { VerificationCodeRepositoryPort } from '../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../domain/services/verification-code.service';
-import { ConfirmEmailCommand } from '../commands/confirm-email.command';
-import type { AccessTokenServicePort } from '../ports/access-token-service.port';
-import type { RefreshTokenServicePort } from '../ports/refresh-token-service.port';
+import type { RefreshTokenRepositoryPort } from '../../../domain/ports/refresh-token-repository.port';
+import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
+import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
+import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
+import { ConfirmEmailCommand } from '../../commands/confirm-email.command';
+import type { AccessTokenServicePort } from '../../ports/access-token-service.port';
+import type { RefreshTokenServicePort } from '../../ports/refresh-token-service.port';
 import {
   ACCESS_SERVICE_TOKEN,
   REFRESH_SERVICE_TOKEN,
   REFRESH_TOKEN_REPOSITORY_TOKEN,
   USER_REPOSITORY_TOKEN,
   VERIFICATION_CODE_REPOSITORY_TOKEN,
-} from '../ports/tokens';
+} from '../../ports/tokens';
 
 @CommandHandler(ConfirmEmailCommand)
 export class ConfigEmailHandler implements ICommandHandler<ConfirmEmailCommand> {

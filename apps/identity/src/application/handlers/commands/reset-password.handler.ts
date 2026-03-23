@@ -5,17 +5,17 @@ import { randomUUID } from 'crypto';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { VerificationCode } from '../../domain/entities/verification-code.entity';
-import type { UserRepositoryPort } from '../../domain/ports/user-repository.port';
-import type { VerificationCodeRepositoryPort } from '../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../domain/services/verification-code.service';
-import { ResetPasswordCommand } from '../commands/reset-password.command';
-import type { BrokerEventBusPort } from '../ports/broker-event-bus.port';
+import { VerificationCode } from '../../../domain/entities/verification-code.entity';
+import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
+import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
+import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
+import { ResetPasswordCommand } from '../../commands/reset-password.command';
+import type { BrokerEventBusPort } from '../../ports/broker-event-bus.port';
 import {
   BROKER_EVENT_BUS_TOKEN,
   USER_REPOSITORY_TOKEN,
   VERIFICATION_CODE_REPOSITORY_TOKEN,
-} from '../ports/tokens';
+} from '../../ports/tokens';
 
 @CommandHandler(ResetPasswordCommand)
 export class ResetPasswordHandler implements ICommandHandler<ResetPasswordCommand> {

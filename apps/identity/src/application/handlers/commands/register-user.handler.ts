@@ -5,20 +5,20 @@ import { randomUUID } from 'crypto';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { User } from '../../domain/entities/user.entity';
-import { VerificationCode } from '../../domain/entities/verification-code.entity';
-import type { UserRepositoryPort } from '../../domain/ports/user-repository.port';
-import type { VerificationCodeRepositoryPort } from '../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../domain/services/verification-code.service';
-import { RegisterUserCommand } from '../commands/register-user.command';
-import type { BrokerEventBusPort } from '../ports/broker-event-bus.port';
-import type { PasswordHasherPort } from '../ports/password-hasher.port';
+import { User } from '../../../domain/entities/user.entity';
+import { VerificationCode } from '../../../domain/entities/verification-code.entity';
+import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
+import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
+import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
+import { RegisterUserCommand } from '../../commands/register-user.command';
+import type { BrokerEventBusPort } from '../../ports/broker-event-bus.port';
+import type { PasswordHasherPort } from '../../ports/password-hasher.port';
 import {
   BROKER_EVENT_BUS_TOKEN,
   PASSWORD_HASHER_TOKEN,
   USER_REPOSITORY_TOKEN,
   VERIFICATION_CODE_REPOSITORY_TOKEN,
-} from '../ports/tokens';
+} from '../../ports/tokens';
 
 @CommandHandler(RegisterUserCommand)
 export class RegisterUserHandler implements ICommandHandler<RegisterUserCommand> {

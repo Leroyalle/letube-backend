@@ -1,19 +1,19 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { RefreshTokenRepositoryPort } from '../../domain/ports/refresh-token-repository.port';
-import type { UserRepositoryPort } from '../../domain/ports/user-repository.port';
-import { LoginCommand } from '../commands/login.command';
-import type { AccessTokenServicePort } from '../ports/access-token-service.port';
-import type { PasswordHasherPort } from '../ports/password-hasher.port';
-import type { RefreshTokenServicePort } from '../ports/refresh-token-service.port';
+import type { RefreshTokenRepositoryPort } from '../../../domain/ports/refresh-token-repository.port';
+import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
+import { LoginCommand } from '../../commands/login.command';
+import type { AccessTokenServicePort } from '../../ports/access-token-service.port';
+import type { PasswordHasherPort } from '../../ports/password-hasher.port';
+import type { RefreshTokenServicePort } from '../../ports/refresh-token-service.port';
 import {
   ACCESS_SERVICE_TOKEN,
   PASSWORD_HASHER_TOKEN,
   REFRESH_SERVICE_TOKEN,
   REFRESH_TOKEN_REPOSITORY_TOKEN,
   USER_REPOSITORY_TOKEN,
-} from '../ports/tokens';
+} from '../../ports/tokens';
 
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
