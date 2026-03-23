@@ -21,8 +21,10 @@ export class RefreshTokenService implements RefreshTokenServicePort {
     return { token, expiresAt: this.getExpires() };
   }
 
-  public async generateAndHash(): Promise<string> {
-    return await hash(this.generate().token);
+  public async generateAndHash() {
+    const { token, expiresAt } = this.generate();
+    const hashed = await hash(token);
+    return { token: hashed, expiresAt };
   }
 
   public getExpires(days = 30): ExpiresData {
