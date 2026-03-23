@@ -4,6 +4,6 @@ interface Props {
   email: string;
 }
 
-export class ConfirmPasswordReset {
+export class ConfirmPasswordResetCommand {
   constructor(public readonly props: Props) {}
 }
