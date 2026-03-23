@@ -1,3 +1,5 @@
+export type TRole = 'USER' | 'ADMIN' | 'MODERATOR';
+
 interface Props {
   id: string;
   name: string;
@@ -5,7 +7,7 @@ interface Props {
   password: string;
   isBanned: boolean;
   isVerified: boolean;
-  role: 'USER' | 'ADMIN' | 'MODERATOR';
+  role: TRole;
 }
 
 export class User {
