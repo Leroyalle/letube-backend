@@ -1,5 +1,5 @@
 import type { VerifyAccessTokenDto } from '@contracts/auth';
-import type { VerifyAccessTokenResponse } from '@contracts/auth/dto/response/verify-access-token-response.dto';
+import type { VerifyAccessTokenResponse } from '@contracts/auth/dto/verify-access/verify-access-token-response.dto';
 import type { UserRepositoryPort } from 'apps/identity/src/domain/ports/user-repository.port';
 
 import { Inject } from '@nestjs/common';
