@@ -1,6 +1,11 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString, Max, Min } from 'class-validator';
 
 export class ForgotPasswordDto {
   @IsEmail()
-  email: string;
+  email!: string;
+
+  @IsString()
+  @Min(6)
+  @Max(20)
+  password!: string;
 }
