@@ -6,3 +6,5 @@ export const VERIFICATION_CODE_SERVICE_TOKEN = Symbol('verification_code_service
 export const REFRESH_TOKEN_REPOSITORY_TOKEN = Symbol('refresh_token_repository_token');
 
 export const PASSWORD_HASHER_TOKEN = Symbol('password_hasher_token');
+
+export const BROKER_EVENT_BUS_TOKEN = Symbol('broker_event_bus_token');
