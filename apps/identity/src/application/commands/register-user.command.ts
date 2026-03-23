@@ -4,6 +4,6 @@ interface Props {
   password: string;
 }
 
-export class VerifyEmailCommand {
+export class RegisterUserCommand {
   constructor(public readonly props: Props) {}
 }
