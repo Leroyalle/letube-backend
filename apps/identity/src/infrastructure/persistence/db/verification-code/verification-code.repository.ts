@@ -6,7 +6,7 @@ import type { VerificationCodeRepositoryPort } from 'apps/identity/src/domain/po
 
 import { Injectable } from '@nestjs/common';
 
-import type { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 import { VerificationCodeMapper } from './verification-code.mapper';
 

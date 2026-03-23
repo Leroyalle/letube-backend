@@ -3,7 +3,7 @@ import type { RefreshTokenRepositoryPort } from 'apps/identity/src/domain/ports/
 
 import { Injectable } from '@nestjs/common';
 
-import type { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 @Injectable()
 export class RefreshTokenRepository implements RefreshTokenRepositoryPort {

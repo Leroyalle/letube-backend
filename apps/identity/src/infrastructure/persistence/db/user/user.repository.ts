@@ -3,7 +3,7 @@ import type { UserRepositoryPort } from 'apps/identity/src/domain/ports/user-rep
 
 import { Injectable } from '@nestjs/common';
 
-import type { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 import { UserMapper } from './user.mapper';
 

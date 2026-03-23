@@ -1,8 +1,8 @@
 import type { TokenData } from '@contracts/auth';
 
 import { Injectable } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import type { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 import type {
   AccessTokenServicePort,
