@@ -1,10 +1,11 @@
 import type { TokenData } from '@contracts/auth';
-import type { EUserRole } from '@contracts/user';
+
+import type { TRole } from '../../domain/entities/user.entity';
 
 export interface SignPayload {
   id: string;
   email: string;
-  role: EUserRole;
+  role: TRole;
 }
 
 export interface AccessTokenServicePort {
