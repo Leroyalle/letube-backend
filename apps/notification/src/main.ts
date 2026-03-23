@@ -1,18 +1,23 @@
-import { NOTIFICATION_HOST, NOTIFICATION_PORT } from 'libs/infra-constants/src';
+import { NOTIFICATION_BROKER_QUEUES } from '@contracts/notification/queues/broker.queues';
 
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { type RmqOptions, Transport } from '@nestjs/microservices';
 
 import { NotificationModule } from './notification.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(NotificationModule, {
-    transport: Transport.TCP,
+  const app = await NestFactory.create(NotificationModule);
+  const config = app.get(ConfigService);
+
+  app.connectMicroservice<RmqOptions>({
+    transport: Transport.RMQ,
     options: {
-      port: NOTIFICATION_PORT,
-      host: NOTIFICATION_HOST,
+      urls: [config.getOrThrow<string>('RMQ_URL')],
+      queue: NOTIFICATION_BROKER_QUEUES.SEND_MESSAGE,
     },
   });
-  await app.listen();
+  await app.startAllMicroservices();
+  await app.init();
 }
 void bootstrap();

@@ -1,17 +1,18 @@
 import { SendMessageDto } from '@contracts/notification';
 import { MailerService } from '@nestjs-modules/mailer';
+import type { MailerAdapterPort } from 'apps/notification/src/application/ports/mailer-adapter.port';
 
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class NotificationService {
+export class MailerAdapter implements MailerAdapterPort {
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
   ) {}
 
-  public async sendMessage(dto: SendMessageDto): Promise<{ status: 'success' | 'error' }> {
+  public async sendMessage(dto: SendMessageDto) {
     try {
       for (const to of dto.to) {
         await this.mailerService.sendMail({
@@ -22,7 +23,6 @@ export class NotificationService {
           html: '<b>welcome</b>',
         });
       }
-      return { status: 'success' };
     } catch (error) {
       console.log('NotificationService_sendMessage', error);
       throw error;
