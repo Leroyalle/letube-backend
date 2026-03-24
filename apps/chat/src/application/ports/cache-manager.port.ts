@@ -1,5 +1,6 @@
 export interface CacheManagerPort {
-  add(key: string, value: string, ttl: number): Promise<void>;
-  get(key: string): Promise<string | null>;
-  del(key: string): Promise<void>;
+  zadd(key: string, score: number, value: string): Promise<void>;
+  zrevrange(key: string, start: number, stop: number): Promise<void>;
+  zremrangebyrank(key: string, start: number, stop: number): Promise<void>;
+  expire(key: string, ttl: number): Promise<void>;
 }
