@@ -1,3 +1,5 @@
+import type { ClockPort } from '@app/abstractions/system/time/clock.port';
+import { CLOCK_TOKEN } from '@app/abstractions/system/time/clock.token';
 import { RabbitMQModule } from '@app/infra-core';
 import { join } from 'path';
 
@@ -16,9 +18,8 @@ import {
   USER_REPOSITORY_TOKEN,
   VERIFICATION_CODE_REPOSITORY_TOKEN,
 } from './application/ports/tokens';
-import type { ClockPort } from './domain/ports/clock.port';
 import type { CodeGeneratorPort } from './domain/ports/code-generator.port';
-import { CLOCK_TOKEN, CODE_GENERATOR_TOKEN } from './domain/ports/tokens';
+import { CODE_GENERATOR_TOKEN } from './domain/ports/tokens';
 import { VerificationCodeService } from './domain/services/verification-code.service';
 import { RabbitMQEventBus } from './infrastructure/broker/rabbitmq/rabbitmq-event-bus';
 import { rabbitMQConfig } from './infrastructure/broker/rabbitmq/rabbitmq.config';

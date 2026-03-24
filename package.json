@@ -26,7 +26,7 @@
     "start:media-worker": "nest start media-worker --watch",
     "start:stream": "nest start stream --watch",
     "start:stream-worker": "nest start stream-worker --watch",
-    "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\"",
+    "start:all": "concurrently \"npm run start:gateway\" \"npm run start:identity\" \"npm run start:notification\" \"npm run start:channel\" \"npm run start:media\" \"npm run start:media-worker\" \"npm run start:stream\"",
     "prepare": "husky"
   },
   "dependencies": {

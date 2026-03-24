@@ -1,4 +1,5 @@
-import type { ClockPort } from '../ports/clock.port';
+import type { ClockPort } from '@app/abstractions/system/time/clock.port';
+
 import type { CodeGeneratorPort } from '../ports/code-generator.port';
 
 export class VerificationCodeService {
