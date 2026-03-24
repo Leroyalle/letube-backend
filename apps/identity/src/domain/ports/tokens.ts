@@ -1,2 +1,1 @@
 export const CODE_GENERATOR_TOKEN = Symbol('code_generator_token');
-export const CLOCK_TOKEN = Symbol('clock_token');
