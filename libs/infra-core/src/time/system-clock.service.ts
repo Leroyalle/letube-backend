@@ -7,4 +7,8 @@ export class SystemClockService implements ClockPort {
   public now(): Date {
     return new Date();
   }
+
+  public nowMs(): number {
+    return Date.now();
+  }
 }
