@@ -5,10 +5,10 @@ interface Props {
   receiverId: string;
 }
 
-export class MessageEntity {
+export class Message {
   private constructor(public readonly props: Props) {}
 
   public static create(props: Props) {
-    return new MessageEntity(props);
+    return new Message(props);
   }
 }
