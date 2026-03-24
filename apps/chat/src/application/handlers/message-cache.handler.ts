@@ -3,13 +3,13 @@ import type { ClockPort } from '@app/abstractions/system/time/clock.port';
 import { CLOCK_TOKEN } from '@app/abstractions/system/time/clock.token';
 
 import { Inject } from '@nestjs/common';
-import { EventsHandler } from '@nestjs/cqrs';
+import { EventsHandler, type IEventHandler } from '@nestjs/cqrs';
 
 import { MessageCreatedEvent } from '../events/message-created.event';
 import type { CacheManagerPort } from '../ports/cache-manager.port';
 
 @EventsHandler(MessageCreatedEvent)
-export class MessageCacheHandler {
+export class MessageCacheHandler implements IEventHandler<MessageCreatedEvent> {
   constructor(
     @Inject(CACHE_TOKEN) private readonly cacheManager: CacheManagerPort,
     @Inject(CLOCK_TOKEN) private readonly clockService: ClockPort,
