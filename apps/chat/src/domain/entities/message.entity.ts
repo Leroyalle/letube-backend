@@ -6,5 +6,9 @@ interface Props {
 }
 
 export class MessageEntity {
-  constructor(public readonly props: Props) {}
+  private constructor(public readonly props: Props) {}
+
+  public static create(props: Props) {
+    return new MessageEntity(props);
+  }
 }
