@@ -1,4 +1,5 @@
 import { CHAT_QUEUES } from '@contracts/chat/queues/broker.queues';
+import { CHAT_PORT } from '@infra';
 
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -18,6 +19,6 @@ async function bootstrap() {
       queue: CHAT_QUEUES.COMMANDS,
     },
   });
-  await app.listen(process.env.port ?? 3000);
+  await app.listen(CHAT_PORT);
 }
 void bootstrap();
