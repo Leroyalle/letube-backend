@@ -16,7 +16,7 @@ export class Message {
     };
   }
 
-  public toPrimitives(): Props {
+  public snapshot(): Readonly<Props> {
     return {
       ...this.props,
       createdAt: new Date(this.props.createdAt),
