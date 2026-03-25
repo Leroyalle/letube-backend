@@ -1,4 +1,4 @@
-import { CHAT_BROKER_QUEUES } from '@contracts/chat/queues/broker.queues';
+import { CHAT_PATTERNS } from '@contracts/chat/patterns/patterns';
 
 import { Inject } from '@nestjs/common';
 import { EventsHandler, type IEventHandler } from '@nestjs/cqrs';
@@ -14,11 +14,12 @@ export class MessageRealtimeHandler implements IEventHandler<MessageCreatedEvent
   ) {}
 
   public handle(event: MessageCreatedEvent) {
-    this.brokerEventBus.emit(CHAT_BROKER_QUEUES.send, {
+    this.brokerEventBus.emit(CHAT_PATTERNS.MESSAGE_CREATED, {
       id: event.props.id,
       content: event.props.content,
       receiverId: event.props.receiverId,
       senderId: event.props.senderId,
+      createdAt: event.props.createdAt,
     });
   }
 }
