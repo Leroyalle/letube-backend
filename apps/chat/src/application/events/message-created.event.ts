@@ -3,6 +3,7 @@ interface Props {
   content: string;
   senderId: string;
   receiverId: string;
+  createdAt: Date;
 }
 
 export class MessageCreatedEvent {
