@@ -1,19 +1,18 @@
-import type { ClockPort } from '@app/abstractions/system/time/clock.port';
-import { CLOCK_TOKEN } from '@app/abstractions/system/time/clock.token';
-import type { ChatCacheAdapterPort } from 'apps/chat/src/application/ports/chat-cache-adapter.port';
+import type {
+  CachedMessage,
+  ChatCacheAdapterPort,
+} from 'apps/chat/src/application/ports/chat-cache-adapter.port';
 import type { Message } from 'apps/chat/src/domain/entities/message.entity';
 
-import { Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import type { RedisAdapter } from '../redis/redis.adapter';
 
 import { MessageCacheMapper } from './chat-cache.mapper';
 
+@Injectable()
 export class ChatCacheAdapter implements ChatCacheAdapterPort {
-  constructor(
-    private readonly redis: RedisAdapter,
-    @Inject(CLOCK_TOKEN) private readonly clockService: ClockPort,
-  ) {}
+  constructor(private readonly redis: RedisAdapter) {}
 
   private buildUserFeedKey(receiverId: string): string {
     return `chat:${receiverId}`;
@@ -29,7 +28,7 @@ export class ChatCacheAdapter implements ChatCacheAdapterPort {
     await this.redis.expire(key, 3600);
   }
 
-  public async findMessages(receiverId: string): Promise<Message[]> {
+  public async findMessages(receiverId: string): Promise<CachedMessage[]> {
     const key = this.buildUserFeedKey(receiverId);
 
     const messages = await this.redis.zrevrange(key, 0, -1);

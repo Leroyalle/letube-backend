@@ -1,12 +1,5 @@
+import type { CachedMessage } from 'apps/chat/src/application/ports/chat-cache-adapter.port';
 import { Message } from 'apps/chat/src/domain/entities/message.entity';
-
-type CachedMessage = {
-  id: string;
-  content: string;
-  senderId: string;
-  receiverId: string;
-  createdAt: number;
-};
 
 export class MessageCacheMapper {
   public static toCache(message: Message): CachedMessage {
@@ -21,7 +14,7 @@ export class MessageCacheMapper {
     };
   }
 
-  public static fromCache(raw: string): Message {
+  public static fromCache(raw: string): CachedMessage {
     let parsed: unknown;
 
     try {
@@ -34,10 +27,7 @@ export class MessageCacheMapper {
       throw new Error('Invalid cached message');
     }
 
-    return Message.rehydrate({
-      ...parsed,
-      createdAt: new Date(parsed.createdAt),
-    });
+    return parsed;
   }
 }
 
