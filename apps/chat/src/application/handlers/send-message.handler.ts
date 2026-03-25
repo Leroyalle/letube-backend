@@ -4,7 +4,7 @@ import { Message } from 'apps/chat/src/domain/entities/message.entity';
 import { randomUUID } from 'crypto';
 
 import { Inject } from '@nestjs/common';
-import { CommandHandler, type EventBus, type ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
 
 import { SendMessageCommand } from '../commands/send-message.command';
 import { MessageCreatedEvent } from '../events/message-created.event';
