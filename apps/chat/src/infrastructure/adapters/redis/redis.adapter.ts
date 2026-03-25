@@ -1,10 +1,11 @@
 import { CACHE_TOKEN } from '@app/abstractions/cache/cache.token';
 import type Redis from 'ioredis';
 
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type { CacheManagerPort } from '../../../application/ports/cache-manager.port';
 
+@Injectable()
 export class RedisAdapter implements CacheManagerPort {
   constructor(@Inject(CACHE_TOKEN) private readonly client: Redis) {}
 

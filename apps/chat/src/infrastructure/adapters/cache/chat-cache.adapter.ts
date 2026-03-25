@@ -6,7 +6,7 @@ import type { Message } from 'apps/chat/src/domain/entities/message.entity';
 
 import { Injectable } from '@nestjs/common';
 
-import type { RedisAdapter } from '../redis/redis.adapter';
+import { RedisAdapter } from '../redis/redis.adapter';
 
 import { MessageCacheMapper } from './chat-cache.mapper';
 
