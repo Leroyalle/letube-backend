@@ -9,14 +9,15 @@ type CachedMessage = {
 };
 
 export class MessageCacheMapper {
-  public static toCache(message: Message, now: number): CachedMessage {
-    const dto = message.toPrimitives();
+  public static toCache(message: Message): CachedMessage {
+    const dto = message.snapshot();
+
     return {
       id: dto.id,
       content: dto.content,
       receiverId: dto.receiverId,
       senderId: dto.senderId,
-      createdAt: now,
+      createdAt: dto.createdAt.getTime(),
     };
   }
 
