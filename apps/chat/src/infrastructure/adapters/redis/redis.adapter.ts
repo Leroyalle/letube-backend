@@ -13,7 +13,7 @@ export class RedisAdapter implements CacheManagerPort {
   }
 
   public async zrevrange(key: string, start: number, stop: number) {
-    await this.client.zrevrange(key, start, stop);
+    return await this.client.zrevrange(key, start, stop);
   }
 
   public async zremrangebyrank(key: string, start: number, stop: number) {
