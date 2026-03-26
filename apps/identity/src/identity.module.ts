@@ -1,6 +1,7 @@
 import type { ClockPort } from '@app/abstractions/system/time/clock.port';
 import { CLOCK_TOKEN } from '@app/abstractions/system/time/clock.token';
 import { RabbitMQModule } from '@app/infra-core';
+import { SystemClockService } from '@app/infra-core/time/system-clock.service';
 import { join } from 'path';
 
 import { Module } from '@nestjs/common';
@@ -30,7 +31,6 @@ import { VerificationCodeRepository } from './infrastructure/persistence/db/veri
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { ArgonPasswordHasher } from './infrastructure/security/password-hasher/argon-password.hasher';
 import { CodeGenerator } from './infrastructure/system/code.generator';
-import { SystemClockService } from './infrastructure/system/system-clock.service';
 import { AccessTokenService } from './infrastructure/token/access-token.service';
 import { RefreshTokenService } from './infrastructure/token/refresh-token.service';
 import { IdentityCommandsController } from './presentation/commands/identity.commands.controller';
