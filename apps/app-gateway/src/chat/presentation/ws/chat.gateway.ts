@@ -9,7 +9,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-import { ChatClientService } from '../../infrastructure/transport/chat-client.service';
+import { ChatClientService } from '../../application/use-cases/chat-client.service';
 import { ChatEmitter } from '../../infrastructure/transport/ws/chat.emitter';
 
 @WebSocketGateway()
