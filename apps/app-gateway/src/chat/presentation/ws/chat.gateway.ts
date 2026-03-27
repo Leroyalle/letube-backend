@@ -22,7 +22,6 @@ import { ChatEmitter } from '../../infrastructure/transport/ws/chat.emitter';
 // implements OnGatewayConnection, OnGatewayDisconnect
 export class ChatGateway implements OnGatewayInit {
   constructor(
-    // private readonly chatService: ChatClientService,
     private readonly chatEmitter: ChatEmitter,
     private readonly commandBus: CommandBus,
   ) {}
