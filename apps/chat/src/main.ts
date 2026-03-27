@@ -19,6 +19,8 @@ async function bootstrap() {
       queue: CHAT_QUEUES.COMMANDS,
     },
   });
+
+  await app.startAllMicroservices();
   await app.listen(CHAT_PORT);
 }
 void bootstrap();
