@@ -12,6 +12,7 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { MarkMediaAsProcessedCommand } from '../../application/commands/mark-media-as-processed.command';
 import { UploadCompleteCommand } from '../../application/commands/upload-complete.command';
 import { UploadMediaCommand } from '../../application/commands/upload-media.command';
+import { GetAllVideosQuery } from '../../application/queries/get-all-videos.query';
 import { GetVideoByIdQuery } from '../../application/queries/get-video-by-id.query';
 import { ContentType } from '../../domain/value-objects/content-type.vo';
 import { Visibility } from '../../domain/value-objects/visibility.vo';
@@ -47,6 +48,11 @@ export class MediaMessagingController {
   @MessagePattern(MEDIA_PATTERNS.GET_BY_ID)
   public getById(@Payload() dto: GetByIdDto) {
     return this.queryBus.execute(new GetVideoByIdQuery(dto.id));
+  }
+
+  @MessagePattern(MEDIA_PATTERNS.GET_ALL)
+  public getAll() {
+    return this.queryBus.execute(new GetAllVideosQuery());
   }
 
   @EventPattern(MEDIA_BROKER_QUEUES.processed)
