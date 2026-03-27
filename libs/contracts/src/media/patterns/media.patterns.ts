@@ -8,4 +8,7 @@ export const MEDIA_PATTERNS = {
   GET_BY_ID: {
     cmd: 'media.get-by-id',
   },
+  GET_ALL: {
+    cmd: 'media.get-all',
+  },
 };

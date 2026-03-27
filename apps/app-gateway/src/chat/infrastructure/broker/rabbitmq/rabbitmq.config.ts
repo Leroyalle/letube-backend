@@ -1,4 +1,4 @@
-import { MEDIA_BROKER_QUEUES } from '@contracts/media/queues/broker.queues';
+import { CHAT_QUEUES } from '@contracts/chat/queues/broker.queues';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { type ClientsModuleAsyncOptions, Transport } from '@nestjs/microservices';
@@ -12,7 +12,7 @@ export const rabbitMQConfig: ClientsModuleAsyncOptions = [
     useFactory: (configService: ConfigService) => ({
       options: {
         urls: [configService.getOrThrow<string>('RMQ_URL')],
-        queue: MEDIA_BROKER_QUEUES.uploaded,
+        queue: CHAT_QUEUES.COMMANDS,
       },
       transport: Transport.RMQ,
     }),
