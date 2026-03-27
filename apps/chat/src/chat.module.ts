@@ -15,6 +15,7 @@ import { RabbitMQEventBus } from './infrastructure/adapters/rabbitmq/rabbitmq-ev
 import { rabbitMQConfig } from './infrastructure/adapters/rabbitmq/rabbitmq.config';
 import { RedisAdapter } from './infrastructure/adapters/redis/redis.adapter';
 import { ChatEventsController } from './presentation/events/chat.events.controller';
+import { ChatQueriesController } from './presentation/queries/chat.queries.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ChatEventsController } from './presentation/events/chat.events.controll
       envFilePath: join(process.cwd(), 'apps', 'chat', '.env'),
     }),
   ],
-  controllers: [ChatEventsController],
+  controllers: [ChatEventsController, ChatQueriesController],
   providers: [
     ...handlers,
     RedisAdapter,
