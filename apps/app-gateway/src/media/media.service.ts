@@ -19,4 +19,12 @@ export class MediaService {
   public uploadComplete(dto: UploadCompleteDto) {
     return this.mediaClient.send(MEDIA_PATTERNS.UPLOAD_COMPLETE, dto);
   }
+
+  public getAll() {
+    return this.mediaClient.send(MEDIA_PATTERNS.GET_ALL, {});
+  }
+
+  public getById(id: string) {
+    return this.mediaClient.send(MEDIA_PATTERNS.GET_BY_ID, { id });
+  }
 }

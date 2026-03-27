@@ -1,10 +1,11 @@
 import { Authorization } from '@app/modules/auth/decorators/authorization.decorator';
 import { CurrentUserDecorator } from '@app/modules/auth/decorators/current-user.decorator';
+import type { GetByIdDto } from '@contracts/media/dto/get-by-id.dto';
 import type { UploadCompleteDto } from '@contracts/media/dto/upload-complete.dto';
 import { UploadMediaDto } from '@contracts/media/dto/upload-media.dto';
 import type { UserDto } from '@contracts/user';
 
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { MediaService } from './media.service';
 
@@ -22,5 +23,15 @@ export class MediaController {
   @Post('upload-complete')
   public uploadComplete(@Body() dto: UploadCompleteDto) {
     return this.mediaService.uploadComplete(dto);
+  }
+
+  @Get()
+  public getAll() {
+    return this.mediaService.getAll();
+  }
+
+  @Get(':id')
+  public getById(@Body() dto: GetByIdDto) {
+    return this.mediaService.getById(dto.id);
   }
 }
