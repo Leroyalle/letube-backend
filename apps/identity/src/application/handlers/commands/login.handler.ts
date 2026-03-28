@@ -33,7 +33,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
 
     const isPasswordValid = await this.passwordHasher.verify(user.props.password, command.password);
 
-    if (isPasswordValid) throw new Error('Invalid credentials');
+    if (!isPasswordValid) throw new Error('Invalid credentials');
 
     const access = await this.accessTokenService.sign({
       id: user.props.id,
