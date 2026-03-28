@@ -14,12 +14,7 @@ import { Response } from 'express';
 import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
 import { firstValueFrom } from 'rxjs';
 
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
@@ -64,11 +59,11 @@ export class AuthService {
       };
     } catch (error) {
       console.log('AppGateway_AuthService_sendVerificationCode', error);
-      if (error?.message === 'User has already exists') {
-        throw new BadRequestException(error.message);
-      }
+      // if (error?.message === 'User has already exists') {
+      //   throw new BadRequestException(error.message);
+      // }
 
-      throw new InternalServerErrorException(error.message);
+      // throw new InternalServerErrorException(error.message);
     }
   }
 

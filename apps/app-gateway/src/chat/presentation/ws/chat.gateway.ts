@@ -56,6 +56,5 @@ export class ChatGateway implements OnGatewayInit {
         senderId: client.data.userId as string,
       }),
     );
-    // return this.chatService.sendMessage(client.data.id as string, payload);
   }
 }
