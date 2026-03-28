@@ -1,3 +1,3 @@
-import { CreateChannelHandler } from '../handlers/create-cannel.handler';
+import { CreateChannelHandler } from '../handlers/create-channel.handler';
 
 export const commandHandlers = [CreateChannelHandler];
