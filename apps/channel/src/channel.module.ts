@@ -4,9 +4,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { commandHandlers } from './application/commands/command-handlers';
 import { CHANNEL_REPOSITORY } from './application/constants/channel-repository.token';
-import { queryHandlers } from './application/queries/query-handlers';
+import { commandHandlers } from './application/handlers/command-handlers';
+import { queryHandlers } from './application/handlers/query-handlers';
 import { PrismaChannelRepository } from './infrastructure/persistence/prisma-channel.repository';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { ChannelController } from './presentation/http/channel.controller';

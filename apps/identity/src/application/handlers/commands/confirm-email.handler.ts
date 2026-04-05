@@ -17,7 +17,7 @@ import {
 } from '../../ports/tokens';
 
 @CommandHandler(ConfirmEmailCommand)
-export class ConfigEmailHandler implements ICommandHandler<ConfirmEmailCommand> {
+export class ConfirmEmailHandler implements ICommandHandler<ConfirmEmailCommand> {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN) private readonly userRepository: UserRepositoryPort,
     @Inject(VERIFICATION_CODE_REPOSITORY_TOKEN)
