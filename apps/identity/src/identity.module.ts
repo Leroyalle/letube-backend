@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 
-import { handlers } from './application/handlers/commands/handlers';
+import { commands } from './application/handlers/commands/handlers';
 import { queries } from './application/handlers/queries/queries';
 import {
   ACCESS_SERVICE_TOKEN,
@@ -98,7 +98,7 @@ import { IdentityQueriesController } from './presentation/queries/identity.queri
       },
       inject: [CLOCK_TOKEN, CODE_GENERATOR_TOKEN],
     },
-    ...handlers,
+    ...commands,
     ...queries,
   ],
 })
