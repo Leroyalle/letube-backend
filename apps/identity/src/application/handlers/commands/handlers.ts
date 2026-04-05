@@ -4,7 +4,7 @@ import { LoginHandler } from './login.handler';
 import { RegisterUserHandler } from './register-user.handler';
 import { ResetPasswordHandler } from './reset-password.handler';
 
-export const handlers = [
+export const commands = [
   ConfirmEmailHandler,
   ConfirmPasswordResetHandler,
   LoginHandler,
