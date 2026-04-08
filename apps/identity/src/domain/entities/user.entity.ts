@@ -7,6 +7,7 @@ interface Props {
   password: string;
   isBanned: boolean;
   isVerified: boolean;
+  avatar: string | null;
   role: TRole;
 }
 
@@ -22,6 +23,7 @@ export class User {
       isBanned: props.isBanned,
       isVerified: props.isVerified,
       role: props.role,
+      avatar: props.avatar,
     });
   }
 

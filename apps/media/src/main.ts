@@ -22,11 +22,11 @@ async function bootstrap() {
   app.connectMicroservice<RmqOptions>({
     options: {
       urls: [config.getOrThrow<string>('RMQ_URL')],
+      // urls: ['amqp://backend:123123@localhost:5672/'],
       queue: MEDIA_BROKER_QUEUES.processed,
     },
     transport: Transport.RMQ,
   });
-
   await app.startAllMicroservices();
   await app.init();
 }

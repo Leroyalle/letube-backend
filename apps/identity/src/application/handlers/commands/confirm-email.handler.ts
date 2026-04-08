@@ -1,13 +1,15 @@
+import { RefreshTokenRepositoryPort } from 'apps/identity/src/domain/ports/refresh-token-repository.port';
+import { UserRepositoryPort } from 'apps/identity/src/domain/ports/user-repository.port';
+import { VerificationCodeRepositoryPort } from 'apps/identity/src/domain/ports/verification-code-repository.port';
+import { VerificationCodeService } from 'apps/identity/src/domain/services/verification-code.service';
+import { UserPublicMapper } from 'apps/identity/src/infrastructure/persistence/db/user/user-public.mapper';
+
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import type { RefreshTokenRepositoryPort } from '../../../domain/ports/refresh-token-repository.port';
-import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
-import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
 import { ConfirmEmailCommand } from '../../commands/confirm-email.command';
-import type { AccessTokenServicePort } from '../../ports/access-token-service.port';
-import type { RefreshTokenServicePort } from '../../ports/refresh-token-service.port';
+import { AccessTokenServicePort } from '../../ports/access-token-service.port';
+import { RefreshTokenServicePort } from '../../ports/refresh-token-service.port';
 import {
   ACCESS_SERVICE_TOKEN,
   REFRESH_SERVICE_TOKEN,
@@ -33,7 +35,6 @@ export class ConfirmEmailHandler implements ICommandHandler<ConfirmEmailCommand>
 
   public async execute(command: ConfirmEmailCommand) {
     const user = await this.userRepository.findUserByEmail(command.props.email);
-
     if (!user) throw new Error('Account not found');
 
     const foundCode = await this.verificationCodeRepository.findByUserId(
@@ -48,15 +49,20 @@ export class ConfirmEmailHandler implements ICommandHandler<ConfirmEmailCommand>
 
     if (!isNotExpired) throw new Error('Code is over');
 
-    const access = await this.accessTokenService.sign({
+    user.props.isVerified = true;
+
+    await this.userRepository.update(user);
+    const accessData = await this.accessTokenService.sign({
       id: user.props.id,
       email: user.props.email,
       role: user.props.role,
     });
 
-    const refresh = await this.refreshTokenService.generateAndHash();
-    await this.refreshTokenRepository.refresh(user.props.id, refresh);
+    const refreshData = await this.refreshTokenService.generateAndHash();
+    await this.refreshTokenRepository.refresh(user.props.id, refreshData);
+    const userMapped = UserPublicMapper.toPublic(user);
 
-    return { access, refresh };
+    void this.verificationCodeRepository.deleteByUserId(user.props.id);
+    return { accessData, refreshData, user: userMapped };
   }
 }

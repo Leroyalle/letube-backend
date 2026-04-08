@@ -19,6 +19,7 @@ export class VerifyAccessTokenHandler implements IQueryHandler<VerifyAccessToken
   public async execute(dto: VerifyAccessTokenDto): Promise<VerifyAccessTokenResponse> {
     const payload = await this.accessTokenService.verify(dto.token);
     const user = await this.userRepository.findById(payload.id);
+    console.log('1232123312user', user);
 
     if (!user) {
       throw new Error('User not found');
@@ -29,6 +30,7 @@ export class VerifyAccessTokenHandler implements IQueryHandler<VerifyAccessToken
       name: user.props.name,
       id: user.props.id,
       role: user.props.role,
+      avatar: user.props.avatar,
     };
   }
 }

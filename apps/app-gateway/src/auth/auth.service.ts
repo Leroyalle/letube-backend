@@ -28,12 +28,12 @@ export class AuthService {
       );
 
       this.setRefreshToken(data.refreshData, res);
+      this.setAccessToken(data.accessData, res);
 
       return {
-        data: {
-          accessToken: data.accessData.token,
-          expiresIn: data.accessData.expiresAt,
-        },
+        user: data.user,
+        accessToken: data.accessData.token,
+        expiresIn: data.accessData.expiresAt,
         message: 'Login successful!',
       };
     } catch (error) {
@@ -72,24 +72,35 @@ export class AuthService {
       const data = await firstValueFrom<SuccessLoginDto | undefined>(
         this.userClient.send(AUTH_PATTERNS.REGISTER_VERIFY_CODE, dto),
       );
-
       if (!data) {
         throw new InternalServerErrorException('Registration failed');
       }
 
       this.setRefreshToken(data.refreshData, res);
+      this.setAccessToken(data.accessData, res);
 
       return {
         accessToken: data.accessData.token,
         expiresIn: data.accessData.expiresAt.expiresMs,
+        user: data.user,
       };
     } catch (error) {
-      console.log('AppGateway_AuthService_registerVerifyCode', error);
+      console.log('AppGateway AuthService registerVerifyCode', error);
     }
   }
 
   private setRefreshToken(tokenData: TokenData, res: Response) {
     res.cookie(EAuthTokens.Refresh, tokenData.token, {
+      httpOnly: true,
+      // secure: true,
+      sameSite: 'strict',
+      maxAge: tokenData.expiresAt.expiresMs,
+      // maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+  }
+
+  private setAccessToken(tokenData: TokenData, res: Response) {
+    res.cookie(EAuthTokens.Access, tokenData.token, {
       httpOnly: true,
       // secure: true,
       sameSite: 'strict',

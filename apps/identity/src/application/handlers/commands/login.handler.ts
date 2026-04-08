@@ -1,3 +1,5 @@
+import { UserPublicMapper } from 'apps/identity/src/infrastructure/persistence/db/user/user-public.mapper';
+
 import { Inject } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
@@ -35,21 +37,23 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
 
     if (!isPasswordValid) throw new Error('Invalid credentials');
 
-    const access = await this.accessTokenService.sign({
+    const accessData = await this.accessTokenService.sign({
       id: user.props.id,
       email: user.props.email,
       role: user.props.role,
     });
 
-    const refresh = await this.refreshTokenService.generateAndHash();
+    const refreshData = await this.refreshTokenService.generateAndHash();
 
     await this.refreshTokenRepository.refresh(user.props.id, {
-      token: refresh.token,
-      expiresAt: refresh.expiresAt,
+      token: refreshData.token,
+      expiresAt: refreshData.expiresAt,
     });
 
     await this.userRepository.update(user);
 
-    return { access, refresh };
+    const userMapped = UserPublicMapper.toPublic(user);
+
+    return { accessData, refreshData, user: userMapped };
   }
 }

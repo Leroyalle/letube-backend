@@ -1,5 +1,6 @@
 import type { SendMessageDto } from '@contracts/notification';
 import { NOTIFICATION_BROKER_QUEUES } from '@contracts/notification/queues/broker.queues';
+import { VerificationCodeService } from 'apps/identity/src/domain/services/verification-code.service';
 import { randomUUID } from 'crypto';
 
 import { Inject } from '@nestjs/common';
@@ -8,7 +9,6 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 import { VerificationCode } from '../../../domain/entities/verification-code.entity';
 import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
 import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
 import { ResetPasswordCommand } from '../../commands/reset-password.command';
 import type { BrokerEventBusPort } from '../../ports/broker-event-bus.port';
 import {

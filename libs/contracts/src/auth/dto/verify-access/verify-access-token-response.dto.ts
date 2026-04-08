@@ -3,4 +3,5 @@ export interface VerifyAccessTokenResponse {
   email: string;
   name: string;
   role: string;
+  avatar: string | null;
 }

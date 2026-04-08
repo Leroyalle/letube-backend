@@ -21,4 +21,10 @@ export class PrismaVideoReadRepository implements VideoReadRepositoryPort {
 
     return VideoResponseMapper.toDto(data);
   }
+
+  public async findAll(): Promise<VideoResponseDto[]> {
+    const data = await this.prismaService.video.findMany();
+
+    return data.map(item => VideoResponseMapper.toDto(item));
+  }
 }

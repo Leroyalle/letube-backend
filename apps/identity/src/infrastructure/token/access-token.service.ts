@@ -23,7 +23,8 @@ export class AccessTokenService implements AccessTokenServicePort {
   }
 
   public async sign(payload: SignPayload): Promise<TokenData> {
-    const stringExpiresAt = '5m';
+    // const stringExpiresAt = '5m';
+    const stringExpiresAt = '100000000m';
 
     const expiresMs = parseInt(stringExpiresAt) * 1000 * 60 + Date.now();
     const expiresDate = new Date(Date.now() + expiresMs);

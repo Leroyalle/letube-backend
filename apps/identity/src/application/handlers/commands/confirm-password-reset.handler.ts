@@ -3,7 +3,7 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import type { UserRepositoryPort } from '../../../domain/ports/user-repository.port';
 import type { VerificationCodeRepositoryPort } from '../../../domain/ports/verification-code-repository.port';
-import type { VerificationCodeService } from '../../../domain/services/verification-code.service';
+import { VerificationCodeService } from '../../../domain/services/verification-code.service';
 import { ConfirmPasswordResetCommand } from '../../commands/confirm-password-reset.command';
 import type { PasswordHasherPort } from '../../ports/password-hasher.port';
 import {

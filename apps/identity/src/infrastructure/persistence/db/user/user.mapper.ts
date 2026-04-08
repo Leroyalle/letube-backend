@@ -11,11 +11,13 @@ export class UserMapper {
       isBanned: data.isBanned,
       isVerified: data.isVerified,
       role: data.role,
+      avatar: data.avatar,
     });
   }
 
   public static toPersistence(data: DomainUser): PersistenceUser {
     return {
+      avatar: data.props.avatar || null,
       email: data.props.email,
       id: data.props.id,
       name: data.props.name,

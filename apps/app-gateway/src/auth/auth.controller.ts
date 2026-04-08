@@ -1,3 +1,4 @@
+import { Authorization } from '@app/modules/auth/decorators/authorization.decorator';
 import {
   ForgotPasswordDto,
   LoginDto,
@@ -7,7 +8,7 @@ import {
 } from '@contracts/auth';
 import { Response } from 'express';
 
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
@@ -38,5 +39,11 @@ export class AuthController {
   @Post('reset-password')
   public resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
+  }
+
+  @Get('get-user')
+  @Authorization()
+  public getUser(@Req() req: any) {
+    return req.user;
   }
 }

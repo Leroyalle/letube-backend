@@ -16,8 +16,6 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
 
     const token = request.cookies?.[EAuthTokens.Access] as string;
-    console.log(token, request.cookies);
-
     if (!token) throw new UnauthorizedException('Unauthorized');
 
     try {
@@ -25,7 +23,6 @@ export class AuthGuard implements CanActivate {
       const user = await firstValueFrom<UserDto>(
         this.identityClient.send(AUTH_PATTERNS.VERIFY_ACCESS_TOKEN, reqData),
       );
-
       request.user = user;
       return true;
     } catch {

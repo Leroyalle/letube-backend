@@ -23,4 +23,7 @@ export const AUTH_PATTERNS = {
   VERIFY_ACCESS_TOKEN: {
     cmd: 'auth.verify-access-token',
   },
+  GET_USER: {
+    cmd: 'auth.get-user',
+  },
 };

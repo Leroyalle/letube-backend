@@ -1,6 +1,9 @@
+import { UserPublicDto } from 'apps/identity/src/application/dto/user-public.dto';
+
 export class SuccessLoginDto {
   accessData!: TokenData;
   refreshData!: TokenData;
+  user!: UserPublicDto;
 }
 
 export class TokenData {
