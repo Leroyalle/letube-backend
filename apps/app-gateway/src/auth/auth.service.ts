@@ -28,7 +28,7 @@ export class AuthService {
       );
 
       this.setRefreshToken(data.refreshData, res);
-      this.setAccessToken(data.accessData, res);
+      // this.setAccessToken(data.accessData, res);
 
       return {
         user: data.user,
@@ -77,7 +77,7 @@ export class AuthService {
       }
 
       this.setRefreshToken(data.refreshData, res);
-      this.setAccessToken(data.accessData, res);
+      // this.setAccessToken(data.accessData, res);
 
       return {
         accessToken: data.accessData.token,
@@ -99,15 +99,15 @@ export class AuthService {
     });
   }
 
-  private setAccessToken(tokenData: TokenData, res: Response) {
-    res.cookie(EAuthTokens.Access, tokenData.token, {
-      httpOnly: true,
-      // secure: true,
-      sameSite: 'strict',
-      maxAge: tokenData.expiresAt.expiresMs,
-      // maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
-  }
+  // private setAccessToken(tokenData: TokenData, res: Response) {
+  //   res.cookie(EAuthTokens.Access, tokenData.token, {
+  //     httpOnly: true,
+  //     // secure: true,
+  //     sameSite: 'strict',
+  //     maxAge: tokenData.expiresAt.expiresMs,
+  //     // maxAge: 30 * 24 * 60 * 60 * 1000,
+  //   });
+  // }
 
   public async forgotPassword(dto: ForgotPasswordDto) {
     const data = await firstValueFrom<SendMessageResponseDto>(
@@ -121,6 +121,22 @@ export class AuthService {
     return {
       message: 'The letter with verification code has been sent to your email!',
       status: data.status,
+    };
+  }
+
+  public async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw new InternalServerErrorException('Refresh token is missing');
+    }
+
+    const data = await firstValueFrom<TokenData>(
+      this.userClient.send(AUTH_PATTERNS.REFRESH, { refreshToken }),
+    );
+
+    return {
+      accessToken: data.token,
+      expiresIn: data.expiresAt.expiresMs,
+      message: 'Token refreshed!',
     };
   }
 

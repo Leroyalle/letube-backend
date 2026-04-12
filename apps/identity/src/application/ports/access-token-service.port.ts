@@ -11,4 +11,5 @@ export interface SignPayload {
 export interface AccessTokenServicePort {
   sign(payload: SignPayload): Promise<TokenData>;
   verify(token: string): Promise<SignPayload>;
+  refresh(refreshToken: string): Promise<TokenData>;
 }

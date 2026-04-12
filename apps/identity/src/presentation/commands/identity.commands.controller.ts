@@ -14,6 +14,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ConfirmEmailCommand } from '../../application/commands/confirm-email.command';
 import { ConfirmPasswordResetCommand } from '../../application/commands/confirm-password-reset.command';
 import { LoginCommand } from '../../application/commands/login.command';
+import { RefreshCommand } from '../../application/commands/refresh.command';
 import { RegisterUserCommand } from '../../application/commands/register-user.command';
 import { ResetPasswordCommand } from '../../application/commands/reset-password.command';
 
@@ -50,5 +51,10 @@ export class IdentityCommandsController {
     return this.commandBus.execute(
       new ConfirmPasswordResetCommand({ email: dto.email, code: dto.code, password: dto.password }),
     );
+  }
+
+  @MessagePattern(AUTH_PATTERNS.REFRESH)
+  public refresh(@Payload() dto: { refreshToken: string }) {
+    return this.commandBus.execute(new RefreshCommand({ refreshToken: dto.refreshToken }));
   }
 }

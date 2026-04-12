@@ -47,6 +47,7 @@ export class RegisterUserHandler implements ICommandHandler<RegisterUserCommand>
       name: command.props.name,
       role: 'USER',
       isVerified: false,
+      avatar: null,
     });
 
     await this.userRepository.create(user);

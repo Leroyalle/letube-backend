@@ -11,8 +11,8 @@ export const AUTH_PATTERNS = {
   REGISTER_VERIFY_CODE: {
     cmd: 'auth.register_verify_code',
   },
-  REFRESH_TOKEN: {
-    cmd: 'auth.refresh-token',
+  REFRESH: {
+    cmd: 'auth.refresh',
   },
   FORGOT_PASSWORD: {
     cmd: 'auth.forgot-password',
