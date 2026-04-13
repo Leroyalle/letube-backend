@@ -9,7 +9,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 export class RefreshTokenRepository implements RefreshTokenRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async refresh(userId: string, payload: TokenData) {
+  public async refresh(userId: string, tokenId: string, payload: TokenData) {
     await this.prismaService.refreshToken.deleteMany({
       where: {
         userId,
@@ -18,9 +18,27 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryPort {
 
     await this.prismaService.refreshToken.create({
       data: {
+        id: tokenId,
         tokenHash: payload.token,
         expiresAt: payload.expiresAt.expiresDate,
         userId,
+      },
+    });
+  }
+
+  public async find(token: string) {
+    const tokenHash = token;
+    return await this.prismaService.refreshToken.findFirst({
+      where: {
+        tokenHash,
+      },
+    });
+  }
+
+  public async findById(tokenId: string) {
+    return await this.prismaService.refreshToken.findUnique({
+      where: {
+        id: tokenId,
       },
     });
   }

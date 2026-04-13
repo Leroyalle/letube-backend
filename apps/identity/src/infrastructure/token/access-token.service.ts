@@ -12,12 +12,14 @@ import type {
 @Injectable()
 export class AccessTokenService implements AccessTokenServicePort {
   private readonly accessSecret: string;
+  private readonly refreshSecret: string;
 
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
     this.accessSecret = configService.getOrThrow<string>('ACCESS_SECRET');
+    this.refreshSecret = configService.getOrThrow('REFRESH_SECRET');
   }
 
   public async sign(payload: SignPayload): Promise<TokenData> {
@@ -42,7 +44,7 @@ export class AccessTokenService implements AccessTokenServicePort {
 
   public async refresh(refreshToken: string): Promise<TokenData> {
     const payload: SignPayload = await this.jwtService.verifyAsync(refreshToken, {
-      secret: this.accessSecret,
+      secret: this.refreshSecret,
     });
 
     return this.sign(payload);

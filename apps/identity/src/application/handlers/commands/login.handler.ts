@@ -43,17 +43,19 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
       role: user.props.role,
     });
 
-    const refreshData = await this.refreshTokenService.generateAndHash();
+    const refreshToken = this.refreshTokenService.generate();
+    const refreshTokenHash = await this.refreshTokenService.hash(refreshToken.tokenSecret);
+    const expiresAt = this.refreshTokenService.getExpires(30);
 
-    await this.refreshTokenRepository.refresh(user.props.id, {
-      token: refreshData.token,
-      expiresAt: refreshData.expiresAt,
+    await this.refreshTokenRepository.refresh(user.props.id, refreshToken.tokenId, {
+      token: refreshTokenHash,
+      expiresAt: expiresAt,
     });
 
     await this.userRepository.update(user);
 
     const userMapped = UserPublicMapper.toPublic(user);
 
-    return { accessData, refreshData, user: userMapped };
+    return { accessData, refreshData: { token: refreshToken.token, expiresAt }, user: userMapped };
   }
 }

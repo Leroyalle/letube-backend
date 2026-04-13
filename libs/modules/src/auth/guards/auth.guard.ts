@@ -1,4 +1,4 @@
-import { AUTH_PATTERNS, EAuthTokens, VerifyAccessTokenDto } from '@contracts/auth';
+import { AUTH_PATTERNS, VerifyAccessTokenDto } from '@contracts/auth';
 import { UserDto } from '@contracts/user';
 import { Request } from 'express';
 import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
@@ -15,8 +15,15 @@ export class AuthGuard implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
 
-    const token = request.cookies?.[EAuthTokens.Access] as string;
-    if (!token) throw new UnauthorizedException('Unauthorized');
+    // const token = request.cookies?.[EAuthTokens.Access] as string;
+    // if (!token) throw new UnauthorizedException('Unauthorized');
+
+    const authHeader = request.headers.authorization;
+    if (!authHeader) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    const token = authHeader.split(' ')[1];
 
     try {
       const reqData: VerifyAccessTokenDto = { token };

@@ -1,6 +1,6 @@
 import { Authorization } from '@app/modules/auth/decorators/authorization.decorator';
+import { RefreshToken } from '@app/modules/auth/decorators/refresh-token.decorator';
 import {
-  EAuthTokens,
   ForgotPasswordDto,
   LoginDto,
   RegisterDto,
@@ -45,11 +45,12 @@ export class AuthController {
   @Get('get-user')
   @Authorization()
   public getUser(@Req() req: any) {
+    console.log('req user', req.user);
     return req.user;
   }
 
   @Post('refresh')
-  public async refresh(@Req() req: string) {
-    return this.authService.refresh(req.cookies?.[EAuthTokens.Refresh] as string);
+  public async refresh(@RefreshToken() refreshToken: string) {
+    return this.authService.refresh(refreshToken);
   }
 }

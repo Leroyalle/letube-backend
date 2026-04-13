@@ -58,11 +58,17 @@ export class ConfirmEmailHandler implements ICommandHandler<ConfirmEmailCommand>
       role: user.props.role,
     });
 
-    const refreshData = await this.refreshTokenService.generateAndHash();
-    await this.refreshTokenRepository.refresh(user.props.id, refreshData);
+    const refreshToken = this.refreshTokenService.generate();
+    const refreshTokenHash = await this.refreshTokenService.hash(refreshToken.tokenSecret);
+    const expiresAt = this.refreshTokenService.getExpires(30);
+
+    await this.refreshTokenRepository.refresh(user.props.id, refreshToken.tokenId, {
+      token: refreshTokenHash,
+      expiresAt: expiresAt,
+    });
     const userMapped = UserPublicMapper.toPublic(user);
 
     void this.verificationCodeRepository.deleteByUserId(user.props.id);
-    return { accessData, refreshData, user: userMapped };
+    return { accessData, refreshData: { token: refreshToken.token, expiresAt }, user: userMapped };
   }
 }
