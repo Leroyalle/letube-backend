@@ -128,7 +128,6 @@ export class AuthService {
     if (!refreshToken) {
       throw new InternalServerErrorException('Refresh token is missing');
     }
-    console.log('refreshTokenrefreshTokenrefreshToken', refreshToken);
 
     const data = await firstValueFrom<TokenData>(
       this.userClient.send(AUTH_PATTERNS.REFRESH, { refreshToken }),

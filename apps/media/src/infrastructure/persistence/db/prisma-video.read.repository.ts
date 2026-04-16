@@ -18,6 +18,7 @@ export class PrismaVideoReadRepository implements VideoReadRepositoryPort {
     });
 
     if (!data) return null;
+    console.log('data', data);
 
     return VideoResponseMapper.toDto(data);
   }

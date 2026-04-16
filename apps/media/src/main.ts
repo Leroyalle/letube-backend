@@ -1,7 +1,7 @@
 import { MEDIA_BROKER_QUEUES } from '@contracts/media/queues/broker.queues';
 import { MEDIA_HOST, MEDIA_PORT } from 'libs/infra-constants/src';
 
-import { ConfigService } from '@nestjs/config';
+// import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { type RmqOptions, type TcpOptions, Transport } from '@nestjs/microservices';
 
@@ -9,7 +9,7 @@ import { MediaModule } from './media.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(MediaModule);
-  const config = app.get(ConfigService);
+  // const config = app.get(ConfigService);
 
   app.connectMicroservice<TcpOptions>({
     options: {
@@ -21,8 +21,8 @@ async function bootstrap() {
 
   app.connectMicroservice<RmqOptions>({
     options: {
-      urls: [config.getOrThrow<string>('RMQ_URL')],
-      // urls: ['amqp://backend:123123@localhost:5672/'],
+      // urls: [config.getOrThrow<string>('RMQ_URL')],
+      urls: ['amqp://backend:123123@localhost:5672/'],
       queue: MEDIA_BROKER_QUEUES.processed,
     },
     transport: Transport.RMQ,
