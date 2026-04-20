@@ -5,5 +5,6 @@ export class MarkMediaAsProcessedCommand {
     public readonly sourceId: string,
     public readonly contentType: ContentType,
     public readonly hlsMasterKey: string,
+    public readonly durationMs: number,
   ) {}
 }

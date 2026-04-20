@@ -45,7 +45,6 @@ export class AuthController {
   @Get('get-user')
   @Authorization()
   public getUser(@Req() req: any) {
-    console.log('req user', req.user);
     return req.user;
   }
 

@@ -17,4 +17,7 @@ export const CHANNEL_PATTERNS = {
   FIND_ALL: {
     cmd: 'channel.find-all',
   },
+  FIND_BY_IDS: {
+    cmd: 'channel.find-by-ids',
+  },
 };

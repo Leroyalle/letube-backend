@@ -11,6 +11,5 @@ export function Authorization(...roles: EUserRole[]) {
   const decorators: CustomDecorator | MethodDecorator[] = [UseGuards(AuthGuard)];
 
   if (roles.length > 0) decorators.push(RolesDecorator(...roles), UseGuards(RolesGuard));
-
   return applyDecorators(...decorators);
 }

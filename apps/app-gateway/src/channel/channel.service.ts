@@ -14,18 +14,18 @@ export class ChannelService {
   constructor(@Inject(CHANNEL_SERVICE) private readonly channelClient: ClientProxy) {}
 
   public create(dto: CreateChannelDto) {
-    return this.channelClient.emit(CHANNEL_PATTERNS.CREATE, dto);
+    return this.channelClient.send(CHANNEL_PATTERNS.CREATE, dto);
   }
 
   public findById(dto: FindByIdDto) {
-    return this.channelClient.emit(CHANNEL_PATTERNS.FIND_BY_ID, dto);
+    return this.channelClient.send(CHANNEL_PATTERNS.FIND_BY_ID, dto);
   }
 
   public findByUserId(dto: FindByUserIdDto) {
-    return this.channelClient.emit(CHANNEL_PATTERNS.FIND_BY_USER_ID, dto);
+    return this.channelClient.send(CHANNEL_PATTERNS.FIND_BY_USER_ID, dto);
   }
 
   public findAll() {
-    return this.channelClient.emit(CHANNEL_PATTERNS.FIND_ALL, undefined);
+    return this.channelClient.send(CHANNEL_PATTERNS.FIND_ALL, undefined);
   }
 }

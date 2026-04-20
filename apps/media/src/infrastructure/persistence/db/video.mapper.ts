@@ -27,11 +27,15 @@ export class VideoMapper {
       status: statusMap[video.status] || 'ERROR',
       createdAt: video.createdAt,
       updatedAt: video.updatedAt,
+      durationMs: video.durationMs,
+      views: video.views,
     });
   }
 
   public static toCreatePersistence(data: CreateVideoRecord): Prisma.VideoCreateInput {
     return {
+      durationMs: data.video.props.durationMs,
+      views: data.video.props.views,
       id: data.video.props.id,
       name: data.video.props.name,
       description: data.video.props.description,
@@ -46,6 +50,8 @@ export class VideoMapper {
 
   public static toPersistenceUpdateData(video: DomainVideo): PersistenceRecord {
     return {
+      durationMs: video.props.durationMs,
+      views: video.props.views,
       id: video.props.id,
       name: video.props.name,
       description: video.props.description,

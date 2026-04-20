@@ -16,7 +16,13 @@ export class CreateChannelHandler implements ICommandHandler<CreateChannelComman
   ) {}
 
   public async execute(command: CreateChannelCommand): Promise<Channel> {
-    const channel = new Channel(randomUUID(), command.userId, command.name, command.description);
+    const channel = new Channel(
+      randomUUID(),
+      command.userId,
+      command.name,
+      command.description,
+      command.avatar,
+    );
 
     await this.channelRepository.create(channel);
 

@@ -34,6 +34,7 @@ export class MediaMessagingController {
         dto.filename,
         ContentType.from(dto.contentType),
         Visibility.from(dto.visibility),
+        0,
       ),
     );
   }
@@ -57,11 +58,13 @@ export class MediaMessagingController {
 
   @EventPattern(MEDIA_BROKER_QUEUES.processed)
   public processMedia(@Payload() dto: MediaProcessedDto) {
+    console.log('MEDIA_BROKER_QUEUES.processed datatoo', dto);
     return this.commandBus.execute(
       new MarkMediaAsProcessedCommand(
         dto.sourceId,
         ContentType.from(dto.contentType),
         dto.hlsMasterKey,
+        dto.durationMs,
       ),
     );
   }

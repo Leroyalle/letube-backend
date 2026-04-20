@@ -24,10 +24,10 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
   ) {}
 
   public async execute(command: UploadMediaCommand) {
+    console.log('object');
     const channel = await this.channelAdapter.findChannelByUserId(command.userId);
 
     if (!channel) throw new Error('Канал не найден');
-
     const videoId = randomUUID();
     const key = MediaStorageResolver.generateUploadKey(
       videoId,
@@ -51,6 +51,8 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       sourceKey: key,
       hlsMasterKey: null,
       status: 'UPLOADING',
+      durationMs: command.durationMs,
+      views: 0,
     });
 
     const videoRecord: CreateVideoRecord = {

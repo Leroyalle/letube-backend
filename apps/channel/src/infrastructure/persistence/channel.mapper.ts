@@ -4,7 +4,7 @@ import { Channel as DomainChannel } from '../../domain/entities/channel.entity';
 
 export class ChannelMapper {
   public static toDomain(data: PrismaChannel): DomainChannel {
-    return new DomainChannel(data.id, data.userId, data.name, data.description);
+    return new DomainChannel(data.id, data.userId, data.name, data.description, data.avatar);
   }
 
   public static toPersistence(data: DomainChannel): Prisma.ChannelCreateInput {
@@ -13,6 +13,7 @@ export class ChannelMapper {
       id: data.id,
       name: data.name,
       userId: data.userId,
+      avatar: data.avatar,
     };
   }
 }

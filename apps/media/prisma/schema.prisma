@@ -19,12 +19,15 @@ model Video {
 
   name        String
   description String
+  durationMs  Int
   channelId   String
   visibility  String
+  views       Int
 
   bucket       String
   sourceKey    String
   hlsMasterKey String?
+  previewKey   String?
 
   status String
 

@@ -9,9 +9,10 @@ import {
   TokenData,
   VerifyCodeDto,
 } from '@contracts/auth';
+import { CHANNEL_PATTERNS } from '@contracts/channel';
 import { SendMessageResponseDto } from '@contracts/notification';
 import { Response } from 'express';
-import { IDENTITY_SERVICE } from 'libs/infra-constants/src';
+import { CHANNEL_SERVICE, IDENTITY_SERVICE } from 'libs/infra-constants/src';
 import { firstValueFrom } from 'rxjs';
 
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
@@ -19,7 +20,10 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject(IDENTITY_SERVICE) private readonly userClient: ClientProxy) {}
+  constructor(
+    @Inject(IDENTITY_SERVICE) private readonly userClient: ClientProxy,
+    @Inject(CHANNEL_SERVICE) private readonly channelClient: ClientProxy,
+  ) {}
 
   public async login(dto: LoginDto, res: Response) {
     try {
@@ -78,6 +82,15 @@ export class AuthService {
 
       this.setRefreshToken(data.refreshData, res);
       // this.setAccessToken(data.accessData, res);
+
+      await firstValueFrom(
+        this.channelClient.send(CHANNEL_PATTERNS.CREATE, {
+          name: data.user.name,
+          description: `Channel of ${data.user.name}`,
+          userId: data.user.id,
+          avatar: data.user.avatar,
+        }),
+      );
 
       return {
         accessToken: data.accessData.token,

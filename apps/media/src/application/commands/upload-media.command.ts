@@ -9,5 +9,6 @@ export class UploadMediaCommand {
     public readonly filename: string,
     public readonly contentType: ContentType,
     public readonly visibility: Visibility,
+    public readonly durationMs: number,
   ) {}
 }

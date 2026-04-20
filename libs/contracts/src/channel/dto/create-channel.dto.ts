@@ -9,4 +9,7 @@ export class CreateChannelDto {
 
   @IsUUID()
   userId!: string;
+
+  @IsString()
+  avatar!: string | null;
 }

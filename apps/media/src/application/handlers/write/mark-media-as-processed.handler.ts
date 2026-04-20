@@ -20,6 +20,7 @@ export class MarkMediaAsProcessedHandler implements ICommandHandler<MarkMediaAsP
 
     video.setMasterKey(command.hlsMasterKey);
     video.changeStatus('READY');
+    video.setDuration(command.durationMs);
 
     return this.videoRepository.update(video);
   }

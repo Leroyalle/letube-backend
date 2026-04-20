@@ -12,6 +12,7 @@ export class MediaService {
   constructor(@Inject(MEDIA_SERVICE) private readonly mediaClient: ClientProxy) {}
 
   public getUploadUrl(dto: UploadMediaDto, userId: string) {
+    console.log(dto);
     const payload: UploadMediaRpc = { ...dto, userId };
     return this.mediaClient.send(MEDIA_PATTERNS.UPLOAD, payload);
   }

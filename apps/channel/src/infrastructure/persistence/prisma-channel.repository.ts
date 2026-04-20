@@ -43,4 +43,14 @@ export class PrismaChannelRepository implements ChannelRepository {
       },
     });
   }
+
+  public findByIds(ids: string[]) {
+    return this.prismaService.channel.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
 }

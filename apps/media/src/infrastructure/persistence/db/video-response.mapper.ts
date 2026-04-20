@@ -15,6 +15,9 @@ export class VideoResponseMapper {
       name: data.name,
       description: data.description,
       channelId: data.channelId,
+      durationMs: data.durationMs,
+      previewKey: data.previewKey,
+      views: data.views,
     };
   }
 }

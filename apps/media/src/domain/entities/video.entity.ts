@@ -12,6 +12,8 @@ interface VideoData {
   visibility: Visibility;
   status: VideoStatus;
   channelId: string;
+  durationMs: number;
+  views: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -38,5 +40,9 @@ export class Video {
 
   public setMasterKey(masterKey: string) {
     return (this.props.hlsMasterKey = masterKey);
+  }
+
+  public setDuration(durationMs: number) {
+    return (this.props.durationMs = durationMs);
   }
 }

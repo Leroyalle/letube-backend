@@ -1,4 +1,11 @@
-import { IDENTITY_HOST, IDENTITY_PORT, IDENTITY_SERVICE } from 'libs/infra-constants/src';
+import {
+  CHANNEL_HOST,
+  CHANNEL_PORT,
+  CHANNEL_SERVICE,
+  IDENTITY_HOST,
+  IDENTITY_PORT,
+  IDENTITY_SERVICE,
+} from 'libs/infra-constants/src';
 
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -15,6 +22,14 @@ import { AuthService } from './auth.service';
         options: {
           port: IDENTITY_PORT,
           host: IDENTITY_HOST,
+        },
+      },
+      {
+        transport: Transport.TCP,
+        name: CHANNEL_SERVICE,
+        options: {
+          port: CHANNEL_PORT,
+          host: CHANNEL_HOST,
         },
       },
     ]),

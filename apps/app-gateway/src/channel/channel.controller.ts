@@ -13,12 +13,12 @@ export class ChannelController {
     return this.channelService.create(dto);
   }
 
-  @Get(':id')
+  @Get('byId/:id')
   public findById(@Param() dto: FindByIdDto) {
     return this.channelService.findById(dto);
   }
 
-  @Get(':userId')
+  @Get('byUserId/:userId')
   public findByUserId(@Param() dto: FindByUserIdDto) {
     return this.channelService.findByUserId(dto);
   }
